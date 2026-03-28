@@ -1,7 +1,8 @@
-.direnv
+# macos
 .DS_Store
-deps
-.local_rust
+
+# project specific
+.direnv
 
 # Added by cargo
 /target

@@ -1,12 +1,16 @@
+default: run
+
 # INFO: -----------------------------
 #         basic cargo aliases
 # -----------------------------------
 
-# runs default debug profile
+# runs via debug profile
 run *args:
 	cargo run {{args}}
 
-# runs the max-optimization release profile
+# runs via max-optimization release profile
+alias run-fast := release
+alias run-release := release
 release *args:
 	cargo run --profile distribution --features final_release
 
@@ -34,17 +38,6 @@ texture:
 # INFO: ---------------------
 #         small utils
 # ---------------------------
-
-zip:
-	git archive --format=zip -o b.zip HEAD
-	@if [ -d "deps" ]; then \
-		zip -g -r b.zip deps; \
-		echo "✅ Added deps/ to b.zip"; \
-	fi
-
-fetch-rust:
-	mkdir deps
-	curl -L -o ./deps/rust-1.88.0-x86_64-unknown-linux-gnu.tar.gz https://static.rust-lang.org/dist/rust-1.88.0-x86_64-unknown-linux-gnu.tar.gz
 
 fmt:
 	nix fmt

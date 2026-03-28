@@ -1,33 +1,40 @@
-# Voxel engine
+# 🅱️oxel
 
-## Notes for grading
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?style=flat&logo=github)](https://github.com/masoniis/b)
+![Rust Version](https://img.shields.io/badge/rustc-1.88.0%2B-orange.svg)
 
-Easiest way to navigate for grading is the simple **showcase keybinds**, which are numkeys 1, 2, etc:
+## Table of contents
 
-1. Numkey 1: showcases water bobbing, shadows visible, and sinwave terrain gen
-2. Numkey 2: showcases a more realistic terrain, sunset transition happening
-3. Numkey 3: showcases more powerful 3D terrain capabilities (proving that terrain is not a mere heightmap) with 3D simplex noise!
-4. Numkey 4: showcases a wider terrain with clearer biomes
-5. Numkey 5: showcases some beach scenery
-6. Numkey 6: showcases a mini badlands biome
+- [Notes for grading](#notes-for-grading)
+  - [Usage warnings](#usage-warnings)
+  - [What remains to be done](#what-remains-to-be-done)
+- [How to run the project](#how-to-run-the-project)
+  - [Usage guide](#usage-guide)
+- [Cool "technical" things](#cool-technical-things)
+  - [Graphics stuff](#graphics-stuff)
+  - [Other stuff](#other-stuff)
+- [Acknowledgments](#acknowledgments)
 
 ### Important usage warnings/notes
 
-1. UI is EXPENSIVE and may cause lag so be weary of that.
-2. Shadows have very low render distance of 32 voxels (have not implemented cascaded shadow maps)
+1. MOUSE CAN BE UNLOCKED WITH `ESCAPE`
 
-### Cool things I'm proud of (things to pay attention to)
+2. UI is EXPENSIVE. I recommend turning it off when you aren't actively paying attention to it.
+3. Shadows have very low render distance of 32 voxels (didn't have time for cascaded shadow maps) and also have some other small issues.
+4. Chunk generation speed is not extremely fast (swap generator type with `T`). It is easy to overwhelm it by moving fast depending on hardware.
+
+### Cool things
 
 #### Graphics stuff
 
-1. "Vertex pulling." Each group of 6 vertices that make up a face share a **single 32 bit uint** in a GPU buffer. This required cool GPU stuff and unpacking face data in shaders (packing on CPU of course). The shader code where this data is unpacked is seen [here](./assets/shaders/world/lib/face_unpacking.wesl) if you are curious about what/how data is packed into a single uint.
-2. Global illumination via the "sun" with directional lighting, and a shadow pass that adds basic hard-shadows using shadow mapping.
-3. Approximate **ambient occlusion** based on nearby voxels to a vertex. Provides some depth to the world even where there is no lighting.
+1. "Vertex pulling." Each group of 6 vertices that make up a face share a single 32 bit float in a GPU buffer.
+2. Global illumination via the "Sun" with directional lighting, and a shadow pass that adds (somewhat scuffed) shadows
+3. Approximate ambient occlusion based on nearby voxels to a vertex.
 4. Full transparency support via a separate render pass.
 5. Custom UI implementation (with `taffy` for computing flexbox layouts and `glyphon` for text heavylifting)
 6. Custom fog and sky shaders that define the sky and horizon blending with sun/moon.
 7. Convenient texture and voxel definition loading enabling swapping voxel textures easily in the `assets/blocks` folder.
-8. Water vertices "wave" up and down if you look at them closely!
+8. Water vertices "wave" up and down if you look at them closer
 
 #### Other stuff
 
@@ -35,19 +42,9 @@ Easiest way to navigate for grading is the simple **showcase keybinds**, which a
 2. ECS architecture for data-oriented design of the entire system
 3. Rendering and simulation run in parallel (only with a max of 1-frame delta though)
 
-### AI usage
-
-1. AI wrote the texture converter in [tools/texture_processor](./tools/texture_processor.rs) (though some adjustments and fixes were made) to add tints to existing pngs and generate a water clear texture.
-2. AI helped with determinance of some thresholds regarding biomes that are typical of other voxel engines, and while it was a good baseline, I definitely need to tune the thresholds.
-3. AI helped with writing the makefile to work fully on ubuntu without root access since I don't have access to a ubuntu machine.
-
-### Time spent
-
-Not exactly sure but a lot, likely greater than 100 hours
-
 ## How to run the project
 
-On most Linux distros, simply running `make` should work (since a bundled version of rust has been included locally)
+1. On linux, simply running `make` should work (since a bundled version of rust has been included locally)
 
 Otherwise...
 
@@ -64,29 +61,22 @@ To run, `cargo` can be used like any standard Rust project:
 - Run `cargo run --release` to compile and run in **release mode** (higher fps, optimized compilation)
 - Run `cargo run` to compile and run in **debug mode** (lower FPS, debug tracing, simplified compilation)
 
-### Full keybind list
+### Usage guide
 
 | Key(s)        | Action                                                                               |
 | :------------ | :----------------------------------------------------------------------------------- |
+| `Escape`      | Toggle "pause" (locks/unlocks cursor, no _real_ pause currently)                     |
 | `W`           | Move forward                                                                         |
 | `S`           | Move backward                                                                        |
 | `A`           | Move left                                                                            |
 | `D`           | Move right                                                                           |
-| `1`           | Jump to scene showcase 1 (water bobbing, shadow showing, sinwave gen)                |
-| `2`           | Jump to scene showcase 2 (realistic gen, sunset transition happening)                |
-| `3`           | Jump to scene showcase 3 (showcase of 3D gen capabilities, 3D simplex area)          |
-| `4`           | Jump to scene showcase 4 (showcase of a wider terrain with clearer biomes)           |
-| `5`           | Jump to scene showcase 5 (showcase of a cool hole in a mountain)                     |
 | `Left Shift`  | Move faster                                                                          |
-| `Mouse Left`  | Break targeted voxel                                                                 |
-| `Mouse right` | Place voxel against targeted face                                                    |
+| `Mouse Left`  | Break voxel                                                                          |
+| `Mouse right` | Place voxel                                                                          |
 | `T`           | Switch terrain generator (only applies to new chunks that generate e.g. from moving) |
-| `Left Arrow`  | Jump time backwards (by 30 seconds)                                                  |
-| `Right Arrow` | Jump time forwards (by 30 seconds)                                                   |
-| `F1` or `u`   | Toggle diagnostics UI (FPS, vert count, coordinates)                                 |
-| `F2` or `o`   | Toggle opaque wireframe mode                                                         |
-| `F3` or `b`   | Toggle chunk borders                                                                 |
-| `Escape`      | Toggle "pause" (locks/unlocks cursor, no _real_ pause currently)                     |
+| `F1` or `1`   | Toggle diagnostics UI (FPS, vert count, coordinates)                                 |
+| `F2` or `2`   | Toggle opaque wireframe mode                                                         |
+| `F3` or `3`   | Toggle chunk borders                                                                 |
 
 ## Acknowledgments
 
