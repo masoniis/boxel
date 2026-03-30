@@ -1,0 +1,27 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "rust"
+    }
+  },
+  "changelog-sections": [
+    { "type": "feat", "section": "Features | 🚀", "hidden": false },
+    { "type": "fix", "section": "Bug Fixes | 🐛", "hidden": false },
+    {
+      "type": "perf",
+      "section": "Performance Improvements | 🧠",
+      "hidden": false
+    },
+    { "type": "chore", "section": "Maintenance | 😔", "hidden": false },
+    { "type": "ci", "section": "Continuous Integration | 🕳️", "hidden": false },
+    { "type": "docs", "section": "Documentation | 📜", "hidden": false },
+    {
+      "type": "refactor",
+      "section": "Architecture & Refactoring | 🌍",
+      "hidden": false
+    },
+    { "type": "style", "section": "Style & Formatting | 🪮", "hidden": false },
+    { "type": "test", "section": "Tests | 🚨", "hidden": false }
+  ]
+}
