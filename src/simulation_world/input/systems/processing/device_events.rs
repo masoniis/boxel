@@ -44,7 +44,7 @@ pub fn device_events_system(
                     winit::event::MouseScrollDelta::PixelDelta(p) => p.y as f32,
                 };
                 let semantic_event = MouseScrollMessage {
-                    delta: glam::Vec2::new(0.0, yoffset),
+                    delta: Vec2::new(0.0, yoffset),
                 };
 
                 movement.adjust_scroll_delta(semantic_event.delta);

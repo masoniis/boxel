@@ -37,12 +37,12 @@ pub fn queue_wireframe_system(
 
     if active_bounds.enabled {
         // add all chunk wireframes
-        let translation_matrix = Mat4::from_translation(glam::vec3(
+        let translation_matrix = Mat4::from_translation(vec3(
             CHUNK_WIDTH as f32 / 2.0,
             CHUNK_HEIGHT as f32 / 2.0,
             CHUNK_DEPTH as f32 / 2.0,
         ));
-        let scale_matrix = Mat4::from_scale(glam::vec3(
+        let scale_matrix = Mat4::from_scale(vec3(
             CHUNK_WIDTH as f32,
             CHUNK_HEIGHT as f32,
             CHUNK_DEPTH as f32,
@@ -59,7 +59,7 @@ pub fn queue_wireframe_system(
 
     // add targeted block wireframe if exists
     if let Some(block_pos) = targeted_block.position {
-        let block_translation = glam::vec3(
+        let block_translation = vec3(
             block_pos.x as f32 + 0.5,
             block_pos.y as f32 + 0.5,
             block_pos.z as f32 + 0.5,

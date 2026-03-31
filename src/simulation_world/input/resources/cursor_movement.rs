@@ -1,5 +1,5 @@
 use bevy_ecs::prelude::Resource;
-use glam::{DVec2, Vec2};
+use bevy::math::{DVec2, Vec2};
 
 #[derive(Debug, Resource, Default)]
 pub struct CursorMovement {

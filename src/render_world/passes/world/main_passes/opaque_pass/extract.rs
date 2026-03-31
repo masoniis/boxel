@@ -10,7 +10,7 @@ use crate::{
     },
 };
 use bevy_ecs::prelude::*;
-use glam::Mat4;
+use bevy::math::Mat4;
 
 // INFO: --------------------------------
 //         RenderWorld components

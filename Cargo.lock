@@ -374,7 +374,6 @@ dependencies = [
  "crossbeam",
  "derive_more",
  "futures-lite",
- "glam",
  "glob",
  "glyphon",
  "image",

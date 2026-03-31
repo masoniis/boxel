@@ -1,5 +1,5 @@
 use bevy_ecs::prelude::Component;
-use glam::{Mat4, Quat, Vec3};
+use bevy::math::{Mat4, Quat, Vec3};
 
 #[derive(Component, Debug)]
 pub struct TransformComponent {

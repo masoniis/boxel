@@ -6,7 +6,7 @@ use crate::simulation_world::chunk::{
 use crate::simulation_world::chunk::{LOAD_DISTANCE, WORLD_MAX_Y_CHUNK, WORLD_MIN_Y_CHUNK};
 use crate::simulation_world::player::ActiveCamera;
 use bevy_ecs::prelude::*;
-use glam::IVec3;
+use bevy::math::IVec3;
 use std::collections::HashSet;
 
 /// Determines chunks to unload/load based on the camera position and render/loading distance.

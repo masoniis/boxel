@@ -85,7 +85,7 @@ wesl = "0.2.0" # preprocessor
 ## utils 
 image = { version = "0.25.6", default-features = false, features = ["png"] }
 bytemuck = { version = "1.13", features = ["derive"] }                       # gpu friendly data
-glam = "0.30.5"                                                              # linear algebra
+
 offset-allocator = "0.2.0"                                                   # gpu buffer allocation
 
 # INFO: --------------------------

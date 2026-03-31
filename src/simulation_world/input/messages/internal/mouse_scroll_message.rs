@@ -1,5 +1,5 @@
 use bevy_ecs::prelude::Message;
-use glam::Vec2;
+use bevy::math::Vec2;
 
 #[derive(Message, Debug, Clone)]
 pub struct MouseScrollMessage {

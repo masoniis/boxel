@@ -9,7 +9,7 @@ use crate::{
     simulation_world::time::FrameClock,
 };
 use bevy_ecs::prelude::*;
-use glam::{Mat4, Vec3};
+use bevy::math::{Mat4, Vec3};
 use tracing::{instrument, warn};
 
 /// The distance the near plane is set to for the camera frustum.

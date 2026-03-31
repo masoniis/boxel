@@ -5,7 +5,7 @@ use crate::simulation_world::{
     time::{world_clock::SECONDS_IN_A_DAY, WorldClockResource},
 };
 use bevy_ecs::prelude::*;
-use glam::Vec3;
+use bevy::math::Vec3;
 use std::time::Duration;
 
 struct Showcase {
