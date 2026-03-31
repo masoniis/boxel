@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
@@ -57,6 +57,11 @@
         packages.default = pkgs.buildEnv {
           name = "gh action empty default profile";
           paths = [ ];
+        };
+
+        packages.formatting = pkgs.buildEnv {
+          name = "gh action empty default profile";
+          paths = [ pkgs-unstable.wgsl-analyzer ];
         };
       }) // (let
         # iterate each system and evaluate
