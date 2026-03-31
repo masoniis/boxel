@@ -8,6 +8,7 @@ default-run = "b"
 product-name = "Boxel"
 identifier = "com.masoniis.boxel"
 resources = ["assets", "readme.md"]
+icons = ["assets/icon.png"]
 before-packaging-command = "cargo build --profile distribution --features final_release"
 binaries = [
     { path = "b", main = true }
