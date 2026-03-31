@@ -8,6 +8,10 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true # cancel previous format if new commit is made
+
 jobs:
   do-the-formatting:
     # if it's a PR, only run if not a draft
