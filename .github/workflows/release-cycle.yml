@@ -77,9 +77,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.release-please.outputs.tag_name }}
+          fail_on_unmatched_files: false
           files: |
-            target/distribution/**/*.dmg
-            target/distribution/**/*.exe
-            target/distribution/**/*.msi
-            target/distribution/**/*.deb
-            target/distribution/**/*.AppImage
+            target/distribution/out/*.dmg
+            target/distribution/out/*.msi
+            target/distribution/out/*.exe
+            target/distribution/out/*.deb
+            target/distribution/out/*.AppImage
