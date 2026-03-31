@@ -1,7 +1,7 @@
 use crate::simulation_world::terrain::generators::climate::{
     climate_noise_gen::ClimateNoiseGenerator, lib::ClimateGenerator,
 };
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use std::sync::Arc;
 
 #[derive(Resource, Clone)]

@@ -3,7 +3,7 @@ use crate::render_world::global_extract::RenderWindowSizeResource;
 use crate::render_world::graphics_context::resources::{
     RenderDevice, RenderSurface, RenderSurfaceConfig,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// A system that reacts to window size changes and reconfigures the wgpu surface.
 #[instrument(skip_all)]

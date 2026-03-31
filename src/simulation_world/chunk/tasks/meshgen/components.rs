@@ -1,5 +1,5 @@
 use crate::simulation_world::chunk::{OpaqueMeshData, TransparentMeshData};
-use bevy_ecs::prelude::Component;
+use bevy::ecs::prelude::Component;
 use crossbeam::channel::Receiver;
 
 /// Marks a chunk meshing task in the simulation world that returns a MeshComponent.

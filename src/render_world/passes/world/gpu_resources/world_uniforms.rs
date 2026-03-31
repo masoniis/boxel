@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::render_world::graphics_context::resources::RenderDevice;
 use crate::render_world::types::PackedFace;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use offset_allocator::{Allocation, Allocator};
 
 /// The virtual address space size the allocator believes it has.

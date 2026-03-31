@@ -5,7 +5,7 @@ use crate::simulation_world::{
     user_interface::components::UiText,
     user_interface::screens::debug::debug_screen::{FaceCountTextMarker, MeshCountTextMarker},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 #[derive(Resource, Default, Debug)]
 pub struct MeshCounterResource {

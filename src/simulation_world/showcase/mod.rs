@@ -7,7 +7,7 @@ use crate::{
         scheduling::SimulationSchedule,
     },
 };
-use bevy_ecs::prelude::{IntoScheduleConfigs, Res};
+use bevy::ecs::prelude::{IntoScheduleConfigs, Res};
 use systems::{apply_default_showcase_system, apply_showcase_system};
 
 pub struct ShowcasePlugin;

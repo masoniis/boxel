@@ -1,5 +1,5 @@
 use crate::simulation_world::input::types::simulation_action::SimulationAction;
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use std::collections::HashSet;
 
 /// A resource for central mapping of input to actions

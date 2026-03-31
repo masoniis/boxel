@@ -1,4 +1,4 @@
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// A "scratch" world used to avoid allocating new worlds every frame when
 /// swapping out the `MainWorld` for the `Extract` schedule.

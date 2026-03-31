@@ -10,7 +10,7 @@ use crate::{
     ecs_core::{state_machine::AppState, EcsBuilder, Plugin},
     simulation_world::{scheduling::StartupSet, OnExit, SimulationSchedule},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct LoadingScreenPlugin;
 

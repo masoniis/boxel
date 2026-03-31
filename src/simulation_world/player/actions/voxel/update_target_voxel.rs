@@ -5,7 +5,7 @@ use crate::simulation_world::{
     chunk::{ChunkBlocksComponent, ChunkStateManager},
     player::{ActiveCamera, CameraComponent},
 };
-use bevy_ecs::prelude::{Query, Res, ResMut};
+use bevy::ecs::prelude::{Query, Res, ResMut};
 
 /// Max raycast traverse distance in blocks
 const RAYCAST_MAX_DIST: f32 = 8.0;

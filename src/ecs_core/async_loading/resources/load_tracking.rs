@@ -1,4 +1,4 @@
-use bevy_ecs::resource::Resource;
+use bevy::ecs::resource::Resource;
 use std::sync::{Arc, Mutex};
 
 /// Loading tracker is a NonSend Resource that the outer app loop orchestrates

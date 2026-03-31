@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::render_world::global_extract::utils::run_extract_schedule::SimulationWorld;
-use bevy_ecs::prelude::*; // Your path might differ
+use bevy::ecs::prelude::*; // Your path might differ
 
 /// A custom run condition that returns `true` if a resource of type `T` has been added
 /// or changed in the **game world** since the last time this condition was checked.

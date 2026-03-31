@@ -21,7 +21,7 @@ use crate::{
     simulation_world::{player::ActiveCamera, scheduling::FixedUpdateSet, SimulationSchedule},
     SimulationSet,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct ChunkLoadingPlugin;
 

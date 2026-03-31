@@ -5,7 +5,7 @@ use crate::{
     ecs_core::{EcsBuilder, Plugin},
     simulation_world::{SimulationSchedule, SimulationSet},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::marker::PhantomData;

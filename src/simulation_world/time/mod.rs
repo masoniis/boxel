@@ -19,7 +19,7 @@ use crate::{
     ecs_core::{state_machine::utils::in_state, EcsBuilder, Plugin},
     simulation_world::{SimulationSchedule, SimulationSet},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 use super::input::ActionStateResource;
 

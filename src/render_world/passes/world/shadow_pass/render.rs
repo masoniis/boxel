@@ -10,7 +10,7 @@ use crate::render_world::{
         ShadowDepthTextureResource, ShadowPassPipeline, ShadowViewBuffer,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct ShadowRenderPassNode {
     // caches the queries

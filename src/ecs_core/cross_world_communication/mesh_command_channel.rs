@@ -1,5 +1,5 @@
 use crate::simulation_world::asset_management::MeshDeletionRequest;
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use crossbeam::channel::{Receiver, Sender};
 
 /// Resource for the Simulation World to send mesh deletions to render world

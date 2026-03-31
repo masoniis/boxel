@@ -17,7 +17,7 @@ use crate::{
     },
     simulation_world::{SimulationSchedule, SimulationSet},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct CameraPlugin;
 

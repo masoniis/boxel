@@ -1,5 +1,5 @@
 use crate::render_world::textures::TextureLoadError;
-use bevy_ecs::resource::Resource;
+use bevy::ecs::resource::Resource;
 use std::{collections::HashMap, sync::Arc};
 
 /// A numeric ID for a texture, representing its index in the texture array.

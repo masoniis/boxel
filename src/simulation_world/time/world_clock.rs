@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::simulation_world::time::simulation_tick::SimulationTick;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::time::Duration;
 
 /// Number of seconds it takes for a day/night cycle to complete

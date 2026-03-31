@@ -1,7 +1,7 @@
 use crate::{
     prelude::*, render_world::global_extract::utils::run_extract_schedule::SimulationWorld,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// A generic system that clones a resource of type `T` from the main world
 /// and inserts it into the render world.

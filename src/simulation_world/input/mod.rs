@@ -31,7 +31,7 @@ use crate::{
         SimulationSchedule, SimulationSet,
     },
 };
-use bevy_ecs::{
+use bevy::ecs::{
     message::Messages,
     schedule::{IntoScheduleConfigs, SystemSet},
     system::Res,

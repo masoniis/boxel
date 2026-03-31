@@ -5,7 +5,7 @@ use crate::{
     },
     prelude::*,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use crossbeam::channel::TryRecvError;
 
 /// Polls simulation-specific tasks and updates the shared `LoadingTracker`.

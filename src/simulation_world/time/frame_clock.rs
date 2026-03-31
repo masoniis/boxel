@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::time::{Duration, Instant};
 
 const FPS_SMOOTHING_FACTOR: f32 = 0.025;

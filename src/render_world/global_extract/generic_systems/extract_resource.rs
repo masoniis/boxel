@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::render_world::global_extract::utils::run_extract_schedule::SimulationWorld;
-use bevy_ecs::prelude::*;
-use bevy_ecs::resource::Resource;
+use bevy::ecs::prelude::*;
+use bevy::ecs::resource::Resource;
 use std::marker::PhantomData;
 
 /// A trait for a resource that can be extracted from the simulation world into the render world.

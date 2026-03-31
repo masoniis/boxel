@@ -11,7 +11,7 @@ use crate::render_world::{
         },
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 // INFO: --------------------------------------------------------
 //         Systems to set up and execute the render graph

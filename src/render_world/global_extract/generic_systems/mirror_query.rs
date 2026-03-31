@@ -2,8 +2,8 @@ use crate::prelude::*;
 use crate::render_world::global_extract::utils::run_extract_schedule::SimulationWorld;
 use crate::render_world::scheduling::RenderSchedule;
 use crate::{EcsBuilder, Plugin};
-use bevy_ecs::prelude::*;
-use bevy_ecs::query::{QueryData, QueryFilter};
+use bevy::ecs::prelude::*;
+use bevy::ecs::query::{QueryData, QueryFilter};
 use std::collections::HashMap;
 use std::marker::PhantomData;
 

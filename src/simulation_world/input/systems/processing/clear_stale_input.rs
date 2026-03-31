@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::simulation_world::input::messages::RawDeviceMessage;
-use bevy_ecs::message::Messages;
-use bevy_ecs::prelude::*;
+use bevy::ecs::message::Messages;
+use bevy::ecs::prelude::*;
 
 /// Clears any input events that accumulated, likely during the loading screen or something.
 #[instrument(skip_all)]

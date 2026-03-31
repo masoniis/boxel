@@ -1,5 +1,5 @@
 use super::super::State;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 #[derive(Resource, Debug, Default, PartialEq, Eq)]
 pub struct PrevState<T: State> {

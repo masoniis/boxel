@@ -1,7 +1,7 @@
 use crate::simulation_world::terrain::generators::painting::{
     lib::TerrainPainter, simple_surface_painter::SimpleSurfacePainter,
 };
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use std::sync::Arc;
 
 /// A resource holding the active terrain chunk painter.

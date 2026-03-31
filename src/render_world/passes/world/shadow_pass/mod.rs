@@ -6,7 +6,7 @@ pub mod render;
 //         plugin definition
 // ---------------------------------
 
-use bevy_ecs::schedule::IntoScheduleConfigs;
+use bevy::ecs::schedule::IntoScheduleConfigs;
 use gpu_resources::{
     shadow_view_uniform::ShadowViewBindGroupLayout, ShadowDepthTextureResource, ShadowPassPipeline,
     ShadowViewBuffer,

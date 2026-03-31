@@ -25,7 +25,7 @@ use crate::{
     },
     simulation_world::chunk::OpaqueMeshComponent,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct OpaqueRenderPassPlugin;
 

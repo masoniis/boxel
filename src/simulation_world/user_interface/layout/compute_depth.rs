@@ -1,7 +1,7 @@
 use crate::simulation_world::user_interface::{
     components::Node, screens::spawn_root::UiRootNodeResource,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use tracing::instrument;
 
 #[derive(Component, Debug)]

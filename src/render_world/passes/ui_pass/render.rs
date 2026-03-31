@@ -11,7 +11,7 @@ use crate::{
         },
     },
 };
-use bevy_ecs::world::World;
+use bevy::ecs::world::World;
 
 use super::gpu_resources::{view_binding::UiViewBuffer, ScreenQuadResource};
 

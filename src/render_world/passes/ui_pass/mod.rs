@@ -29,7 +29,7 @@ use crate::{
         scheduling::{RenderSchedule, RenderSet},
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct UiRenderPassPlugin;
 

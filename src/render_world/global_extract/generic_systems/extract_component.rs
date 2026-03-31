@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::render_world::global_extract::utils::run_extract_schedule::SimulationWorld;
-use bevy_ecs::prelude::*;
-use bevy_ecs::query::{QueryData, QueryFilter};
+use bevy::ecs::prelude::*;
+use bevy::ecs::query::{QueryData, QueryFilter};
 use std::collections::HashSet;
 
 /// A resource in the RenderWorld that will store the extracted component data.

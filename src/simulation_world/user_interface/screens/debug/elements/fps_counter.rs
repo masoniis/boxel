@@ -5,7 +5,7 @@ use crate::simulation_world::{
         components::UiText, screens::debug::debug_screen::FpsCounterTextElementMarker,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// Updates the content of the FPS counter text element.
 #[instrument(skip_all)]

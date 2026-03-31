@@ -1,4 +1,4 @@
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use derive_more::{Deref, DerefMut};
 use std::sync::Arc;
 

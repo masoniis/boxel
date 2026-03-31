@@ -12,7 +12,7 @@ use crate::render_world::{
 };
 use crate::simulation_world::block::TargetedBlock;
 use crate::simulation_world::chunk::consts::{CHUNK_DEPTH, CHUNK_HEIGHT, CHUNK_WIDTH};
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 #[instrument(skip_all)]
 pub fn queue_wireframe_system(

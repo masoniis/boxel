@@ -6,7 +6,7 @@ use crate::{
         passes::ui_pass::gpu_resources::view_binding::{UiViewBuffer, UiViewData},
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// A system that updates the orthographic projection matrix for the UI camera.
 ///

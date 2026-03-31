@@ -3,7 +3,7 @@ use crate::simulation_world::terrain::shaping::{RealisticShaper, SimplexShaper};
 use crate::simulation_world::terrain::{
     ActiveTerrainGenerator, NoisyShaper, SinwaveShaper, SuperflatShaper, TerrainShaper,
 };
-use bevy_ecs::{
+use bevy::ecs::{
     resource::Resource,
     system::{Local, Res, ResMut},
     world::{FromWorld, World},

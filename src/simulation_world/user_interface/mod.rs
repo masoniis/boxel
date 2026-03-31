@@ -16,7 +16,7 @@ use crate::{
     ecs_core::{EcsBuilder, Plugin},
     simulation_world::{SimulationSchedule, SimulationSet},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use {
     layout::{
         compute_and_apply_layout_system, compute_ui_depth_system, handle_hierarchy_changes_system,

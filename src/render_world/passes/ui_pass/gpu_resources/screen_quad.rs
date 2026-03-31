@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::render_world::graphics_context::resources::RenderDevice;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use wgpu::util::DeviceExt;
 
 /// A resource for a wgpu mesh that fills the entire screen.

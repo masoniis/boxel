@@ -5,7 +5,7 @@ use crate::simulation_world::chunk::{
 };
 use crate::simulation_world::chunk::{ChunkCoord, ChunkStateManager};
 use crate::simulation_world::player::ActiveCamera;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use crossbeam::channel::TryRecvError;
 
 /// Assesses whether a chunk coordinate is within the meshing radius of the camera.

@@ -1,6 +1,6 @@
 use crate::ecs_core::state_machine::State;
-use bevy_ecs::prelude::SystemSet;
-use bevy_ecs::schedule::ScheduleLabel;
+use bevy::ecs::prelude::SystemSet;
+use bevy::ecs::schedule::ScheduleLabel;
 
 // INFO: -------------------------
 //         Core scheduling

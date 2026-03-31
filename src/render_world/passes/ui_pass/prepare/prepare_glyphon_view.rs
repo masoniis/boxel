@@ -6,7 +6,7 @@ use crate::{
         passes::ui_pass::gpu_resources::GlyphonViewportResource,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// A system that creates the orthographic projection matrix for the UI camera.
 ///

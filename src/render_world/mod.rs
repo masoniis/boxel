@@ -26,7 +26,7 @@ use crate::render_world::{
     graphics_context::{GraphicsContext, GraphicsContextPlugin},
     passes::{core::setup_render_graph, RenderPassManagerPlugin},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::ops::{Deref, DerefMut};
 
 pub struct RenderWorldInterface {

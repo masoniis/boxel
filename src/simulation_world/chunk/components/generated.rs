@@ -1,7 +1,7 @@
 use crate::simulation_world::{
     block::BlockId, chunk::ChunkBlocksComponent, terrain::BiomeMapComponent,
 };
-use bevy_ecs::prelude::Component;
+use bevy::ecs::prelude::Component;
 
 /// Contains all metadata calculated during generation.
 #[derive(Component, Debug, Clone)]

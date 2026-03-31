@@ -11,7 +11,7 @@ use crate::{
         },
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 #[derive(Debug)]
 pub struct PhaseItem {

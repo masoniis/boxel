@@ -3,7 +3,7 @@ use crate::simulation_world::user_interface::{
     components::{Node, Size, Style, TextAlign, UiBackground, UiText},
     screens::spawn_root::UiRootNodeResource,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// A marker component for all entities that are part of the Loading UI screen.
 #[derive(Component)]

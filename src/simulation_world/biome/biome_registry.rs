@@ -2,7 +2,7 @@ use crate::{
     prelude::*,
     simulation_world::biome::biome_definition::{load_biome_from_str, BiomeDefinition},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::{collections::HashMap, fs, path::Path, sync::Arc};
 
 pub type BiomeId = u8;

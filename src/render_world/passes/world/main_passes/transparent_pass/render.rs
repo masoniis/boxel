@@ -15,7 +15,7 @@ use crate::render_world::{
         },
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct TransparentPassRenderNode {
     // caches the queries

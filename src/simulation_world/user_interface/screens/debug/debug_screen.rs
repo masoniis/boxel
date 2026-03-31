@@ -10,7 +10,7 @@ use crate::simulation_world::{
         screens::MeshCounterResource,
     },
 };
-use bevy_ecs::{prelude::*, relationship::RelatedSpawnerCommands};
+use bevy::ecs::{prelude::*, relationship::RelatedSpawnerCommands};
 
 // INFO: -------------------------
 //         Marker elements

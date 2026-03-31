@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::simulation_world::biome::biome_registry::BiomeId;
 use crate::simulation_world::chunk::types::{ChunkLod, ChunkVolumeData};
-use bevy_ecs::prelude::Component;
+use bevy::ecs::prelude::Component;
 
 #[derive(Component, Clone, Deref, DerefMut)]
 pub struct BiomeMapComponent(pub ChunkVolumeData<BiomeId>);

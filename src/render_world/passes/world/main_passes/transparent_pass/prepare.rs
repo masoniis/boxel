@@ -14,7 +14,7 @@ use crate::{
     },
     simulation_world::asset_management::{AssetStorageResource, MeshAsset},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::sync::Arc;
 use tracing::warn;
 

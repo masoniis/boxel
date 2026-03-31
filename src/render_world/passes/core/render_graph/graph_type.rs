@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::any::TypeId;
 use std::collections::HashMap;
 

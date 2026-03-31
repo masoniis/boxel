@@ -4,7 +4,7 @@ use crate::render_world::passes::world::main_passes::shared_resources::main_dept
 use crate::render_world::passes::world::main_passes::shared_resources::{
     CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout, TextureArrayBindGroupLayout,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use tracing::instrument;
 use wesl::include_wesl;
 

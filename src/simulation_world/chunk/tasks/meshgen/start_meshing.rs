@@ -12,7 +12,7 @@ use crate::simulation_world::{
     block::BlockRegistryResource,
     chunk::{build_chunk_mesh, ChunkBlocksComponent, ChunkCoord, ChunkStateManager},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use crossbeam::channel::unbounded;
 
 /// A system that detects chunks marked as dirty and prepares them for re-meshing.

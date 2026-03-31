@@ -4,7 +4,7 @@ use crate::simulation_world::{
     chunk::ChunkCoord, user_interface::components::UiText,
     user_interface::screens::debug_screen::CameraChunkCoordTextMarker,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// Updates the content of the FPS counter text element.
 #[instrument(skip_all)]

@@ -7,7 +7,7 @@ use crate::render_world::{
     graphics_context::resources::{RenderDevice, RenderQueue},
 };
 use crate::simulation_world::chunk::{CHUNK_SIDE_LENGTH, RENDER_DISTANCE};
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use bytemuck::{Pod, Zeroable};
 
 // INFO: ---------------------------------

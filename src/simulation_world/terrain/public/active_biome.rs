@@ -1,7 +1,7 @@
 use crate::simulation_world::terrain::{
     biome::MultiNoiseBiomeGenerator, generators::biome::lib::BiomeGenerator,
 };
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use std::sync::Arc;
 
 /// A resource holding the active biome chunk generator.

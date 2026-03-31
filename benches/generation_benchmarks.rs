@@ -17,7 +17,7 @@ use b::simulation_world::{
         SimpleSurfacePainter, SinwaveShaper, TerrainPainter, TerrainShaper,
     },
 };
-use bevy_ecs::prelude::World;
+use bevy::ecs::prelude::World;
 use criterion::{criterion_group, criterion_main, Criterion};
 
 const CLIMATE_NOISE_SEED: u32 = 42;

@@ -2,7 +2,7 @@ use crate::simulation_world::block::{BlockId, AIR_BLOCK_ID, SOLID_BLOCK_ID};
 use crate::simulation_world::chunk::{
     ChunkLod, ChunkVolumeData, VolumeDataView, VolumeDataWriter, CHUNK_SIDE_LENGTH,
 };
-use bevy_ecs::prelude::Component;
+use bevy::ecs::prelude::Component;
 
 /// A read-only view into the chunk's data.
 #[derive(Clone, Copy)]

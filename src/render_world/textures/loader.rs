@@ -6,7 +6,7 @@ use crate::{
         registry::{TextureId, TextureRegistryResource},
     },
 };
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use image::RgbaImage;
 use std::{collections::HashMap, path::Path};
 

@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use std::{
     collections::hash_map::HashMap,
     hash::Hash,

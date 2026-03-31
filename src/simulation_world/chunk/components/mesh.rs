@@ -1,5 +1,5 @@
 use crate::simulation_world::{asset_management::asset_storage::Handle, MeshAsset};
-use bevy_ecs::prelude::Component;
+use bevy::ecs::prelude::Component;
 
 #[derive(Component, Debug)]
 pub struct OpaqueMeshComponent {

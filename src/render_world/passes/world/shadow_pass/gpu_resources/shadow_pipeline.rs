@@ -4,7 +4,7 @@ use crate::render_world::{
     graphics_context::resources::RenderDevice,
     passes::world::shadow_pass::gpu_resources::SHADOW_DEPTH_FORMAT,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use wesl::include_wesl;
 
 use super::shadow_view_uniform::ShadowViewBindGroupLayout;

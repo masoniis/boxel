@@ -15,7 +15,7 @@ use crate::{
         SimulationSchedule,
     },
 };
-use bevy_ecs::schedule::IntoScheduleConfigs;
+use bevy::ecs::schedule::IntoScheduleConfigs;
 
 pub struct BiomePlugin;
 

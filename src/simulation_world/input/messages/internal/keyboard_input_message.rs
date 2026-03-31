@@ -1,4 +1,4 @@
-use bevy_ecs::prelude::Message;
+use bevy::ecs::prelude::Message;
 use winit::{event::ElementState, keyboard::PhysicalKey};
 
 #[derive(Message, Debug, Clone)]

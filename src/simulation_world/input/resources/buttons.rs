@@ -1,4 +1,4 @@
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use std::collections::hash_set::{HashSet, Iter};
 use std::hash::Hash;
 

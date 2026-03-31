@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use bevy_ecs::prelude::Component;
+use bevy::ecs::prelude::Component;
 
 // INFO: ----------------------
 //         UI Hierarchy

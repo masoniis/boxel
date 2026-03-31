@@ -1,5 +1,5 @@
 use crate::simulation_world::input::types::simulation_action::SimulationAction;
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use std::collections::hash_map::{HashMap, Iter};
 use winit::{
     event::MouseButton,

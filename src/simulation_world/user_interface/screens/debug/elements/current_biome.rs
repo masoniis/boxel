@@ -5,7 +5,7 @@ use crate::simulation_world::{
     terrain::BiomeMapComponent,
     user_interface::{components::UiText, screens::debug::debug_screen::CurrentBiomeTextMarker},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub fn update_current_biome_text_system(
     // Input

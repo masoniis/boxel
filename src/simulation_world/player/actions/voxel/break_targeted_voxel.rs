@@ -8,8 +8,8 @@ use crate::simulation_world::{
         CHUNK_SIDE_LENGTH,
     },
 };
-use bevy_ecs::prelude::{Commands, Message, MessageReader, Query};
-use bevy_ecs::prelude::{MessageWriter, Res};
+use bevy::ecs::prelude::{Commands, Message, MessageReader, Query};
+use bevy::ecs::prelude::{MessageWriter, Res};
 
 /// An event that is sent when a voxel should be broken.
 #[derive(Message, Clone)]

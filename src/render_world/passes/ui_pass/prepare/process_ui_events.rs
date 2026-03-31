@@ -5,7 +5,7 @@ use crate::render_world::passes::ui_pass::{
     extract::{ExtractedUiEvent, ExtractedUiEvents, UiElementKind},
     queue::UiElementCache,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// A resource that tracks the type of UI changes that occurred in a frame.
 #[derive(Resource, Default)]

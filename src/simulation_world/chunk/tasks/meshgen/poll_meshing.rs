@@ -5,7 +5,7 @@ use crate::simulation_world::chunk::{
     OpaqueMeshComponent, TransformComponent, TransparentMeshComponent, WantsMeshing,
     CHUNK_SIDE_LENGTH,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use crossbeam::channel::TryRecvError;
 
 /// Polls chunk meshing tasks and adds the MeshComponent when ready.

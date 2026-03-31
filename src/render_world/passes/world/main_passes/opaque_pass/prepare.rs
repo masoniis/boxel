@@ -14,7 +14,7 @@ use crate::{
     },
     simulation_world::asset_management::{AssetStorageResource, MeshAsset},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// A system to read all render meshes and initialize GPU buffers if they don't have one yet.
 #[instrument(skip_all)]

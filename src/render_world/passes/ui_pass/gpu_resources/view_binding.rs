@@ -1,5 +1,5 @@
 use crate::render_world::graphics_context::resources::RenderDevice;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use bytemuck::{Pod, Zeroable};
 use std::num::NonZeroU64;
 

@@ -1,4 +1,4 @@
-use bevy_ecs::schedule::{ScheduleLabel, SystemSet};
+use bevy::ecs::schedule::{ScheduleLabel, SystemSet};
 
 #[derive(ScheduleLabel, Debug, Clone, PartialEq, Eq, Hash)]
 pub enum RenderSchedule {

@@ -5,7 +5,7 @@ use crate::simulation_world::input::{
     },
     resources::{Buttons, WindowSizeResource},
 };
-use bevy_ecs::{
+use bevy::ecs::{
     message::{MessageReader, MessageWriter},
     system::ResMut,
 };

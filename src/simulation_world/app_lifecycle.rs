@@ -11,7 +11,7 @@ use crate::{
     },
     simulation_world::{OnExit, SimulationSchedule, SimulationSet},
 };
-use bevy_ecs::schedule::IntoScheduleConfigs;
+use bevy::ecs::schedule::IntoScheduleConfigs;
 
 pub struct AppLifecyclePlugin;
 

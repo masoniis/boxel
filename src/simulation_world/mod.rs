@@ -39,7 +39,7 @@ use crate::{
     ecs_core::{worlds::SimulationWorldMarker, CommonEcsInterface, EcsBuilder, PluginGroup},
     simulation_world::app_lifecycle::AppLifecyclePlugin,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::ops::{Deref, DerefMut};
 use winit::window::Window;
 

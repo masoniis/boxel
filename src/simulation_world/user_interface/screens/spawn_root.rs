@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::simulation_world::user_interface::components::{Node, Size, Style};
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 #[derive(Resource)]
 pub struct UiRootNodeResource(pub Entity);

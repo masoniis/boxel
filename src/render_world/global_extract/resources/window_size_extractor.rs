@@ -2,7 +2,7 @@ use crate::{
     render_world::global_extract::generic_systems::extract_resource::ExtractResource,
     simulation_world::input::resources::WindowSizeResource,
 };
-use bevy_ecs::{
+use bevy::ecs::{
     change_detection::DetectChangesMut,
     prelude::Resource,
     system::{Commands, ResMut},

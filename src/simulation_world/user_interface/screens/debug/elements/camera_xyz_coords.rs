@@ -2,7 +2,7 @@ use crate::simulation_world::{
     player::{ActiveCamera, CameraComponent},
     user_interface::{components::UiText, screens::debug::debug_screen::CameraXYZCoordTextMarker},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub fn update_camera_xyz_coord_screen_text(
     active_camera: Res<ActiveCamera>,

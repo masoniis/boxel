@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::simulation_world::chunk::{types::ChunkLod, ChunkColumnData};
-use bevy_ecs::component::Component;
+use bevy::ecs::component::Component;
 
 // INFO: --------------------------------
 //         Biome gen climate data

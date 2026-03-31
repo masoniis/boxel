@@ -2,7 +2,7 @@ use crate::prelude::*;
 use crate::render_world::graphics_context::resources::{
     RenderDevice, RenderQueue, RenderSurfaceConfig,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use derive_more::{Deref, DerefMut};
 use glyphon::{fontdb::Source, Cache, FontSystem, SwashCache, TextAtlas, TextRenderer, Viewport};
 use std::sync::Arc;

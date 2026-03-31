@@ -5,7 +5,7 @@ use crate::{
         load_block_from_str, BlockDescription, BlockFaceTextures, BlockRenderData,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::collections::HashMap;
 use std::path::Path;
 use std::{fs, sync::Arc};

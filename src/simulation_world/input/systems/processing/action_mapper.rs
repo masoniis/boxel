@@ -5,7 +5,7 @@ use crate::{
         InputActionMapResource,
     },
 };
-use bevy_ecs::prelude::{Res, ResMut};
+use bevy::ecs::prelude::{Res, ResMut};
 use winit::{event::MouseButton, keyboard::PhysicalKey};
 
 /// A system that translates the raw state from `Buttons` resources into abstract,

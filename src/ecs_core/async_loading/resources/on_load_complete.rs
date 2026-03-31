@@ -1,5 +1,5 @@
 use crate::ecs_core::state_machine::State;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::marker::PhantomData;
 
 /// A temporary resource that tells the master finalizer system which state

@@ -8,7 +8,7 @@ use crate::{
         chunk::{mesh::TransparentMeshComponent, TransformComponent},
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 // INFO: --------------------------------
 //         RenderWorld components

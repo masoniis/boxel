@@ -22,7 +22,7 @@ use crate::{
         input::resources::WindowSizeResource,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct SimulationExtractionPlugin;
 

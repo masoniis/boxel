@@ -1,6 +1,6 @@
 use crate::render_world::graphics_context::resources::RenderDevice;
 use crate::render_world::types::WireframeVertex;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use wgpu::util::DeviceExt;
 
 /// A 1x1x1 wireframe cube mesh to be used for representing chunk bounding boxes.

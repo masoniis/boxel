@@ -1,5 +1,5 @@
 use crate::ecs_core::state_machine::State;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::fmt::Debug;
 use std::hash::Hash;
 

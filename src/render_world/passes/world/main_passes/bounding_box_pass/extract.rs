@@ -2,7 +2,7 @@ use crate::{
     render_world::global_extract::extract_resource::ExtractResource,
     simulation_world::input::systems::toggle_chunk_borders::ChunkBoundsToggle,
 };
-use bevy_ecs::{
+use bevy::ecs::{
     resource::Resource,
     system::{Commands, ResMut},
 };

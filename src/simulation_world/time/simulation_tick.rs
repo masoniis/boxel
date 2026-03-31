@@ -2,7 +2,7 @@ use crate::{
     prelude::*,
     simulation_world::{time::FrameClock, SimulationSchedule},
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::time::Duration;
 
 #[derive(Resource, Debug)]

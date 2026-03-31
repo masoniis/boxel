@@ -3,7 +3,7 @@ use crate::simulation_world::user_interface::{
     components::{Node, Size, Style, UiBackground},
     screens::spawn_root::UiRootNodeResource,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub fn spawn_crosshair(mut commands: Commands, root_node: Res<UiRootNodeResource>) {
     info!("Spawning crosshair element");

@@ -25,7 +25,7 @@ use crate::{
     simulation_world::chunk::mesh::TransparentMeshComponent,
     Plugin,
 };
-use bevy_ecs::schedule::IntoScheduleConfigs;
+use bevy::ecs::schedule::IntoScheduleConfigs;
 
 pub struct TransparentRenderPassPlugin;
 

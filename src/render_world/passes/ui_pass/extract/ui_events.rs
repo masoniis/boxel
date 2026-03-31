@@ -4,7 +4,7 @@ use crate::simulation_world::user_interface::components::{CalculatedLayout, Node
 use crate::simulation_world::user_interface::{
     components::TextAlign, components::UiText, layout::compute_depth::UiDepth,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 #[derive(Clone, Debug)]
 pub enum UiElementKind {

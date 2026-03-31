@@ -2,7 +2,7 @@ use crate::simulation_world::{
     terrain::ActiveTerrainGenerator,
     user_interface::{components::UiText, screens::debug::debug_screen::ActiveGenTextMarker},
 };
-use bevy_ecs::{
+use bevy::ecs::{
     change_detection::DetectChanges,
     prelude::{Query, Res, With},
 };

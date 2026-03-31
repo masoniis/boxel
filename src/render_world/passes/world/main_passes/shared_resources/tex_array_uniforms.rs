@@ -5,7 +5,7 @@ use crate::{
         textures::loader::StagingTextureImages,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use image::RgbaImage;
 use wgpu::{
     Device, Extent3d, Queue, Sampler, TexelCopyBufferLayout, TexelCopyTextureInfo, Texture,

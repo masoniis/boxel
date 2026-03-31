@@ -5,7 +5,7 @@ use crate::{
     },
     prelude::*,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 /// The master system that runs in the simulation world. It checks the shared
 /// LoadingTracker and the OnLoadComplete resource to make the final decision

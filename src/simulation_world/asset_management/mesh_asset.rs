@@ -8,7 +8,7 @@ use crate::{
         chunk::{OpaqueMeshComponent, TransparentMeshComponent},
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::collections::{hash_map::Entry, HashMap};
 
 // INFO: -----------------------------

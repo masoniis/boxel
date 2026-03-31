@@ -2,7 +2,7 @@ use crate::{
     render_world::passes::world::gpu_resources::VoxelMesh,
     simulation_world::asset_management::asset_storage::AssetId,
 };
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use std::{collections::HashMap, sync::Arc};
 
 #[derive(Resource, Default)]

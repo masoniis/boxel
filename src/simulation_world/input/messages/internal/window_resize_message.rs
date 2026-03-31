@@ -1,4 +1,4 @@
-use bevy_ecs::prelude::Message;
+use bevy::ecs::prelude::Message;
 
 #[derive(Message, Clone, Copy)]
 pub struct MouseResizeMessage {

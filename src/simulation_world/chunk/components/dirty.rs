@@ -1,4 +1,4 @@
-use bevy_ecs::prelude::Component;
+use bevy::ecs::prelude::Component;
 
 /// A marker component to indicate that a chunk's mesh needs to be regenerated.
 #[derive(Component)]

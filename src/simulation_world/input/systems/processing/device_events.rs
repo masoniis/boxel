@@ -5,7 +5,7 @@ use crate::{
         resources::CursorMovement,
     },
 };
-use bevy_ecs::{
+use bevy::ecs::{
     message::{MessageReader, MessageWriter},
     system::ResMut,
 };

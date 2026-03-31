@@ -20,7 +20,7 @@ use crate::{
     },
     SimulationSet,
 };
-use bevy_ecs::{message::Messages, schedule::IntoScheduleConfigs};
+use bevy::ecs::{message::Messages, schedule::IntoScheduleConfigs};
 
 pub struct AssetManagementPlugin;
 

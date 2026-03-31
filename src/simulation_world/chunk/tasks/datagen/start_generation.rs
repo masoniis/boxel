@@ -14,7 +14,7 @@ use crate::simulation_world::{
         ActiveBiomeGenerator, ActiveClimateGenerator, ActiveTerrainGenerator, ActiveTerrainPainter,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use crossbeam::channel::unbounded;
 
 /// Queries for entities needing generation and starts a limited number per frame.

@@ -8,7 +8,7 @@ use crate::{
         },
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use derive_more::{Deref, DerefMut};
 use taffy::{self};
 

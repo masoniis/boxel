@@ -5,7 +5,7 @@ use crate::ecs_core::state_machine::{
 use crate::ecs_core::worlds::SimulationWorldMarker;
 use crate::prelude::*;
 pub use crate::simulation_world::scheduling::{OnEnter, OnExit};
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use std::any::type_name;
 
 #[instrument(skip_all)]

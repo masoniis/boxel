@@ -25,7 +25,7 @@ use crate::{
     simulation_world::{input::ActionStateResource, SimulationSchedule},
     SimulationSet,
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 pub struct DebugScreenPlugin;
 

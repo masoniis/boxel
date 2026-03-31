@@ -9,7 +9,7 @@ use crate::{
         },
     },
 };
-use bevy_ecs::resource::Resource;
+use bevy::ecs::resource::Resource;
 use noise::{Fbm, MultiFractal, NoiseFn, OpenSimplex};
 
 /// The number of octaves used in the noise functions.

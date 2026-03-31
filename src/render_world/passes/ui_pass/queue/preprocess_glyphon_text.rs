@@ -11,7 +11,7 @@ use crate::render_world::{
         queue::{batch_ui_elements::UiRenderBatch, IsGlyphonDirty, PreparedUiBatches},
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use glyphon::{Buffer, Metrics, TextArea, TextBounds};
 
 /// A conditional system that marks Glyphon as dirty if relevant UI changes occurred.

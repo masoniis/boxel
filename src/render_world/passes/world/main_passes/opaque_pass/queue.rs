@@ -5,7 +5,7 @@ use crate::render_world::{
         OpaqueRenderMeshComponent, RenderTransformComponent,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 
 #[derive(Debug)]
 pub struct PhaseItem {

@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use bevy_ecs::{resource::Resource, system::ResMut};
+use bevy::ecs::{resource::Resource, system::ResMut};
 
 #[derive(Resource, Default)]
 pub struct OpaqueWireframeMode {

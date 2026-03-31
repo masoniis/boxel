@@ -1,4 +1,4 @@
-use bevy_ecs::prelude::Component;
+use bevy::ecs::prelude::Component;
 
 use crate::simulation_world::chunk::CHUNK_AREA;
 

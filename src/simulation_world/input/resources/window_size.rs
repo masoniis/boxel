@@ -1,4 +1,4 @@
-use bevy_ecs::prelude::Resource;
+use bevy::ecs::prelude::Resource;
 use winit::dpi::PhysicalSize;
 
 /// WindowSize is considered an Input resource as it is received

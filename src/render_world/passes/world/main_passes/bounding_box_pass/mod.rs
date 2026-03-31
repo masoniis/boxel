@@ -20,7 +20,7 @@ use crate::{
     },
     simulation_world::block::TargetedBlock,
 };
-use bevy_ecs::schedule::IntoScheduleConfigs;
+use bevy::ecs::schedule::IntoScheduleConfigs;
 use gpu_resources::{
     object_binding::WireframeObjectBindGroupLayout, UnitCubeMesh, WireframeObjectBuffer,
     WireframePipeline,

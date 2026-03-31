@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::simulation_world::chunk::{CHUNK_DEPTH, CHUNK_HEIGHT, CHUNK_SIDE_LENGTH, CHUNK_WIDTH};
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use derive_more::{Deref, DerefMut};
 use std::fmt;
 

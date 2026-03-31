@@ -10,7 +10,7 @@ use crate::{
         types::WireframeVertex,
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use wesl::include_wesl;
 
 /// A resource holding the pipeline for rendering debug wireframes.

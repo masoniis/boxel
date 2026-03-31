@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::render_world::graphics_context::resources::{RenderDevice, RenderSurfaceConfig};
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use wgpu::{Texture, TextureView};
 
 pub const MAIN_DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;

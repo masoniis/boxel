@@ -35,7 +35,7 @@ use crate::{
         scheduling::{RenderSchedule, RenderSet},
     },
 };
-use bevy_ecs::schedule::{common_conditions::resource_changed_or_removed, IntoScheduleConfigs};
+use bevy::ecs::schedule::{common_conditions::resource_changed_or_removed, IntoScheduleConfigs};
 
 /// A plugin that sets up all the necessary resources and render
 /// passes used in the rendering pipeline.

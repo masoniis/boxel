@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::render_world::global_extract::{ExtractedSun, RenderTimeResource};
 use crate::render_world::graphics_context::resources::{RenderDevice, RenderQueue};
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use bytemuck::{Pod, Zeroable};
 
 // INFO: ----------------------------

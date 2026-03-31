@@ -2,7 +2,7 @@ use crate::{
     render_world::global_extract::generic_systems::extract_resource::ExtractResource,
     simulation_world::time::FrameClock,
 };
-use bevy_ecs::{
+use bevy::ecs::{
     prelude::Resource,
     system::{Commands, ResMut},
 };

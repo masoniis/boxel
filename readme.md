@@ -101,7 +101,7 @@ The "biggest" dependencies this project relies on are...
 2. `wgpu` for an abstraction layer on communicating with the gpu and ultimately rendering the graphics
 3. `wesl` as a `wgsl` preprocessor, enabling import statements in shaders and other QOL features
 4. `glyphon` for handling text rendering (with a glyph atlas), font loading, and vectorization (using underlying `cosmic-text`)
-5. `bevy_ecs` for a framework to implement the entity component system the simulation relies on
+5. `bevy::ecs` for a framework to implement the entity component system the simulation relies on
 6. `taffy` for computing UI layouts, particularly flex-box set ups, given a set of input styles.
 7. `noise` (rust library) for providing a very simple Simplex noise interface to use in generation.
 

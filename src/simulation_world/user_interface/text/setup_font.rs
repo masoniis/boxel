@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use glyphon::{fontdb::Source, FontSystem};
 use std::sync::Arc;
 

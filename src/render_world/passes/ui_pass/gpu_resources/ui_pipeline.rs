@@ -8,7 +8,7 @@ use crate::{
         },
     },
 };
-use bevy_ecs::prelude::*;
+use bevy::ecs::prelude::*;
 use wesl::include_wesl;
 
 /// A resource to hold the pipeline and bind group layouts for our UI shader.
