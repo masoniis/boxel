@@ -13,8 +13,7 @@ pub use scheduling::{RenderSchedule, RenderSet};
 // --------------------------------------
 
 use crate::ecs_core::{
-    async_loading::poll_render_loading_tasks,
-    state_machine::{self, in_state, AppState, GameState, StatePlugin},
+    state_machine::{self, AppState, GameState, StatePlugin},
     worlds::RenderWorldMarker,
 };
 use crate::prelude::*;
@@ -98,10 +97,6 @@ impl RenderWorldInterface {
         builder
             .add_plugin(StatePlugin::<AppState>::default())
             .add_plugin(StatePlugin::<GameState>::default());
-
-        builder
-            .schedule_entry(RenderSchedule::Main)
-            .add_systems(poll_render_loading_tasks.run_if(in_state(AppState::StartingUp)));
 
         builder.schedule_entry(RenderSchedule::Main).add_systems(
             (

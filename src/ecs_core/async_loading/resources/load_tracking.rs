@@ -15,23 +15,11 @@ pub struct LoadingTracker {
     inner: Arc<Mutex<LoadingTrackerInner>>,
 }
 
-// TODO: remove render world from load tracking and making rendering entirely data-centric
-
 impl LoadingTracker {
     /// Returns true only if all worlds have reported that they are ready.
-    pub fn is_all_ready(&self) -> bool {
-        let guard = self.inner.lock().unwrap();
-        guard.is_simulation_ready && guard.is_renderer_ready
-    }
-
-    pub fn is_simulation_ready(&self) -> bool {
+    pub fn is_ready(&self) -> bool {
         let guard = self.inner.lock().unwrap();
         guard.is_simulation_ready
-    }
-
-    pub fn is_renderer_ready(&self) -> bool {
-        let guard = self.inner.lock().unwrap();
-        guard.is_renderer_ready
     }
 
     /// Resets the tracker to its initial state.
@@ -41,12 +29,7 @@ impl LoadingTracker {
         guard.is_renderer_ready = false;
     }
 
-    // You'll need methods to set the flags now
     pub fn set_simulation_ready(&self, is_ready: bool) {
         self.inner.lock().unwrap().is_simulation_ready = is_ready;
-    }
-
-    pub fn set_renderer_ready(&self, is_ready: bool) {
-        self.inner.lock().unwrap().is_renderer_ready = is_ready;
     }
 }

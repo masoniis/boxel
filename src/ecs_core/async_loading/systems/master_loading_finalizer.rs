@@ -22,9 +22,9 @@ pub fn master_finalize_loading_system<T: State>(
 ) {
     // if we have both the tracker and the "what to do next" instruction
     if let Some(on_complete) = on_complete {
-        if loading_tracker.is_all_ready() {
+        if loading_tracker.is_ready() {
             info!(
-                "All worlds are ready. Transitioning to {:?}.",
+                "Loading is done. Transitioning to {:?}.",
                 on_complete.destination
             );
 
