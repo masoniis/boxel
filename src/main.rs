@@ -1,6 +1,6 @@
-use b::app;
-use b::prelude::*;
-use b::utils;
+use boxel::app;
+use boxel::prelude::*;
+use boxel::utils;
 
 #[instrument(skip_all, fields(name = "main"))]
 fn main() -> Result<(), Box<dyn std::error::Error>> {

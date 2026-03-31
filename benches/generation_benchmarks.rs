@@ -1,7 +1,8 @@
-use b::ecs_core::config::load_config;
-use b::prelude::*;
-use b::render_world::textures::load_voxel_texture_assets;
-use b::simulation_world::{
+use bevy::ecs::prelude::World;
+use boxel::ecs_core::config::load_config;
+use boxel::prelude::*;
+use boxel::render_world::textures::load_voxel_texture_assets;
+use boxel::simulation_world::{
     biome::biome_registry::BiomeRegistryResource,
     block::{BlockRegistryResource, SOLID_BLOCK_ID},
     chunk::{
@@ -17,7 +18,6 @@ use b::simulation_world::{
         SimpleSurfacePainter, SinwaveShaper, TerrainPainter, TerrainShaper,
     },
 };
-use bevy::ecs::prelude::World;
 use criterion::{criterion_group, criterion_main, Criterion};
 
 const CLIMATE_NOISE_SEED: u32 = 42;

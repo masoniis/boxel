@@ -59,7 +59,7 @@ sign:
 # Shows the ASM associated with a rust file.
 # requires https://crates.io/crates/cargo-show-asm
 asm path:
-    cargo asm --bin b --color {{path}}
+    cargo asm --bin boxel --color {{path}}
 
 trace *args:
 	#!/usr/bin/env bash
@@ -101,10 +101,9 @@ debug *args:
 	# Add targets to the rust log env variable
 	log_targets=""
 	for target in "$@"; do
-		log_targets="$log_targets$target=trace,"
+	        log_targets="$log_targets$target=trace,"
 	done
-	export RUST_LOG="${log_targets%,},b=info"
+	export RUST_LOG="${log_targets%,},boxel=info"
 
 	echo -e "\033[1;32mRunning with RUST_LOG=\033[0m$RUST_LOG"
-
 	cargo run
