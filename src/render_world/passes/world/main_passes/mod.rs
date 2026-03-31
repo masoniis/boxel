@@ -12,7 +12,7 @@ pub use shared_resources::{
 };
 
 // INFO: ---------------------------
-//         Plugin definition
+//         plugin definition
 // ---------------------------------
 
 use crate::{

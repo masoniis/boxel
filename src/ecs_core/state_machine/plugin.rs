@@ -5,13 +5,16 @@ use crate::{
     ecs_core::{EcsBuilder, Plugin},
     simulation_world::{SimulationSchedule, SimulationSet},
 };
-use bevy::ecs::prelude::*;
+use bevy::{ecs::prelude::*, state::state::States};
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::marker::PhantomData;
 
 // Trait to bundle all the necessary derives needed for state attributes
-pub trait State: Send + Sync + 'static + Copy + Clone + Eq + Hash + Debug + Default {}
+pub trait State:
+    States + Send + Sync + 'static + Copy + Clone + Eq + Hash + Debug + Default
+{
+}
 
 /// A generic plugin for any type T that implements the State trait
 pub struct StatePlugin<T: State>(PhantomData<T>);

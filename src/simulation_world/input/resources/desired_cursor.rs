@@ -10,8 +10,8 @@ pub struct DesiredCursorState {
 impl Default for DesiredCursorState {
     fn default() -> Self {
         Self {
-            visible: true,
-            grab_mode: CursorGrabMode::None,
+            visible: false,
+            grab_mode: CursorGrabMode::Locked,
         }
     }
 }

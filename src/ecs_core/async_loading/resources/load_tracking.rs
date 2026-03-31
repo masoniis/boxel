@@ -15,6 +15,8 @@ pub struct LoadingTracker {
     inner: Arc<Mutex<LoadingTrackerInner>>,
 }
 
+// TODO: remove render world from load tracking and making rendering entirely data-centric
+
 impl LoadingTracker {
     /// Returns true only if all worlds have reported that they are ready.
     pub fn is_all_ready(&self) -> bool {
