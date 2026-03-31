@@ -36,7 +36,7 @@ use crate::simulation_world::{
     user_interface::UiPlugin,
 };
 use crate::{
-    ecs_core::{worlds::SimulationWorldMarker, CommonEcsInterface, EcsBuilder, PluginGroup},
+    ecs_core::{CommonEcsInterface, EcsBuilder, PluginGroup, worlds::SimulationWorldMarker},
     simulation_world::app_lifecycle::AppLifecyclePlugin,
 };
 use bevy::ecs::prelude::*;

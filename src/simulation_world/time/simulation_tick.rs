@@ -1,6 +1,6 @@
 use crate::{
     prelude::*,
-    simulation_world::{time::FrameClock, SimulationSchedule},
+    simulation_world::{SimulationSchedule, time::FrameClock},
 };
 use bevy::ecs::prelude::*;
 use std::time::Duration;

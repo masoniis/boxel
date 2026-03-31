@@ -1,8 +1,8 @@
 use super::TOTAL_BUFFER_SIZE;
 use crate::prelude::*;
 use crate::simulation_world::{
-    block::block_registry::{BlockId, BlockRegistryResource, AIR_BLOCK_ID},
-    chunk::{ChunkBlocksComponent, ChunkLod, ChunkView, CHUNK_SIDE_LENGTH},
+    block::block_registry::{AIR_BLOCK_ID, BlockId, BlockRegistryResource},
+    chunk::{CHUNK_SIDE_LENGTH, ChunkBlocksComponent, ChunkLod, ChunkView},
 };
 
 pub const PADDED_SIZE: usize = CHUNK_SIDE_LENGTH + 2;

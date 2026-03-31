@@ -7,18 +7,18 @@ pub use voxel::*;
 // -------------------------------------
 
 use crate::{
+    SimulationAction, SimulationSet,
     ecs_core::{EcsBuilder, Plugin},
     simulation_world::{
+        SimulationSchedule,
         input::ActionStateResource,
         player::{
-            break_targeted_voxel::{handle_break_voxel_events_system, BreakVoxelEvent},
+            break_targeted_voxel::{BreakVoxelEvent, handle_break_voxel_events_system},
             place_voxel_at_target::{
-                handle_place_voxel_events_system, place_targeted_voxel_system, PlaceVoxelEvent,
+                PlaceVoxelEvent, handle_place_voxel_events_system, place_targeted_voxel_system,
             },
         },
-        SimulationSchedule,
     },
-    SimulationAction, SimulationSet,
 };
 use bevy::ecs::{
     message::Messages,

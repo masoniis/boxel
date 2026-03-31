@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use crate::simulation_world::chunk::{
-    chunk_blocks::ChunkView, types::ChunkLod, ChunkBlocksComponent, CHUNK_SIDE_LENGTH,
+    CHUNK_SIDE_LENGTH, ChunkBlocksComponent, chunk_blocks::ChunkView, types::ChunkLod,
 };
 
 /// Upsamples a low-LOD (e.g., 16x16x16) chunk to a higher LOD (e.g., 32x32x32).

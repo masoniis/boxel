@@ -11,9 +11,9 @@ pub fn update_active_gen_text_system(
     active_gen: Res<ActiveTerrainGenerator>,
     mut query: Query<&mut UiText, With<ActiveGenTextMarker>>,
 ) {
-    if active_gen.is_changed() {
-        if let Ok(mut text) = query.single_mut() {
-            text.content = active_gen.0.name().to_string();
-        }
+    if active_gen.is_changed()
+        && let Ok(mut text) = query.single_mut()
+    {
+        text.content = active_gen.0.name().to_string();
     }
 }

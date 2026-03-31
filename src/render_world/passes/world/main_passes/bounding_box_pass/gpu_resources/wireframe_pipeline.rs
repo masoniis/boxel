@@ -4,8 +4,8 @@ use crate::{
     render_world::{
         graphics_context::resources::{RenderDevice, RenderSurfaceConfig},
         passes::world::main_passes::shared_resources::{
-            main_depth_texture::MAIN_DEPTH_FORMAT, CentralCameraViewBindGroupLayout,
-            EnvironmentBindGroupLayout,
+            CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout,
+            main_depth_texture::MAIN_DEPTH_FORMAT,
         },
         types::WireframeVertex,
     },

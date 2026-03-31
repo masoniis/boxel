@@ -5,7 +5,7 @@ use crate::{
     prelude::*,
 };
 use bevy::ecs::system::Commands;
-use crossbeam::channel::{unbounded, Receiver, Sender};
+use crossbeam::channel::{Receiver, Sender, unbounded};
 use rand::random_range;
 use std::{thread, time::Duration};
 

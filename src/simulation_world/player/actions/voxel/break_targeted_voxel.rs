@@ -4,8 +4,8 @@ use crate::simulation_world::chunk::ChunkStateManager;
 use crate::simulation_world::{
     block::block_registry::AIR_BLOCK_ID,
     chunk::{
-        components::{ChunkBlocksComponent, ChunkCoord, ChunkMeshDirty},
         CHUNK_SIDE_LENGTH,
+        components::{ChunkBlocksComponent, ChunkCoord, ChunkMeshDirty},
     },
 };
 use bevy::ecs::prelude::{Commands, Message, MessageReader, Query};
@@ -43,47 +43,47 @@ pub fn handle_break_voxel_events_system(
     for event in events.read() {
         let chunk_pos = ChunkCoord::world_to_chunk_pos(event.world_pos.as_vec3());
 
-        if let Some(entity) = chunk_manager.get_entity(chunk_pos) {
-            if let Ok(mut chunk_blocks) = chunks.get_mut(entity) {
-                let local_pos = event.world_pos - (chunk_pos * CHUNK_SIDE_LENGTH as i32);
+        if let Some(entity) = chunk_manager.get_entity(chunk_pos)
+            && let Ok(mut chunk_blocks) = chunks.get_mut(entity)
+        {
+            let local_pos = event.world_pos - (chunk_pos * CHUNK_SIDE_LENGTH as i32);
 
-                let mut writer = chunk_blocks.get_writer();
-                writer.set_data(
-                    local_pos.x as usize,
-                    local_pos.y as usize,
-                    local_pos.z as usize,
-                    AIR_BLOCK_ID,
-                );
+            let mut writer = chunk_blocks.get_writer();
+            writer.set_data(
+                local_pos.x as usize,
+                local_pos.y as usize,
+                local_pos.z as usize,
+                AIR_BLOCK_ID,
+            );
 
-                // mark the primary chunk as dirty
-                commands.entity(entity).insert(ChunkMeshDirty);
+            // mark the primary chunk as dirty
+            commands.entity(entity).insert(ChunkMeshDirty);
 
-                // mark any neighbors as dirty if we are on the edge
-                let max_idx = (CHUNK_SIDE_LENGTH - 1) as i32;
-                let mut neighbor_coords_to_dirty = Vec::with_capacity(3);
+            // mark any neighbors as dirty if we are on the edge
+            let max_idx = (CHUNK_SIDE_LENGTH - 1) as i32;
+            let mut neighbor_coords_to_dirty = Vec::with_capacity(3);
 
-                if local_pos.x == 0 {
-                    neighbor_coords_to_dirty.push(chunk_pos - IVec3::X);
-                } else if local_pos.x == max_idx {
-                    neighbor_coords_to_dirty.push(chunk_pos + IVec3::X);
-                }
+            if local_pos.x == 0 {
+                neighbor_coords_to_dirty.push(chunk_pos - IVec3::X);
+            } else if local_pos.x == max_idx {
+                neighbor_coords_to_dirty.push(chunk_pos + IVec3::X);
+            }
 
-                if local_pos.y == 0 {
-                    neighbor_coords_to_dirty.push(chunk_pos - IVec3::Y);
-                } else if local_pos.y == max_idx {
-                    neighbor_coords_to_dirty.push(chunk_pos + IVec3::Y);
-                }
+            if local_pos.y == 0 {
+                neighbor_coords_to_dirty.push(chunk_pos - IVec3::Y);
+            } else if local_pos.y == max_idx {
+                neighbor_coords_to_dirty.push(chunk_pos + IVec3::Y);
+            }
 
-                if local_pos.z == 0 {
-                    neighbor_coords_to_dirty.push(chunk_pos - IVec3::Z);
-                } else if local_pos.z == max_idx {
-                    neighbor_coords_to_dirty.push(chunk_pos + IVec3::Z);
-                }
+            if local_pos.z == 0 {
+                neighbor_coords_to_dirty.push(chunk_pos - IVec3::Z);
+            } else if local_pos.z == max_idx {
+                neighbor_coords_to_dirty.push(chunk_pos + IVec3::Z);
+            }
 
-                for neighbor_coord in neighbor_coords_to_dirty {
-                    if let Some(neighbor_entity) = chunk_manager.get_entity(neighbor_coord) {
-                        commands.entity(neighbor_entity).insert(ChunkMeshDirty);
-                    }
+            for neighbor_coord in neighbor_coords_to_dirty {
+                if let Some(neighbor_entity) = chunk_manager.get_entity(neighbor_coord) {
+                    commands.entity(neighbor_entity).insert(ChunkMeshDirty);
                 }
             }
         }

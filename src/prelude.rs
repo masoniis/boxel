@@ -6,8 +6,8 @@
 // -----------------------------
 pub use crate::{
     ecs_core::{
-        state_machine::{in_state, AppState, GameState},
         CommonEcsInterface, EcsBuilder, Plugin, PluginGroup, ScheduleBuilder,
+        state_machine::{AppState, GameState, in_state},
     },
     render_world::scheduling::*,
     simulation_world::{input::SimulationAction, scheduling::*},
@@ -19,8 +19,8 @@ pub use crate::{
 // ----------------------------
 
 pub use bevy::math::{
-    vec2, vec3, vec4, FloatExt, IVec2, IVec3, IVec4, Mat3, Mat4, Quat, Vec2, Vec3, Vec4,
-    Vec4Swizzles,
+    FloatExt, IVec2, IVec3, IVec4, Mat3, Mat4, Quat, Vec2, Vec3, Vec4, Vec4Swizzles, vec2, vec3,
+    vec4,
 };
 pub use derive_more::{Deref, DerefMut};
 pub use std::f32::consts::{FRAC_PI_2, PI};

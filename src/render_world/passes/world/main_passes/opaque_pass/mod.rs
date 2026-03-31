@@ -13,11 +13,11 @@ use startup::OpaquePipelines;
 
 use crate::{
     ecs_core::{
-        state_machine::{in_state, AppState},
         EcsBuilder, Plugin,
+        state_machine::{AppState, in_state},
     },
     render_world::{
-        global_extract::{extract_resource_system, ExtractComponentPlugin},
+        global_extract::{ExtractComponentPlugin, extract_resource_system},
         passes::world::main_passes::opaque_pass::{
             extract::OpaqueRenderModeExtractor, queue::Opaque3dRenderPhase,
         },

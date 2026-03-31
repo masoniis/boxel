@@ -1,7 +1,7 @@
 use crate::prelude::*;
-use crate::simulation_world::chunk::{chunk_blocks::ChunkView, ChunkCoord, ChunkState};
+use crate::simulation_world::chunk::{ChunkCoord, ChunkState, chunk_blocks::ChunkView};
 use crate::simulation_world::{
-    block::{block_registry::AIR_BLOCK_ID, TargetedBlock},
+    block::{TargetedBlock, block_registry::AIR_BLOCK_ID},
     chunk::{ChunkBlocksComponent, ChunkStateManager},
     player::{ActiveCamera, CameraComponent},
 };
@@ -82,17 +82,16 @@ fn get_block_at_world_pos(
     if let ChunkState::Loaded {
         entity: Some(actual_entity),
     } = chunk_state
+        && let Ok(chunk_blocks) = chunks_query.get(actual_entity)
     {
-        if let Ok(chunk_blocks) = chunks_query.get(actual_entity) {
-            return Some(match chunk_blocks.get_view() {
-                ChunkView::Uniform(block_id) => block_id,
-                ChunkView::Dense(volume_view) => volume_view.get_data(
-                    local_pos.x as usize,
-                    local_pos.y as usize,
-                    local_pos.z as usize,
-                ),
-            });
-        }
+        return Some(match chunk_blocks.get_view() {
+            ChunkView::Uniform(block_id) => block_id,
+            ChunkView::Dense(volume_view) => volume_view.get_data(
+                local_pos.x as usize,
+                local_pos.y as usize,
+                local_pos.z as usize,
+            ),
+        });
     }
 
     None // chunk isn't loaded or doesn't have blocks

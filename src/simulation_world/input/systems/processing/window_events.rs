@@ -1,7 +1,7 @@
 use crate::simulation_world::input::{
     messages::{
-        internal::MouseResizeMessage, KeyboardInputMessage, MouseButtonInputMessage,
-        RawWindowMessage,
+        KeyboardInputMessage, MouseButtonInputMessage, RawWindowMessage,
+        internal::MouseResizeMessage,
     },
     resources::{Buttons, WindowSizeResource},
 };

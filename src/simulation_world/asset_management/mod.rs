@@ -2,23 +2,23 @@ pub mod asset_storage;
 pub mod mesh_asset;
 
 pub use asset_storage::{Asset, AssetStorageResource, Handle};
-pub use mesh_asset::{delete_stale_mesh_assets, MeshAsset, MeshDeletionRequest};
+pub use mesh_asset::{MeshAsset, MeshDeletionRequest, delete_stale_mesh_assets};
 
 // INFO: ---------------------------------
 //         Asset Management Plugin
 // ---------------------------------------
 
 use crate::{
+    SimulationSet,
     ecs_core::{EcsBuilder, Plugin},
     simulation_world::{
-        asset_management::mesh_asset::{
-            opaque_mesh_added_observer, opaque_mesh_removed_observer,
-            transparent_mesh_added_observer, transparent_mesh_removed_observer, MeshRefCounts,
-            OpaqueMeshShadow, TransparentMeshShadow,
-        },
         SimulationSchedule,
+        asset_management::mesh_asset::{
+            MeshRefCounts, OpaqueMeshShadow, TransparentMeshShadow, opaque_mesh_added_observer,
+            opaque_mesh_removed_observer, transparent_mesh_added_observer,
+            transparent_mesh_removed_observer,
+        },
     },
-    SimulationSet,
 };
 use bevy::ecs::{message::Messages, schedule::IntoScheduleConfigs};
 

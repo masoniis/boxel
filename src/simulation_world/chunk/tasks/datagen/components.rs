@@ -1,4 +1,4 @@
-use crate::simulation_world::chunk::{components::GeneratedChunkComponentBundle, ChunkLod};
+use crate::simulation_world::chunk::{ChunkLod, components::GeneratedChunkComponentBundle};
 use bevy::ecs::prelude::Component;
 use crossbeam::channel::Receiver;
 

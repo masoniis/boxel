@@ -5,12 +5,12 @@ use crate::simulation_world::chunk::common::padded_chunk_view::{
 };
 use crate::simulation_world::chunk::thread_buffer_pool::{acquire_buffer, release_buffer};
 use crate::simulation_world::chunk::{
-    downsample_chunk, upsample_chunk, CheckForMeshing, ChunkMeshDirty, ChunkMeshingTaskComponent,
-    ChunkState, WantsMeshing,
+    CheckForMeshing, ChunkMeshDirty, ChunkMeshingTaskComponent, ChunkState, WantsMeshing,
+    downsample_chunk, upsample_chunk,
 };
 use crate::simulation_world::{
     block::BlockRegistryResource,
-    chunk::{build_chunk_mesh, ChunkBlocksComponent, ChunkCoord, ChunkStateManager},
+    chunk::{ChunkBlocksComponent, ChunkCoord, ChunkStateManager, build_chunk_mesh},
 };
 use bevy::ecs::prelude::*;
 use crossbeam::channel::unbounded;
@@ -27,8 +27,7 @@ pub fn handle_dirty_chunks_system(
     for (entity, coord) in dirty_chunks_query.iter() {
         trace!(
             "Chunk {:?} at {} was marked as dirty, preparing for re-meshing.",
-            entity,
-            coord.pos
+            entity, coord.pos
         );
 
         chunk_manager.mark_as_needs_meshing(coord.pos, entity);

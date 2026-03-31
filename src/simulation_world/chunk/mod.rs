@@ -17,9 +17,9 @@ pub use types::*;
 // ------------------------------------
 
 use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    simulation_world::{player::ActiveCamera, scheduling::FixedUpdateSet, SimulationSchedule},
     SimulationSet,
+    ecs_core::{EcsBuilder, Plugin},
+    simulation_world::{SimulationSchedule, player::ActiveCamera, scheduling::FixedUpdateSet},
 };
 use bevy::ecs::prelude::*;
 

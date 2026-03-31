@@ -7,15 +7,16 @@ use crate::{
     },
     prelude::*,
     render_world::{
-        global_extract::utils::run_extract_schedule, graphics_context::GraphicsContext,
-        scheduling::RenderSchedule, textures::load_voxel_texture_assets, RenderWorldInterface,
+        RenderWorldInterface, global_extract::utils::run_extract_schedule,
+        graphics_context::GraphicsContext, scheduling::RenderSchedule,
+        textures::load_voxel_texture_assets,
     },
     simulation_world::{
+        SimulationSchedule, SimulationWorldInterface,
         input::{
             messages::{RawDeviceMessage, RawWindowMessage},
             resources::DesiredCursorState,
         },
-        SimulationSchedule, SimulationWorldInterface,
     },
 };
 use crossbeam::channel::unbounded;

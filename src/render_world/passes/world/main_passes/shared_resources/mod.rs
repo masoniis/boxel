@@ -4,12 +4,12 @@ pub mod tex_array_uniforms;
 pub mod view_uniforms;
 
 pub use environment_uniform::{
-    update_environment_uniform_buffer_system, EnvironmentBindGroupLayout, EnvironmentUniforms,
+    EnvironmentBindGroupLayout, EnvironmentUniforms, update_environment_uniform_buffer_system,
 };
 pub use main_depth_texture::{
-    resize_main_depth_texture_system, MainDepthTextureResource, MAIN_DEPTH_FORMAT,
+    MAIN_DEPTH_FORMAT, MainDepthTextureResource, resize_main_depth_texture_system,
 };
 pub use tex_array_uniforms::{TextureArrayBindGroupLayout, TextureArrayUniforms};
 pub use view_uniforms::{
-    update_camera_view_buffer_system, CentralCameraViewBindGroupLayout, CentralCameraViewUniform,
+    CentralCameraViewBindGroupLayout, CentralCameraViewUniform, update_camera_view_buffer_system,
 };

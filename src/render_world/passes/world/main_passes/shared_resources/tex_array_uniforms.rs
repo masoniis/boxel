@@ -122,10 +122,11 @@ fn create_wgpu_texture_array(
 
     // on WGPU -> vulkan, a heuristic is assumed about the texture array dimensions (being a Cube or a HyperCube)
     // but the heurisitc is incorrect if we are mod 6 == 0, so pad with an image to ensure textures work in this case.
-    if !effective_images.is_empty() && effective_images.len() % 6 == 0 {
-        if let Some(last) = effective_images.last() {
-            effective_images.push(last.clone());
-        }
+    if !effective_images.is_empty()
+        && effective_images.len() % 6 == 0
+        && let Some(last) = effective_images.last()
+    {
+        effective_images.push(last.clone());
     }
 
     // size of the texture array

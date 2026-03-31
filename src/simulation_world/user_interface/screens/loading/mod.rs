@@ -7,8 +7,8 @@ pub use loading_screen::{despawn_loading_ui_system, spawn_loading_ui_system};
 // ----------------------
 
 use crate::{
-    ecs_core::{state_machine::AppState, EcsBuilder, Plugin},
-    simulation_world::{scheduling::StartupSet, OnExit, SimulationSchedule},
+    ecs_core::{EcsBuilder, Plugin, state_machine::AppState},
+    simulation_world::{OnExit, SimulationSchedule, scheduling::StartupSet},
 };
 use bevy::ecs::prelude::*;
 

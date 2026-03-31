@@ -13,8 +13,8 @@ pub use utils::*;
 use self::time_extractor::RenderTimeExtractor;
 use crate::{
     ecs_core::{
-        state_machine::{AppState, GameState},
         EcsBuilder, Plugin,
+        state_machine::{AppState, GameState},
     },
     render_world::scheduling::RenderSchedule,
     simulation_world::{

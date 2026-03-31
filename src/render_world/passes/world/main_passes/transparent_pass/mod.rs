@@ -12,18 +12,18 @@ use startup::TransparentPipeline;
 // ---------------------------------
 
 use crate::{
+    Plugin,
     ecs_core::EcsBuilder,
     render_world::{
+        RenderSchedule, RenderSet,
         global_extract::ExtractComponentPlugin,
         passes::world::main_passes::opaque_pass::prepare::delete_gpu_buffers_system,
         passes::world::main_passes::transparent_pass::{
             prepare::prepare_transparent_meshes_system,
-            queue::{queue_and_prepare_transparent_system, Transparent3dRenderPhase},
+            queue::{Transparent3dRenderPhase, queue_and_prepare_transparent_system},
         },
-        RenderSchedule, RenderSet,
     },
     simulation_world::chunk::mesh::TransparentMeshComponent,
-    Plugin,
 };
 use bevy::ecs::schedule::IntoScheduleConfigs;
 

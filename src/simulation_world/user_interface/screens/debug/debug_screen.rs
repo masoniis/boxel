@@ -6,8 +6,8 @@ use crate::simulation_world::{
     time::FrameClock,
     user_interface::{
         components::{Node, Size, Style, TextAlign, UiBackground, UiText},
-        screens::spawn_root::UiRootNodeResource,
         screens::MeshCounterResource,
+        screens::spawn_root::UiRootNodeResource,
     },
 };
 use bevy::ecs::{prelude::*, relationship::RelatedSpawnerCommands};

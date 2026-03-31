@@ -3,9 +3,9 @@ pub mod block_registry;
 pub mod targeted_block;
 
 pub use block_definition::{
-    load_block_from_str, BlockDescription, BlockFaceTextures, BlockRenderData,
+    BlockDescription, BlockFaceTextures, BlockRenderData, load_block_from_str,
 };
-pub use block_registry::{BlockId, BlockRegistryResource, AIR_BLOCK_ID, SOLID_BLOCK_ID};
+pub use block_registry::{AIR_BLOCK_ID, BlockId, BlockRegistryResource, SOLID_BLOCK_ID};
 pub use targeted_block::TargetedBlock;
 
 // INFO: ----------------------

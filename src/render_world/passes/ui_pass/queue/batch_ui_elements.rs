@@ -211,9 +211,9 @@ fn flush_panel_batch(batch: Option<PanelBatch>, batches: &mut Vec<UiRenderBatch>
 
 /// Flushes a panel batch into the list of render batches if it exists.
 fn flush_text_batch(batch: Option<TextBatch>, batches: &mut Vec<UiRenderBatch>) {
-    if let Some(batch) = batch {
-        if !batch.texts.is_empty() {
-            batches.push(UiRenderBatch::Text(batch));
-        }
+    if let Some(batch) = batch
+        && !batch.texts.is_empty()
+    {
+        batches.push(UiRenderBatch::Text(batch));
     }
 }

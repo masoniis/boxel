@@ -13,7 +13,7 @@ use crate::{
 };
 use bevy::ecs::world::World;
 
-use super::gpu_resources::{view_binding::UiViewBuffer, ScreenQuadResource};
+use super::gpu_resources::{ScreenQuadResource, view_binding::UiViewBuffer};
 
 pub struct UiRenderPassNode;
 impl RenderNode for UiRenderPassNode {

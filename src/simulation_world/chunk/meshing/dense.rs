@@ -1,8 +1,8 @@
-use super::{common::*, OpaqueMeshData, TransparentMeshData};
+use super::{OpaqueMeshData, TransparentMeshData, common::*};
 use crate::prelude::*;
 use crate::simulation_world::{
-    block::{block_registry::AIR_BLOCK_ID, BlockRegistryResource},
-    chunk::{PaddedChunk, CHUNK_SIDE_LENGTH},
+    block::{BlockRegistryResource, block_registry::AIR_BLOCK_ID},
+    chunk::{CHUNK_SIDE_LENGTH, PaddedChunk},
 };
 
 /// Standard mesher for dense, mixed-block chunks.

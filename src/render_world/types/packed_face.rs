@@ -2,8 +2,8 @@ use crate::{
     render_world::{
         graphics_context::resources::RenderDevice,
         passes::world::{
-            gpu_resources::world_uniforms::ChunkStorageBindGroupLayout, ChunkStorageManager,
-            VoxelMesh,
+            ChunkStorageManager, VoxelMesh,
+            gpu_resources::world_uniforms::ChunkStorageBindGroupLayout,
         },
     },
     simulation_world::chunk::meshing::common::{AoLevel, FaceSide},

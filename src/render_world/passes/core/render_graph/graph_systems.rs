@@ -59,7 +59,9 @@ pub fn execute_render_graph_system(world: &mut World) {
         world.get_resource::<RenderSurfaceConfig>(),
     ) else {
         world.insert_resource(render_graph);
-        warn!("Couldn't get one or more required render resources (Device, Queue, Surface, or Config) to execute the render graph!");
+        warn!(
+            "Couldn't get one or more required render resources (Device, Queue, Surface, or Config) to execute the render graph!"
+        );
         return;
     };
 

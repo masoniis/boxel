@@ -2,7 +2,7 @@ use crate::simulation_world::{
     input::{ActionStateResource, SimulationAction},
     player::{ActiveCamera, CameraComponent},
     terrain::{ActiveTerrainGenerator, TerrainGeneratorLibrary},
-    time::{world_clock::SECONDS_IN_A_DAY, WorldClockResource},
+    time::{WorldClockResource, world_clock::SECONDS_IN_A_DAY},
 };
 use bevy::ecs::prelude::*;
 use bevy::math::Vec3;

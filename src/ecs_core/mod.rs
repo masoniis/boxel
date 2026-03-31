@@ -5,6 +5,6 @@ pub mod frame_sync;
 pub mod state_machine;
 pub mod worlds;
 
-pub use config::{load_config, AppConfig};
+pub use config::{AppConfig, load_config};
 pub use cross_world_communication::*;
 pub use worlds::{CommonEcsInterface, EcsBuilder, Plugin, PluginGroup, ScheduleBuilder};

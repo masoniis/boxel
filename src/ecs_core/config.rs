@@ -35,15 +35,15 @@ pub fn load_config() -> AppConfig {
     }
 
     // try to load user-specific config from the platform's config directory
-    if let Some(user_path) = get_user_config_path() {
-        if let Ok(content) = std::fs::read_to_string(&user_path) {
-            match ron::from_str::<AppConfig>(&content) {
-                Ok(user_config) => {
-                    config = user_config;
-                    info!("Loaded user override config from {:?}", user_path);
-                }
-                Err(e) => warn!("Failed to parse user config at {:?}: {}", user_path, e),
+    if let Some(user_path) = get_user_config_path()
+        && let Ok(content) = std::fs::read_to_string(&user_path)
+    {
+        match ron::from_str::<AppConfig>(&content) {
+            Ok(user_config) => {
+                config = user_config;
+                info!("Loaded user override config from {:?}", user_path);
             }
+            Err(e) => warn!("Failed to parse user config at {:?}: {}", user_path, e),
         }
     }
 

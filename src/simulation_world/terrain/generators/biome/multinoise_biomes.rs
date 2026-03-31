@@ -128,11 +128,7 @@ fn resolve_biome(h: &BiomeHandles, c: &ClimateData) -> u8 {
             h.plains
         } else if c.precipitation > 0.1 {
             // wet
-            if c.weirdness > 0.4 {
-                h.swamp
-            } else {
-                h.forest
-            }
+            if c.weirdness > 0.4 { h.swamp } else { h.forest }
         } else {
             // average temp
             if c.weirdness < 0.0 {

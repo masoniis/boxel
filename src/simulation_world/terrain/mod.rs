@@ -17,7 +17,7 @@ use crate::{
     simulation_world::input::ActionStateResource,
 };
 use bevy::ecs::prelude::{IntoScheduleConfigs, Res};
-pub use systems::{cycle_active_generator, TerrainGeneratorLibrary};
+pub use systems::{TerrainGeneratorLibrary, cycle_active_generator};
 
 pub struct TerrainGenerationPlugin;
 

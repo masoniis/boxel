@@ -183,8 +183,9 @@ fn collect_layouts_recursively(
     if let Ok(children) = ui_tree.children(node_id) {
         // We need to find the entity associated with each child NodeId
         for child_node_id in children {
-            if let Some((child_entity, _)) =
-                entity_to_node_map.iter().find(|(_, &n)| n == child_node_id)
+            if let Some((child_entity, _)) = entity_to_node_map
+                .iter()
+                .find(|&(_, &n)| n == child_node_id)
             {
                 collect_layouts_recursively(
                     ui_tree,

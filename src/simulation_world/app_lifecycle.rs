@@ -1,13 +1,13 @@
 use crate::{
     ecs_core::{
+        EcsBuilder, Plugin,
         async_loading::{
-            master_finalize_loading_system, poll_simulation_loading_tasks,
-            reset_loading_tracker_system, start_fake_work_system, OnLoadComplete,
+            OnLoadComplete, master_finalize_loading_system, poll_simulation_loading_tasks,
+            reset_loading_tracker_system, start_fake_work_system,
         },
         state_machine::{
-            in_state, systems::apply_state_transition_system, AppState, GameState, StatePlugin,
+            AppState, GameState, StatePlugin, in_state, systems::apply_state_transition_system,
         },
-        EcsBuilder, Plugin,
     },
     simulation_world::{OnExit, SimulationSchedule, SimulationSet},
 };

@@ -10,8 +10,8 @@ use crate::prelude::*;
 use crate::simulation_world::{
     asset_management::MeshAsset,
     block::{
-        block_registry::{BlockId, AIR_BLOCK_ID},
         BlockRegistryResource,
+        block_registry::{AIR_BLOCK_ID, BlockId},
     },
     chunk::PaddedChunk,
 };

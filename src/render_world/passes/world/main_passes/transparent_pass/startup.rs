@@ -3,8 +3,8 @@ use super::super::shared_resources::{
 };
 use crate::render_world::graphics_context::resources::{RenderDevice, RenderSurfaceConfig};
 use crate::render_world::passes::world::gpu_resources::world_uniforms::ChunkStorageBindGroupLayout;
-use crate::render_world::passes::world::main_passes::shared_resources::main_depth_texture::MAIN_DEPTH_FORMAT;
 use crate::render_world::passes::world::main_passes::shared_resources::TextureArrayBindGroupLayout;
+use crate::render_world::passes::world::main_passes::shared_resources::main_depth_texture::MAIN_DEPTH_FORMAT;
 use bevy::ecs::prelude::*;
 use wesl::include_wesl;
 

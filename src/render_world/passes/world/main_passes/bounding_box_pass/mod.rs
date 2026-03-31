@@ -12,18 +12,18 @@ pub use render::BoundingBoxNode;
 use crate::{
     ecs_core::{EcsBuilder, Plugin},
     render_world::{
+        RenderSchedule, RenderSet,
         global_extract::{clone_resource_system, extract_resource_system},
         passes::world::main_passes::bounding_box_pass::{
             extract::WireframeToggleExtractor, queue::queue_wireframe_system,
         },
-        RenderSchedule, RenderSet,
     },
     simulation_world::block::TargetedBlock,
 };
 use bevy::ecs::schedule::IntoScheduleConfigs;
 use gpu_resources::{
-    object_binding::WireframeObjectBindGroupLayout, UnitCubeMesh, WireframeObjectBuffer,
-    WireframePipeline,
+    UnitCubeMesh, WireframeObjectBuffer, WireframePipeline,
+    object_binding::WireframeObjectBindGroupLayout,
 };
 
 pub struct WireframeRenderPassPlugin;

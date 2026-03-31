@@ -10,13 +10,13 @@ use world_clock::{jump_world_clock_backwards_system, jump_world_clock_forward_sy
 //         Time plugin
 // ---------------------------
 
+use crate::SimulationAction;
 use crate::ecs_core::state_machine::AppState;
 use crate::simulation_world::time::frame_clock::update_frame_clock_system;
-use crate::simulation_world::time::simulation_tick::{run_fixed_update_schedule, SimulationTick};
+use crate::simulation_world::time::simulation_tick::{SimulationTick, run_fixed_update_schedule};
 use crate::simulation_world::time::world_clock::update_world_clock_system;
-use crate::SimulationAction;
 use crate::{
-    ecs_core::{state_machine::utils::in_state, EcsBuilder, Plugin},
+    ecs_core::{EcsBuilder, Plugin, state_machine::utils::in_state},
     simulation_world::{SimulationSchedule, SimulationSet},
 };
 use bevy::ecs::prelude::*;

@@ -4,7 +4,7 @@ use crate::render_world::graphics_context::resources::{
 };
 use bevy::ecs::prelude::*;
 use derive_more::{Deref, DerefMut};
-use glyphon::{fontdb::Source, Cache, FontSystem, SwashCache, TextAtlas, TextRenderer, Viewport};
+use glyphon::{Cache, FontSystem, SwashCache, TextAtlas, TextRenderer, Viewport, fontdb::Source};
 use std::sync::Arc;
 
 #[derive(Resource, Deref, DerefMut)]

@@ -8,16 +8,16 @@ pub mod render;
 
 use bevy::ecs::schedule::IntoScheduleConfigs;
 use gpu_resources::{
-    shadow_view_uniform::ShadowViewBindGroupLayout, ShadowDepthTextureResource, ShadowPassPipeline,
-    ShadowViewBuffer,
+    ShadowDepthTextureResource, ShadowPassPipeline, ShadowViewBuffer,
+    shadow_view_uniform::ShadowViewBindGroupLayout,
 };
 
 use crate::{
+    RenderSet,
     ecs_core::{EcsBuilder, Plugin},
     render_world::{
-        passes::world::shadow_pass::prepare::update_shadow_view_buffer_system, RenderSchedule,
+        RenderSchedule, passes::world::shadow_pass::prepare::update_shadow_view_buffer_system,
     },
-    RenderSet,
 };
 
 pub struct ShadowRenderPassPlugin;

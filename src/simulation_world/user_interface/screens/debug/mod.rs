@@ -5,7 +5,7 @@ pub use debug_screen::{diagnostic_ui_is_visible, toggle_debug_diagnostics_system
 pub use elements::active_gen_text::update_active_gen_text_system;
 pub use elements::current_biome::update_current_biome_text_system;
 pub use elements::fps_counter::update_fps_counter_screen_text_system;
-pub use elements::mesh_counter::{update_mesh_counter_screen_text_system, MeshCounterResource};
+pub use elements::mesh_counter::{MeshCounterResource, update_mesh_counter_screen_text_system};
 
 // INFO: ----------------
 //         plugin
@@ -21,9 +21,9 @@ use crate::simulation_world::user_interface::screens::elements::{
     update_memory_counter_screen_text,
 };
 use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    simulation_world::{input::ActionStateResource, SimulationSchedule},
     SimulationSet,
+    ecs_core::{EcsBuilder, Plugin},
+    simulation_world::{SimulationSchedule, input::ActionStateResource},
 };
 use bevy::ecs::prelude::*;
 

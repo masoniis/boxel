@@ -1,8 +1,8 @@
 use crate::{
     prelude::*,
     simulation_world::input::{
-        resources::{action::ActionStateResource, buttons::Buttons, input_action_map::Input},
         InputActionMapResource,
+        resources::{action::ActionStateResource, buttons::Buttons, input_action_map::Input},
     },
 };
 use bevy::ecs::prelude::{Res, ResMut};
@@ -36,10 +36,10 @@ pub fn update_action_state_system(
     }
 
     for key_code in keyboard_input.iter_previous() {
-        if !keyboard_input.is_down(*key_code) {
-            if let Some(action) = input_map.get_action(&Input::Key(*key_code)) {
-                action_state.release(*action);
-            }
+        if !keyboard_input.is_down(*key_code)
+            && let Some(action) = input_map.get_action(&Input::Key(*key_code))
+        {
+            action_state.release(*action);
         }
     }
 
@@ -57,10 +57,10 @@ pub fn update_action_state_system(
     }
 
     for button in mouse_input.iter_previous() {
-        if !mouse_input.is_down(*button) {
-            if let Some(action) = input_map.get_action(&Input::MouseButton(*button)) {
-                action_state.release(*action);
-            }
+        if !mouse_input.is_down(*button)
+            && let Some(action) = input_map.get_action(&Input::MouseButton(*button))
+        {
+            action_state.release(*action);
         }
     }
 }

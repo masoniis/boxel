@@ -9,7 +9,7 @@ use crate::{
     },
 };
 use bevy::ecs::prelude::*;
-use std::collections::{hash_map::Entry, HashMap};
+use std::collections::{HashMap, hash_map::Entry};
 
 // INFO: -----------------------------
 //         types and resources
@@ -123,12 +123,10 @@ pub fn opaque_mesh_removed_observer(
     let entity = trigger.entity;
 
     if let Some(handle) = shadow.entity_to_handle.remove(&entity) {
-        if let Some(new_count) = mesh_ref_counts.decrement(handle) {
-            if new_count == 0 {
-                stale_mesh_writer.write(MeshDeletionRequest {
-                    mesh_handle: handle,
-                });
-            }
+        if let Some(0) = mesh_ref_counts.decrement(handle) {
+            stale_mesh_writer.write(MeshDeletionRequest {
+                mesh_handle: handle,
+            });
         }
     } else {
         warn!(
@@ -170,13 +168,11 @@ pub fn transparent_mesh_removed_observer(
     let entity = trigger.entity;
 
     if let Some(handle) = shadow.entity_to_handle.remove(&entity) {
-        if let Some(new_count) = mesh_ref_counts.decrement(handle) {
-            if new_count == 0 {
-                debug!(target: "asset_management", "Ref count zero for Transparent mesh {:?}. Deleting.", handle.id());
-                stale_mesh_writer.write(MeshDeletionRequest {
-                    mesh_handle: handle,
-                });
-            }
+        if let Some(0) = mesh_ref_counts.decrement(handle) {
+            debug!(target: "asset_management", "Ref count zero for Transparent mesh {:?}. Deleting.", handle.id());
+            stale_mesh_writer.write(MeshDeletionRequest {
+                mesh_handle: handle,
+            });
         }
     } else {
         warn!(

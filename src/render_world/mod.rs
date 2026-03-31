@@ -23,7 +23,7 @@ use crate::render_world::{
         SimulationExtractionPlugin,
     },
     graphics_context::{GraphicsContext, GraphicsContextPlugin},
-    passes::{core::setup_render_graph, RenderPassManagerPlugin},
+    passes::{RenderPassManagerPlugin, core::setup_render_graph},
 };
 use bevy::ecs::prelude::*;
 use std::ops::{Deref, DerefMut};

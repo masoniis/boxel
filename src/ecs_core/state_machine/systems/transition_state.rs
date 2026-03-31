@@ -1,6 +1,6 @@
 use crate::ecs_core::state_machine::{
-    resources::{CurrentState, NextState},
     State,
+    resources::{CurrentState, NextState},
 };
 use crate::ecs_core::worlds::SimulationWorldMarker;
 use crate::prelude::*;

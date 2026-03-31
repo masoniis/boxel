@@ -5,8 +5,8 @@ use std::{
     hash::Hash,
     marker::PhantomData,
     sync::{
-        atomic::{AtomicU32, Ordering},
         Arc, RwLock,
+        atomic::{AtomicU32, Ordering},
     },
 };
 

@@ -4,8 +4,8 @@ use crate::{
         passes::world::main_passes::opaque_pass::extract::RenderTransformComponent,
     },
     simulation_world::{
-        asset_management::{asset_storage::Handle, MeshAsset},
-        chunk::{mesh::TransparentMeshComponent, TransformComponent},
+        asset_management::{MeshAsset, asset_storage::Handle},
+        chunk::{TransformComponent, mesh::TransparentMeshComponent},
     },
 };
 use bevy::ecs::prelude::*;

@@ -1,10 +1,10 @@
 use crate::{
     render_world::{
-        global_extract::{extract_resource::ExtractResource, MirrorableComponent},
+        global_extract::{MirrorableComponent, extract_resource::ExtractResource},
         passes::world::main_passes::opaque_pass::startup::OpaqueRenderMode,
     },
     simulation_world::{
-        asset_management::{asset_storage::Handle, MeshAsset},
+        asset_management::{MeshAsset, asset_storage::Handle},
         chunk::{OpaqueMeshComponent, TransformComponent},
         input::systems::toggle_opaque_wireframe::OpaqueWireframeMode,
     },

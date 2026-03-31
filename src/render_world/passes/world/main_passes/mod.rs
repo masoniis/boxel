@@ -8,7 +8,7 @@ use shared_resources::{
     TextureArrayUniforms,
 };
 pub use shared_resources::{
-    CentralCameraViewUniform, EnvironmentUniforms, MainDepthTextureResource, MAIN_DEPTH_FORMAT,
+    CentralCameraViewUniform, EnvironmentUniforms, MAIN_DEPTH_FORMAT, MainDepthTextureResource,
 };
 
 // INFO: ---------------------------
@@ -17,8 +17,8 @@ pub use shared_resources::{
 
 use crate::{
     ecs_core::{
-        state_machine::{in_state, AppState},
         EcsBuilder, Plugin,
+        state_machine::{AppState, in_state},
     },
     render_world::{
         global_extract::RenderWindowSizeResource,
@@ -35,7 +35,7 @@ use crate::{
         scheduling::{RenderSchedule, RenderSet},
     },
 };
-use bevy::ecs::schedule::{common_conditions::resource_changed_or_removed, IntoScheduleConfigs};
+use bevy::ecs::schedule::{IntoScheduleConfigs, common_conditions::resource_changed_or_removed};
 
 /// A plugin that sets up all the necessary resources and render
 /// passes used in the rendering pipeline.

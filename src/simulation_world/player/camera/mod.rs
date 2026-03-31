@@ -12,8 +12,8 @@ pub use resource::*;
 
 use crate::{
     ecs_core::{
-        state_machine::{utils::in_state, AppState},
         EcsBuilder, Plugin,
+        state_machine::{AppState, utils::in_state},
     },
     simulation_world::{SimulationSchedule, SimulationSet},
 };

@@ -1,6 +1,6 @@
 use crate::prelude::*;
 use bevy::ecs::prelude::*;
-use glyphon::{fontdb::Source, FontSystem};
+use glyphon::{FontSystem, fontdb::Source};
 use std::sync::Arc;
 
 #[derive(Resource)]

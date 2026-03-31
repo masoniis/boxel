@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::simulation_world::chunk::{
     CheckForMeshing, ChunkCoord, ChunkLod, ChunkState, ChunkStateManager, NeedsGenerating,
-    WantsMeshing, RENDER_DISTANCE,
+    RENDER_DISTANCE, WantsMeshing,
 };
 use crate::simulation_world::chunk::{LOAD_DISTANCE, WORLD_MAX_Y_CHUNK, WORLD_MIN_Y_CHUNK};
 use crate::simulation_world::player::ActiveCamera;

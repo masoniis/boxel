@@ -9,12 +9,12 @@ pub fn update_camera_xyz_coord_screen_text(
     camera_query: Query<&CameraComponent>,
     mut query: Query<&mut UiText, With<CameraXYZCoordTextMarker>>,
 ) {
-    if let Ok(cam) = camera_query.get(active_camera.0) {
-        if let Ok(mut ui_text) = query.single_mut() {
-            ui_text.content = format!(
-                "{:.1}, {:.1}, {:.1}",
-                cam.position.x, cam.position.y, cam.position.z
-            );
-        }
+    if let Ok(cam) = camera_query.get(active_camera.0)
+        && let Ok(mut ui_text) = query.single_mut()
+    {
+        ui_text.content = format!(
+            "{:.1}, {:.1}, {:.1}",
+            cam.position.x, cam.position.y, cam.position.z
+        );
     }
 }

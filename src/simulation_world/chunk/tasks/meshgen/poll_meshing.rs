@@ -1,9 +1,9 @@
 use crate::prelude::*;
 use crate::simulation_world::asset_management::{AssetStorageResource, MeshAsset}; // Added imports
 use crate::simulation_world::chunk::{
-    CheckForMeshing, ChunkCoord, ChunkMeshingTaskComponent, ChunkState, ChunkStateManager,
-    OpaqueMeshComponent, TransformComponent, TransparentMeshComponent, WantsMeshing,
-    CHUNK_SIDE_LENGTH,
+    CHUNK_SIDE_LENGTH, CheckForMeshing, ChunkCoord, ChunkMeshingTaskComponent, ChunkState,
+    ChunkStateManager, OpaqueMeshComponent, TransformComponent, TransparentMeshComponent,
+    WantsMeshing,
 };
 use bevy::ecs::prelude::*;
 use crossbeam::channel::TryRecvError;
@@ -103,7 +103,9 @@ pub fn poll_chunk_meshing_tasks(
                     Some(_) => {
                         error!(
                             "Chunk meshing task for {} completed but manager state entity does not match ({:?} != {:?}).",
-                            coord, current_state.unwrap().entity(), entity
+                            coord,
+                            current_state.unwrap().entity(),
+                            entity
                         );
                     }
                     _ => {

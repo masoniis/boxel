@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use crate::simulation_world::chunk::{types::ChunkLod, ChunkColumnData};
+use crate::simulation_world::chunk::{ChunkColumnData, types::ChunkLod};
 use bevy::ecs::component::Component;
 
 // INFO: --------------------------------

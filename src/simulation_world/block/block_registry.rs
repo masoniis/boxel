@@ -1,8 +1,8 @@
 use crate::{
     prelude::*,
-    render_world::textures::{registry::TextureId, TextureRegistryResource},
+    render_world::textures::{TextureRegistryResource, registry::TextureId},
     simulation_world::block::{
-        load_block_from_str, BlockDescription, BlockFaceTextures, BlockRenderData,
+        BlockDescription, BlockFaceTextures, BlockRenderData, load_block_from_str,
     },
 };
 use bevy::ecs::prelude::*;

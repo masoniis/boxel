@@ -5,11 +5,11 @@ use crate::simulation_world::chunk::{
 use crate::simulation_world::terrain::generators::{
     biome::BiomeResultBuilder, painting::PaintResultBuilder, shaping::ShapeResultBuilder,
 };
-use crate::simulation_world::terrain::{generators::shaping::ChunkUniformity, BiomeMapComponent};
+use crate::simulation_world::terrain::{BiomeMapComponent, generators::shaping::ChunkUniformity};
 use crate::simulation_world::{
     biome::BiomeRegistryResource,
     block::BlockRegistryResource,
-    chunk::{components::GeneratedChunkComponentBundle, ChunkCoord, ChunkStateManager},
+    chunk::{ChunkCoord, ChunkStateManager, components::GeneratedChunkComponentBundle},
     terrain::{
         ActiveBiomeGenerator, ActiveClimateGenerator, ActiveTerrainGenerator, ActiveTerrainPainter,
     },

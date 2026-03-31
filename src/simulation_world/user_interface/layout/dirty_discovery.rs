@@ -114,7 +114,10 @@ pub fn handle_hierarchy_changes_system(
                 if child_nodes.len() == children.len() {
                     ui_tree.set_children(parent_node, &child_nodes).unwrap();
                 } else {
-                    warn!("Could not set children for {:?}; some child nodes were not yet in the Taffy tree.", parent_entity);
+                    warn!(
+                        "Could not set children for {:?}; some child nodes were not yet in the Taffy tree.",
+                        parent_entity
+                    );
                 }
             }
         }

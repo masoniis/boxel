@@ -83,16 +83,15 @@ impl RenderNode for ShadowRenderPassNode {
         render_pass.set_bind_group(1, &chunk_memory_manager.bind_group, &[]);
 
         for item in phase.items.iter() {
-            if let Ok(render_mesh_comp) = self.mesh_query.get(world, item.entity) {
-                if let Some(gpu_mesh) = mesh_storage.meshes.get(&render_mesh_comp.mesh_handle.id())
-                {
-                    let object_index = gpu_mesh.slot_index;
+            if let Ok(render_mesh_comp) = self.mesh_query.get(world, item.entity)
+                && let Some(gpu_mesh) = mesh_storage.meshes.get(&render_mesh_comp.mesh_handle.id())
+            {
+                let object_index = gpu_mesh.slot_index;
 
-                    render_pass.draw(
-                        0..(gpu_mesh.face_count * 6),
-                        object_index..(object_index + 1),
-                    );
-                }
+                render_pass.draw(
+                    0..(gpu_mesh.face_count * 6),
+                    object_index..(object_index + 1),
+                );
             }
         }
     }

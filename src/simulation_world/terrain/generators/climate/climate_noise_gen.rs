@@ -2,8 +2,8 @@ use super::climate_buffer_pool::CLIMATE_BUFFERS;
 use crate::simulation_world::{
     chunk::{ChunkCoord, ChunkLod},
     terrain::{
-        climate::{ClimateData, ClimateMapComponent},
         ClimateGenerator,
+        climate::{ClimateData, ClimateMapComponent},
     },
 };
 use bevy::ecs::prelude::Resource;

@@ -1,6 +1,6 @@
 use crate::{
     prelude::*,
-    simulation_world::biome::biome_definition::{load_biome_from_str, BiomeDefinition},
+    simulation_world::biome::biome_definition::{BiomeDefinition, load_biome_from_str},
 };
 use bevy::ecs::prelude::*;
 use std::{collections::HashMap, fs, sync::Arc};
@@ -174,7 +174,9 @@ pub fn load_biome_defs_from_disk() -> BiomeRegistryResource {
     };
 
     if registry.definitions.len() <= 1 {
-        warn!("Only the default biome was loaded. Check 'assets/biomes/' directory for other biome files.");
+        warn!(
+            "Only the default biome was loaded. Check 'assets/biomes/' directory for other biome files."
+        );
     }
 
     registry

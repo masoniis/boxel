@@ -1,8 +1,8 @@
-use super::{common::*, OpaqueMeshData, TransparentMeshData};
+use super::{OpaqueMeshData, TransparentMeshData, common::*};
 use crate::prelude::*;
 use crate::simulation_world::{
-    block::{block_registry::BlockId, BlockRegistryResource},
-    chunk::{PaddedChunk, CHUNK_SIDE_LENGTH},
+    block::{BlockRegistryResource, block_registry::BlockId},
+    chunk::{CHUNK_SIDE_LENGTH, PaddedChunk},
 };
 
 /// Optimized mesher for uniform solid chunks.

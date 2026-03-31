@@ -13,12 +13,14 @@ pub use types::*;
 // -----------------------------------
 
 use crate::{
-    ecs_core::{state_machine::AppState, EcsBuilder, Plugin},
+    ecs_core::{EcsBuilder, Plugin, state_machine::AppState},
     simulation_world::{
+        SimulationSchedule, SimulationSet,
         input::{
             messages::{
-                internal::MouseResizeMessage, KeyboardInputMessage, MouseButtonInputMessage,
-                MouseMoveMessage, MouseScrollMessage, RawDeviceMessage, RawWindowMessage,
+                KeyboardInputMessage, MouseButtonInputMessage, MouseMoveMessage,
+                MouseScrollMessage, RawDeviceMessage, RawWindowMessage,
+                internal::MouseResizeMessage,
             },
             resources::DesiredCursorState,
             systems::{
@@ -28,7 +30,6 @@ use crate::{
             },
         },
         scheduling::OnExit,
-        SimulationSchedule, SimulationSet,
     },
 };
 use bevy::ecs::{

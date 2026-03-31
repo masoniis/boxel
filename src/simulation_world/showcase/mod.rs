@@ -3,7 +3,7 @@ pub mod systems;
 use crate::{
     ecs_core::{EcsBuilder, Plugin},
     simulation_world::{
-        input::{types::simulation_action::SimulationAction, ActionStateResource},
+        input::{ActionStateResource, types::simulation_action::SimulationAction},
         scheduling::SimulationSchedule,
     },
 };

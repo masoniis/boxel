@@ -2,7 +2,7 @@ pub mod biome_definition;
 pub mod biome_registry;
 
 pub use biome_definition::BiomeDefinition;
-pub use biome_registry::{load_biome_defs_from_disk, BiomeId, BiomeRegistryResource};
+pub use biome_registry::{BiomeId, BiomeRegistryResource, load_biome_defs_from_disk};
 
 // INFO: ----------------------
 //         Biome plugin
@@ -11,8 +11,8 @@ pub use biome_registry::{load_biome_defs_from_disk, BiomeId, BiomeRegistryResour
 use crate::{
     ecs_core::{EcsBuilder, Plugin},
     simulation_world::{
-        biome::biome_registry::initialize_biome_registry_system, scheduling::StartupSet,
-        SimulationSchedule,
+        SimulationSchedule, biome::biome_registry::initialize_biome_registry_system,
+        scheduling::StartupSet,
     },
 };
 use bevy::ecs::schedule::IntoScheduleConfigs;

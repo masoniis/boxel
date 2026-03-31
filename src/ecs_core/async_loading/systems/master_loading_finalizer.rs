@@ -1,7 +1,7 @@
 use crate::{
     ecs_core::{
         async_loading::{LoadingTracker, OnLoadComplete},
-        state_machine::{resources::NextState, State},
+        state_machine::{State, resources::NextState},
     },
     prelude::*,
 };
@@ -21,18 +21,18 @@ pub fn master_finalize_loading_system<T: State>(
     mut commands: Commands,
 ) {
     // if we have both the tracker and the "what to do next" instruction
-    if let Some(on_complete) = on_complete {
-        if loading_tracker.is_ready() {
-            info!(
-                "Loading is done. Transitioning to {:?}.",
-                on_complete.destination
-            );
+    if let Some(on_complete) = on_complete
+        && loading_tracker.is_ready()
+    {
+        info!(
+            "Loading is done. Transitioning to {:?}.",
+            on_complete.destination
+        );
 
-            // Set the next state within our own world.
-            next_state.val = Some(on_complete.destination);
+        // Set the next state within our own world.
+        next_state.val = Some(on_complete.destination);
 
-            // Clean up the temporary resources for the next loading operation.
-            commands.remove_resource::<OnLoadComplete<T>>();
-        }
+        // Clean up the temporary resources for the next loading operation.
+        commands.remove_resource::<OnLoadComplete<T>>();
     }
 }

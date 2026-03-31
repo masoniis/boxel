@@ -5,9 +5,9 @@ pub mod queue;
 pub mod render;
 
 use gpu_resources::{
-    view_binding::{UiViewBindGroupLayout, UiViewBuffer},
     ScreenQuadResource, UiMaterialBindGroupLayout, UiMaterialBuffer, UiObjectBindGroupLayout,
     UiObjectBuffer, UiPipeline,
+    view_binding::{UiViewBindGroupLayout, UiViewBuffer},
 };
 pub use render::UiRenderPassNode;
 

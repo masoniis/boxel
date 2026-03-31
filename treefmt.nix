@@ -7,7 +7,7 @@
     prettier.enable = true;
     rustfmt = {
       enable = true;
-      edition = "2021"; # 2021 matches the rustfmt edition my nvim uses, so im matching this for now
+      edition = "2024"; # 2024 matches the rust edition in Cargo.toml
       # includes = [ "*.ron" ];
     };
   };

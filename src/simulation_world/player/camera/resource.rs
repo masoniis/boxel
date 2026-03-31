@@ -1,7 +1,7 @@
 use crate::{
     prelude::*,
     simulation_world::{
-        chunk::{ChunkCoord, CHUNK_SIDE_LENGTH},
+        chunk::{CHUNK_SIDE_LENGTH, ChunkCoord},
         player::CameraComponent,
     },
 };

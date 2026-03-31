@@ -1,4 +1,4 @@
-use crate::simulation_world::terrain::{generators::shaping::lib::TerrainShaper, SinwaveShaper};
+use crate::simulation_world::terrain::{SinwaveShaper, generators::shaping::lib::TerrainShaper};
 use bevy::ecs::prelude::Resource;
 use std::sync::Arc;
 
