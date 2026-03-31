@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/masoniis/boxel/compare/b-v0.1.0...b-v0.2.0) (2026-03-31)
+
+
+### Features 🚀
+
+* add packager with proper resource/asset management ([55a1270](https://github.com/masoniis/boxel/commit/55a1270ee0d2abe07e528580452f00f275199f53))
+
+
+### Maintenance 😔
+
+* remove render world load tracking ([574efb3](https://github.com/masoniis/boxel/commit/574efb37e78c3558bcb2f4219fe19110f2ac8c68))
+* resolve all clippy errors ([6ef80b7](https://github.com/masoniis/boxel/commit/6ef80b70b95f064e29625f5972ff3f4bf88025c2))
+
 ## [0.1.0](https://github.com/masoniis/boxel/compare/b-v0.0.1...b-v0.1.0) (2026-03-31)
 
 
