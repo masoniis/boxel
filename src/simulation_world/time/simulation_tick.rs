@@ -1,8 +1,9 @@
 use crate::{
     prelude::*,
-    simulation_world::{SimulationSchedule, time::FrameClock},
+    simulation_world::time::FrameClock,
 };
 use bevy::ecs::prelude::*;
+use bevy::app::FixedUpdate;
 use std::time::Duration;
 
 #[derive(Resource, Debug)]
@@ -38,7 +39,7 @@ pub fn run_fixed_update_schedule(world: &mut World) {
 
         world.resource_mut::<SimulationTick>().tick += 1;
 
-        world.run_schedule(SimulationSchedule::FixedUpdate);
+        world.run_schedule(FixedUpdate);
     }
 
     // calculate interpolation alpha after processing fixed updates

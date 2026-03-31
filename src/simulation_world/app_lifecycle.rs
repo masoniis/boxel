@@ -1,6 +1,5 @@
 use crate::{
     ecs_core::{
-        EcsBuilder, Plugin,
         async_loading::{
             OnLoadComplete, master_finalize_loading_system, poll_simulation_loading_tasks,
             reset_loading_tracker_system, start_fake_work_system,
@@ -9,9 +8,11 @@ use crate::{
             AppState, GameState, StatePlugin, in_state, systems::apply_state_transition_system,
         },
     },
-    simulation_world::{OnExit, SimulationSchedule, SimulationSet},
+    simulation_world::scheduling::SimulationSet,
 };
+use bevy::app::{App, Plugin, Startup, Update};
 use bevy::ecs::schedule::IntoScheduleConfigs;
+use bevy::state::state::OnExit;
 
 pub struct AppLifecyclePlugin;
 
@@ -19,51 +20,47 @@ pub struct AppLifecyclePlugin;
 /// systems for handling the application lifecycle. This primarily
 /// involves orchestration of loading tasks and state transitions.
 impl Plugin for AppLifecyclePlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // INFO: -----------------------
         //         async loading
         // -----------------------------
 
         // polling systems and tracking load state
-        builder
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems((poll_simulation_loading_tasks
+        app.add_systems(
+            Update,
+            (poll_simulation_loading_tasks
                 .in_set(SimulationSet::Update)
-                .run_if(in_state(AppState::StartingUp)),));
+                .run_if(in_state(AppState::StartingUp)),),
+        );
 
         // load cleanup to run after transitions
-        builder
-            .schedule_entry(OnExit(AppState::StartingUp))
-            .add_systems(reset_loading_tracker_system);
+        app.add_systems(OnExit(AppState::StartingUp), reset_loading_tracker_system);
 
         // systems to ensure rigidity
-        builder
-            .schedule_entry(SimulationSchedule::Startup)
-            .add_systems(start_fake_work_system);
+        app.add_systems(Startup, start_fake_work_system);
 
         // INFO: ---------------------------
         //         state transitions
         // ---------------------------------
-        builder
-            .add_plugin(StatePlugin::<AppState>::default())
-            .add_plugin(StatePlugin::<GameState>::default());
+        app.add_plugins((
+            StatePlugin::<AppState>::default(),
+            StatePlugin::<GameState>::default(),
+        ));
 
-        builder
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(
-                (
-                    apply_state_transition_system::<AppState>,
-                    master_finalize_loading_system::<AppState>,
-                    apply_state_transition_system::<GameState>,
-                    master_finalize_loading_system::<GameState>,
-                )
-                    .in_set(SimulationSet::PreUpdate),
-            );
+        app.add_systems(
+            Update,
+            (
+                apply_state_transition_system::<AppState>,
+                master_finalize_loading_system::<AppState>,
+                apply_state_transition_system::<GameState>,
+                master_finalize_loading_system::<GameState>,
+            )
+                .in_set(SimulationSet::PreUpdate),
+        );
 
         // initial startup loading state should take us from loading
         // to running/playing once they finish.
-        builder
-            .add_resource(OnLoadComplete::new(AppState::Running))
-            .add_resource(OnLoadComplete::new(GameState::Playing));
+        app.insert_resource(OnLoadComplete::new(AppState::Running))
+            .insert_resource(OnLoadComplete::new(GameState::Playing));
     }
 }

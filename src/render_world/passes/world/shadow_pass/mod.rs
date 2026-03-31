@@ -14,22 +14,21 @@ use gpu_resources::{
 
 use crate::{
     RenderSet,
-    ecs_core::{EcsBuilder, Plugin},
     render_world::{
         RenderSchedule, passes::world::shadow_pass::prepare::update_shadow_view_buffer_system,
     },
 };
+use bevy::app::{App, Plugin};
 
 pub struct ShadowRenderPassPlugin;
 
 impl Plugin for ShadowRenderPassPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // INFO: -----------------
         //         startup
         // -----------------------
 
-        builder
-            .init_resource::<ShadowViewBindGroupLayout>()
+        app.init_resource::<ShadowViewBindGroupLayout>()
             .init_resource::<ShadowPassPipeline>()
             .init_resource::<ShadowViewBuffer>()
             .init_resource::<ShadowDepthTextureResource>();
@@ -38,8 +37,9 @@ impl Plugin for ShadowRenderPassPlugin {
         //         prepare
         // -----------------------
 
-        builder
-            .schedule_entry(RenderSchedule::Main)
-            .add_systems(update_shadow_view_buffer_system.in_set(RenderSet::Prepare));
+        app.add_systems(
+            RenderSchedule::Main,
+            update_shadow_view_buffer_system.in_set(RenderSet::Prepare),
+        );
     }
 }

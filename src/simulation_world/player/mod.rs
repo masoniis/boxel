@@ -8,12 +8,12 @@ pub use camera::*;
 //         player plugin
 // -----------------------------
 
-use crate::ecs_core::{EcsBuilder, Plugin};
+use bevy::app::{App, Plugin};
 
 pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
-        builder.add_plugin(CameraPlugin).add_plugin(ActionPlugin);
+    fn build(&self, app: &mut App) {
+        app.add_plugins((CameraPlugin, ActionPlugin));
     }
 }

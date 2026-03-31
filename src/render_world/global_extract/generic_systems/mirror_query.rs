@@ -1,7 +1,7 @@
 use crate::prelude::*;
 use crate::render_world::global_extract::utils::run_extract_schedule::SimulationWorld;
 use crate::render_world::scheduling::RenderSchedule;
-use crate::{EcsBuilder, Plugin};
+use bevy::app::{App, Plugin};
 use bevy::ecs::prelude::*;
 use bevy::ecs::query::{QueryData, QueryFilter};
 use std::collections::HashMap;
@@ -57,14 +57,15 @@ impl<T: MirrorableComponent> Default for ExtractComponentPlugin<T> {
 }
 
 impl<T: MirrorableComponent> Plugin for ExtractComponentPlugin<T> {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // Register the entity map resource for this component type
-        builder.add_resource(EntityMap::<T>::default());
+        app.insert_resource(EntityMap::<T>::default());
 
         // Add the generic extraction system to the 'Extract' schedule
-        builder
-            .schedule_entry(RenderSchedule::Extract)
-            .add_systems(extract_mirrorable_components_system::<T>);
+        app.add_systems(
+            RenderSchedule::Extract,
+            extract_mirrorable_components_system::<T>,
+        );
     }
 }
 

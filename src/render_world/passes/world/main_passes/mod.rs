@@ -15,23 +15,21 @@ pub use shared_resources::{
 //         plugin definition
 // ---------------------------------
 
-use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    render_world::{
-        global_extract::{RenderCameraResource, RenderWindowSizeResource},
-        graphics_context::reconfigure_wgpu_surface_system,
-        passes::world::main_passes::{
-            bounding_box_pass::WireframeRenderPassPlugin,
-            opaque_pass::OpaqueRenderPassPlugin,
-            shared_resources::{
-                resize_main_depth_texture_system, update_camera_view_buffer_system,
-                update_environment_uniform_buffer_system,
-            },
-            transparent_pass::TransparentRenderPassPlugin,
+use crate::render_world::{
+    global_extract::{RenderCameraResource, RenderWindowSizeResource},
+    graphics_context::reconfigure_wgpu_surface_system,
+    passes::world::main_passes::{
+        bounding_box_pass::WireframeRenderPassPlugin,
+        opaque_pass::OpaqueRenderPassPlugin,
+        shared_resources::{
+            resize_main_depth_texture_system, update_camera_view_buffer_system,
+            update_environment_uniform_buffer_system,
         },
-        scheduling::{RenderSchedule, RenderSet},
+        transparent_pass::TransparentRenderPassPlugin,
     },
+    scheduling::{RenderSchedule, RenderSet},
 };
+use bevy::app::{App, Plugin};
 use bevy::ecs::schedule::{
     IntoScheduleConfigs,
     common_conditions::{resource_changed_or_removed, resource_exists},
@@ -42,12 +40,12 @@ use bevy::ecs::schedule::{
 pub struct PlayerCentricRenderPassPlugin;
 
 impl Plugin for PlayerCentricRenderPassPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // INFO: ----------------------------------------------------
         //         startup (shared resources for main passes)
         // ----------------------------------------------------------
 
-        builder
+        app
             // camera view uniform resources
             .init_resource::<CentralCameraViewBindGroupLayout>()
             .init_resource::<CentralCameraViewUniform>()
@@ -64,7 +62,8 @@ impl Plugin for PlayerCentricRenderPassPlugin {
         //         prepare (also shared resources)
         // -----------------------------------------------
 
-        builder.schedule_entry(RenderSchedule::Main).add_systems(
+        app.add_systems(
+            RenderSchedule::Main,
             (
                 resize_main_depth_texture_system
                     .run_if(resource_changed_or_removed::<RenderWindowSizeResource>)
@@ -82,9 +81,10 @@ impl Plugin for PlayerCentricRenderPassPlugin {
         //         subplugins for render passes
         // --------------------------------------------
 
-        builder
-            .add_plugin(TransparentRenderPassPlugin)
-            .add_plugin(OpaqueRenderPassPlugin)
-            .add_plugin(WireframeRenderPassPlugin);
+        app.add_plugins((
+            TransparentRenderPassPlugin,
+            OpaqueRenderPassPlugin,
+            WireframeRenderPassPlugin,
+        ));
     }
 }

@@ -8,14 +8,12 @@ pub mod text;
 // ----------------------
 
 use self::layout::handle_window_resize_system;
+use crate::simulation_world::scheduling::SimulationSet;
 use crate::simulation_world::scheduling::StartupSet;
 use crate::simulation_world::user_interface::screens::{
     DebugScreenPlugin, GameScreenPlugin, LoadingScreenPlugin,
 };
-use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    simulation_world::{SimulationSchedule, SimulationSet},
-};
+use bevy::app::{App, Plugin, Startup, Update};
 use bevy::ecs::prelude::*;
 use {
     layout::{
@@ -30,40 +28,35 @@ use {
 pub struct UiPlugin;
 
 impl Plugin for UiPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // INFO: -------------------
         //         Resources
         // -------------------------
 
-        builder.world.init_non_send_resource::<UiLayoutTree>();
-        builder
-            .add_resource(EntityToNodeMap::default())
-            .add_resource(IsLayoutDirty::default());
+        app.world_mut().init_non_send_resource::<UiLayoutTree>();
+        app.insert_resource(EntityToNodeMap::default())
+            .insert_resource(IsLayoutDirty::default());
 
         // INFO: -----------------
         //         Plugins
         // -----------------------
 
-        builder
-            .add_plugin(LoadingScreenPlugin)
-            .add_plugin(DebugScreenPlugin)
-            .add_plugin(GameScreenPlugin);
+        app.add_plugins((LoadingScreenPlugin, DebugScreenPlugin, GameScreenPlugin));
 
         // INFO: -----------------
         //         Systems
         // -----------------------
 
-        builder
-            .schedule_entry(SimulationSchedule::Startup)
-            .add_systems(
-                (setup_font_system, spawn_ui_root_system)
-                    .in_set(StartupSet::ResourceInitialization)
-                    .chain(),
-            );
+        app.add_systems(
+            Startup,
+            (setup_font_system, spawn_ui_root_system)
+                .in_set(StartupSet::ResourceInitialization)
+                .chain(),
+        );
 
-        builder
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems((
+        app.add_systems(
+            Update,
+            (
                 (handle_window_resize_system,).in_set(SimulationSet::Update),
                 (
                     handle_structural_changes_system,
@@ -75,6 +68,7 @@ impl Plugin for UiPlugin {
                 (compute_and_apply_layout_system, compute_ui_depth_system)
                     .run_if(resource_equals(IsLayoutDirty(true)))
                     .in_set(SimulationSet::RenderPrep),
-            ));
+            ),
+        );
     }
 }

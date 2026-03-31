@@ -16,9 +16,9 @@ use crate::simulation_world::time::frame_clock::update_frame_clock_system;
 use crate::simulation_world::time::simulation_tick::{SimulationTick, run_fixed_update_schedule};
 use crate::simulation_world::time::world_clock::update_world_clock_system;
 use crate::{
-    ecs_core::{EcsBuilder, Plugin, state_machine::utils::in_state},
-    simulation_world::{SimulationSchedule, SimulationSet},
+    ecs_core::state_machine::utils::in_state, simulation_world::scheduling::SimulationSet,
 };
+use bevy::app::{App, FixedUpdate, Plugin, Update};
 use bevy::ecs::prelude::*;
 
 use super::input::ActionStateResource;
@@ -26,39 +26,31 @@ use super::input::ActionStateResource;
 pub struct TimeControlPlugin;
 
 impl Plugin for TimeControlPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // Maintain a clock that tracks frame time and provides timing info
-        builder
-            // resources
-            .add_resource(FrameClock::default())
-            // systems
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(
-                (update_frame_clock_system)
-                    .in_set(SimulationSet::PreUpdate)
-                    .run_if(in_state(AppState::Running)),
-            );
+        app.insert_resource(FrameClock::default()).add_systems(
+            Update,
+            (update_frame_clock_system)
+                .in_set(SimulationSet::PreUpdate)
+                .run_if(in_state(AppState::Running)),
+        );
 
         // Trigger the simulation ticks when appropriate
-        builder
-            .add_resource(SimulationTick::default())
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(
-                run_fixed_update_schedule
-                    .in_set(SimulationSet::Update)
-                    .run_if(in_state(AppState::Running)),
-            );
+        app.insert_resource(SimulationTick::default()).add_systems(
+            Update,
+            run_fixed_update_schedule
+                .in_set(SimulationSet::Update)
+                .run_if(in_state(AppState::Running)),
+        );
 
         // Maintain world clock that depends on ticks rather that frames
-        builder
-            .add_resource(WorldClockResource::default())
-            .schedule_entry(SimulationSchedule::FixedUpdate)
-            .add_systems(update_world_clock_system);
+        app.insert_resource(WorldClockResource::default())
+            .add_systems(FixedUpdate, update_world_clock_system);
+
         // controls for world clock
-        builder
-            .add_resource(WorldClockResource::default())
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems((
+        app.add_systems(
+            Update,
+            (
                 jump_world_clock_backwards_system.run_if(
                     |action_state: Res<ActionStateResource>| {
                         action_state.just_happened(SimulationAction::JumpGameTimeBackward)
@@ -67,6 +59,7 @@ impl Plugin for TimeControlPlugin {
                 jump_world_clock_forward_system.run_if(|action_state: Res<ActionStateResource>| {
                     action_state.just_happened(SimulationAction::JumpGameTimeForward)
                 }),
-            ));
+            ),
+        );
     }
 }

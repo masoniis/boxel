@@ -10,40 +10,36 @@ pub use mesh_asset::{MeshAsset, MeshDeletionRequest, delete_stale_mesh_assets};
 
 use crate::{
     SimulationSet,
-    ecs_core::{EcsBuilder, Plugin},
-    simulation_world::{
-        SimulationSchedule,
-        asset_management::mesh_asset::{
-            MeshRefCounts, OpaqueMeshShadow, TransparentMeshShadow, opaque_mesh_added_observer,
-            opaque_mesh_removed_observer, transparent_mesh_added_observer,
-            transparent_mesh_removed_observer,
-        },
+    simulation_world::asset_management::mesh_asset::{
+        MeshRefCounts, OpaqueMeshShadow, TransparentMeshShadow, opaque_mesh_added_observer,
+        opaque_mesh_removed_observer, transparent_mesh_added_observer,
+        transparent_mesh_removed_observer,
     },
 };
+use bevy::app::{App, Plugin, Update};
 use bevy::ecs::{message::Messages, schedule::IntoScheduleConfigs};
 
 pub struct AssetManagementPlugin;
 
 impl Plugin for AssetManagementPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // the mesh asset storage
-        builder
-            .add_resource(AssetStorageResource::<MeshAsset>::default())
-            .add_resource(TransparentMeshShadow::default())
-            .add_resource(OpaqueMeshShadow::default());
+        app.insert_resource(AssetStorageResource::<MeshAsset>::default())
+            .insert_resource(TransparentMeshShadow::default())
+            .insert_resource(OpaqueMeshShadow::default());
 
         // mesh ref count tracking
-        builder
-            .add_resource(MeshRefCounts::default())
+        app.insert_resource(MeshRefCounts::default())
             .add_observer(opaque_mesh_added_observer)
             .add_observer(opaque_mesh_removed_observer)
             .add_observer(transparent_mesh_added_observer)
             .add_observer(transparent_mesh_removed_observer);
 
         // mesh deletion handling
-        builder
-            .init_resource::<Messages<MeshDeletionRequest>>()
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(delete_stale_mesh_assets.in_set(SimulationSet::RenderPrep));
+        app.init_resource::<Messages<MeshDeletionRequest>>()
+            .add_systems(
+                Update,
+                delete_stale_mesh_assets.in_set(SimulationSet::RenderPrep),
+            );
     }
 }

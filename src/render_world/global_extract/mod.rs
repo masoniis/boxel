@@ -12,27 +12,27 @@ pub use utils::*;
 
 use self::time_extractor::RenderTimeExtractor;
 use crate::{
-    ecs_core::{EcsBuilder, Plugin},
     render_world::scheduling::RenderSchedule,
     simulation_world::{
         asset_management::{AssetStorageResource, MeshAsset},
         input::resources::WindowSizeResource,
     },
 };
+use bevy::app::{App, Plugin};
 use bevy::ecs::prelude::*;
 
 pub struct SimulationExtractionPlugin;
 
 impl Plugin for SimulationExtractionPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // Extraction here is for global resources used across
         // many different render systems.
         //
         // Anything specific to a pass or otherwise should be
         // located in that pass's dedicated plugin.
-        builder
-            .schedule_entry(RenderSchedule::Extract)
-            .add_systems((
+        app.add_systems(
+            RenderSchedule::Extract,
+            (
                 (
                     // resource extractors
                     extract_resource_system::<SunExtractor>,
@@ -43,6 +43,7 @@ impl Plugin for SimulationExtractionPlugin {
                     clone_resource_system::<AssetStorageResource<MeshAsset>>,
                 ),
                 extract_active_camera_system,
-            ));
+            ),
+        );
     }
 }

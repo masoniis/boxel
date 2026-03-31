@@ -12,7 +12,6 @@ use startup::OpaquePipelines;
 // ---------------------------------
 
 use crate::{
-    ecs_core::{EcsBuilder, Plugin},
     render_world::{
         global_extract::{ExtractComponentPlugin, extract_resource_system},
         passes::world::main_passes::opaque_pass::{
@@ -22,32 +21,35 @@ use crate::{
     },
     simulation_world::chunk::OpaqueMeshComponent,
 };
+use bevy::app::{App, Plugin};
 use bevy::ecs::prelude::*;
 
 pub struct OpaqueRenderPassPlugin;
 
 impl Plugin for OpaqueRenderPassPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // INFO: -----------------
         //         Startup
         // -----------------------
 
-        builder.init_resource::<OpaquePipelines>();
+        app.init_resource::<OpaquePipelines>();
 
         // INFO: -----------------
         //         Extract
         // -----------------------
 
-        builder
-            .add_plugin(ExtractComponentPlugin::<OpaqueMeshComponent>::default())
-            .schedule_entry(RenderSchedule::Extract)
-            .add_systems(extract_resource_system::<OpaqueRenderModeExtractor>);
+        app.add_plugins(ExtractComponentPlugin::<OpaqueMeshComponent>::default())
+            .add_systems(
+                RenderSchedule::Extract,
+                extract_resource_system::<OpaqueRenderModeExtractor>,
+            );
 
         // INFO: -----------------
         //         Prepare
         // -----------------------
 
-        builder.schedule_entry(RenderSchedule::Main).add_systems(
+        app.add_systems(
+            RenderSchedule::Main,
             (
                 prepare::delete_gpu_buffers_system.before(prepare::prepare_opaque_meshes_system),
                 prepare::prepare_opaque_meshes_system,
@@ -59,11 +61,13 @@ impl Plugin for OpaqueRenderPassPlugin {
         //         Queue
         // ---------------------
 
-        builder
+        app
             // resources
             .init_resource::<Opaque3dRenderPhase>()
             // systems
-            .schedule_entry(RenderSchedule::Main)
-            .add_systems(queue::queue_opaque_system.in_set(RenderSet::Queue));
+            .add_systems(
+                RenderSchedule::Main,
+                queue::queue_opaque_system.in_set(RenderSet::Queue),
+            );
     }
 }

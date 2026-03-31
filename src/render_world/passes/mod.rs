@@ -6,16 +6,14 @@ pub mod world;
 //         plugin definition
 // ---------------------------------
 
-use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    render_world::{
-        passes::{
-            core::execute_render_graph_system, ui_pass::UiRenderPassPlugin,
-            world::WorldRenderPassesPlugin,
-        },
-        scheduling::{RenderSchedule, RenderSet},
+use crate::render_world::{
+    passes::{
+        core::execute_render_graph_system, ui_pass::UiRenderPassPlugin,
+        world::WorldRenderPassesPlugin,
     },
+    scheduling::{RenderSchedule, RenderSet},
 };
+use bevy::app::{App, Plugin};
 use bevy::ecs::schedule::IntoScheduleConfigs;
 
 /// A plugin that sets up all the necessary resources and render
@@ -23,17 +21,16 @@ use bevy::ecs::schedule::IntoScheduleConfigs;
 pub struct RenderPassManagerPlugin;
 
 impl Plugin for RenderPassManagerPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
-        builder
-            .add_plugin(WorldRenderPassesPlugin)
-            .add_plugin(UiRenderPassPlugin);
+    fn build(&self, app: &mut App) {
+        app.add_plugins((WorldRenderPassesPlugin, UiRenderPassPlugin));
 
         // INFO: ----------------
         //         render
         // ----------------------
 
-        builder
-            .schedule_entry(RenderSchedule::Main)
-            .add_systems(execute_render_graph_system.in_set(RenderSet::Render));
+        app.add_systems(
+            RenderSchedule::Main,
+            execute_render_graph_system.in_set(RenderSet::Render),
+        );
     }
 }

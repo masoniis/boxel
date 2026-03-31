@@ -14,12 +14,16 @@ use bevy::ecs::prelude::*;
 #[instrument(skip_all)]
 pub fn update_ui_view_data_system(
     // Input
-    window_size: Res<RenderWindowSizeResource>,
+    window_size: Option<Res<RenderWindowSizeResource>>,
     ui_view_buffer: Res<UiViewBuffer>,
 
     // Output (write a buffer)
     queue: Res<RenderQueue>,
 ) {
+    let Some(window_size) = window_size else {
+        return;
+    };
+
     debug!(
         target : "ui_efficiency",
         "Updating UI view data (this should only happen the screen was resized)..."

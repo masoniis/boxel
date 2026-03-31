@@ -8,23 +8,21 @@ pub use biome_registry::{BiomeId, BiomeRegistryResource, load_biome_defs_from_di
 //         Biome plugin
 // ----------------------------
 
-use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    simulation_world::{
-        SimulationSchedule, biome::biome_registry::initialize_biome_registry_system,
-        scheduling::StartupSet,
-    },
+use crate::simulation_world::{
+    biome::biome_registry::initialize_biome_registry_system, scheduling::StartupSet,
 };
+use bevy::app::{App, Plugin, Startup};
 use bevy::ecs::schedule::IntoScheduleConfigs;
 
 pub struct BiomePlugin;
 
 impl Plugin for BiomePlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
-        builder.add_resource(BiomeRegistryResource::default());
+    fn build(&self, app: &mut App) {
+        app.insert_resource(BiomeRegistryResource::default());
 
-        builder
-            .schedule_entry(SimulationSchedule::Startup)
-            .add_systems(initialize_biome_registry_system.in_set(StartupSet::Tasks));
+        app.add_systems(
+            Startup,
+            initialize_biome_registry_system.in_set(StartupSet::Tasks),
+        );
     }
 }

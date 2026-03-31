@@ -12,13 +12,14 @@ use crate::{
         textures::load_voxel_texture_assets,
     },
     simulation_world::{
-        SimulationSchedule, SimulationWorldInterface,
+        SimulationWorldInterface,
         input::{
             messages::{RawDeviceMessage, RawWindowMessage},
             resources::DesiredCursorState,
         },
     },
 };
+use bevy::app::Startup;
 use crossbeam::channel::unbounded;
 use futures_lite::future::block_on;
 use std::{
@@ -127,7 +128,7 @@ impl ApplicationHandler for App {
             render_world.add_resource(render_receiver_resource);
 
             info!("Running startup systems...\n\n\n");
-            simulation_world.run_schedule(SimulationSchedule::Startup);
+            simulation_world.run_schedule(Startup);
             render_world.run_schedule(RenderSchedule::Startup);
 
             // INFO: ----------------------------------------------
@@ -158,8 +159,8 @@ impl ApplicationHandler for App {
 
                             // extract schedule needs mutable access to the simulation world
                             run_extract_schedule(
-                                sim_guard.borrow(),
-                                render_guard.borrow(),
+                                sim_guard.world_mut(),
+                                render_guard.world_mut(),
                                 RenderSchedule::Extract,
                             );
 
@@ -226,7 +227,7 @@ impl ApplicationHandler for App {
                             simulation_world
                                 .lock()
                                 .unwrap()
-                                .run_schedule(SimulationSchedule::Main);
+                                .run_frame();
 
                             // updated cursor if there is a change
                             if let (Some(window), Some(cursor_state)) = (
@@ -242,6 +243,7 @@ impl ApplicationHandler for App {
                                 }
                             }
                         }
+
                         self.frame_sync.finish_simulation();
 
                         // request the next frame

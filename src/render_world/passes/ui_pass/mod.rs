@@ -15,32 +15,28 @@ pub use render::UiRenderPassNode;
 //         Plugin definition
 // ---------------------------------
 
-use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    render_world::{
-        global_extract::resources::RenderWindowSizeResource,
-        passes::ui_pass::{
-            extract::ExtractedUiEvents,
-            prepare::UiChanges,
-            queue::{
-                IsGlyphonDirty, PreparedUiBatches, UiElementCache, UiElementSortBufferResource,
-            },
-        },
-        scheduling::{RenderSchedule, RenderSet},
+use crate::render_world::{
+    global_extract::resources::RenderWindowSizeResource,
+    passes::ui_pass::{
+        extract::ExtractedUiEvents,
+        prepare::UiChanges,
+        queue::{IsGlyphonDirty, PreparedUiBatches, UiElementCache, UiElementSortBufferResource},
     },
+    scheduling::{RenderSchedule, RenderSet},
 };
+use bevy::app::{App, Plugin};
 use bevy::ecs::prelude::*;
 
 pub struct UiRenderPassPlugin;
 
 impl Plugin for UiRenderPassPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // INFO: -----------------
         //         startup
         // -----------------------
 
         // pipeline setup
-        builder
+        app
             // ui view uniform
             .init_resource::<UiViewBindGroupLayout>()
             .init_resource::<UiViewBuffer>()
@@ -54,27 +50,27 @@ impl Plugin for UiRenderPassPlugin {
             .init_resource::<UiPipeline>();
 
         // general resources
-        builder.init_resource::<ScreenQuadResource>();
-        builder
-            .schedule_entry(RenderSchedule::Startup)
-            .add_systems(gpu_resources::setup_glyphon_resources);
+        app.init_resource::<ScreenQuadResource>();
+        app.add_systems(
+            RenderSchedule::Startup,
+            gpu_resources::setup_glyphon_resources,
+        );
 
         // INFO: -----------------
         //         extract
         // -----------------------
 
-        builder
+        app
             // resources
-            .add_resource(ExtractedUiEvents::default())
+            .insert_resource(ExtractedUiEvents::default())
             // systems
-            .schedule_entry(RenderSchedule::Extract)
-            .add_systems(extract::extract_ui_events_system);
+            .add_systems(RenderSchedule::Extract, extract::extract_ui_events_system);
 
         // INFO: -----------------
         //         prepare
         // -----------------------
 
-        builder
+        app
             // resources
             .init_resource::<PreparedUiBatches>()
             .init_resource::<UiElementSortBufferResource>()
@@ -82,8 +78,8 @@ impl Plugin for UiRenderPassPlugin {
             .init_resource::<UiChanges>()
             .init_resource::<UiElementCache>()
             // schedule
-            .schedule_entry(RenderSchedule::Main)
             .add_systems(
+                RenderSchedule::Main,
                 (
                     (
                         prepare::update_ui_view_data_system,
@@ -99,7 +95,8 @@ impl Plugin for UiRenderPassPlugin {
         //         Queue
         // ---------------------
 
-        builder.schedule_entry(RenderSchedule::Main).add_systems(
+        app.add_systems(
+            RenderSchedule::Main,
             (
                 // make decisions based on the UiChanges determined above
                 (

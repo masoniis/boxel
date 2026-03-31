@@ -11,43 +11,41 @@ use startup::TransparentPipeline;
 //         plugin definition
 // ---------------------------------
 
-use crate::{
-    Plugin,
-    ecs_core::EcsBuilder,
-    render_world::{
-        RenderSchedule, RenderSet,
-        global_extract::ExtractComponentPlugin,
-        passes::world::main_passes::opaque_pass::prepare::delete_gpu_buffers_system,
-        passes::world::main_passes::transparent_pass::{
-            prepare::prepare_transparent_meshes_system,
-            queue::{Transparent3dRenderPhase, queue_and_prepare_transparent_system},
-        },
+use crate::render_world::{
+    RenderSchedule, RenderSet,
+    global_extract::ExtractComponentPlugin,
+    passes::world::main_passes::opaque_pass::prepare::delete_gpu_buffers_system,
+    passes::world::main_passes::transparent_pass::{
+        prepare::prepare_transparent_meshes_system,
+        queue::{Transparent3dRenderPhase, queue_and_prepare_transparent_system},
     },
-    simulation_world::chunk::mesh::TransparentMeshComponent,
 };
+use crate::simulation_world::chunk::mesh::TransparentMeshComponent;
+use bevy::app::{App, Plugin};
 use bevy::ecs::schedule::IntoScheduleConfigs;
 
 pub struct TransparentRenderPassPlugin;
 
 impl Plugin for TransparentRenderPassPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // INFO: -----------------
         //         Startup
         // -----------------------
 
-        builder.init_resource::<TransparentPipeline>();
+        app.init_resource::<TransparentPipeline>();
 
         // INFO: -----------------
         //         Extract
         // -----------------------
 
-        builder.add_plugin(ExtractComponentPlugin::<TransparentMeshComponent>::default());
+        app.add_plugins(ExtractComponentPlugin::<TransparentMeshComponent>::default());
 
         // INFO: -----------------
         //         Prepare
         // -----------------------
 
-        builder.schedule_entry(RenderSchedule::Main).add_systems(
+        app.add_systems(
+            RenderSchedule::Main,
             (
                 delete_gpu_buffers_system.before(prepare_transparent_meshes_system),
                 prepare_transparent_meshes_system,
@@ -59,11 +57,13 @@ impl Plugin for TransparentRenderPassPlugin {
         //         Queue
         // ---------------------
 
-        builder
+        app
             // resources
             .init_resource::<Transparent3dRenderPhase>()
             // systems
-            .schedule_entry(RenderSchedule::Main)
-            .add_systems(queue_and_prepare_transparent_system.in_set(RenderSet::Queue));
+            .add_systems(
+                RenderSchedule::Main,
+                queue_and_prepare_transparent_system.in_set(RenderSet::Queue),
+            );
     }
 }

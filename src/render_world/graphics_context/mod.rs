@@ -11,16 +11,14 @@ pub use reconfigure_surface::reconfigure_wgpu_surface_system;
 //         Plugin definition
 // ---------------------------------
 
-use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    render_world::{
-        global_extract::RenderWindowSizeResource,
-        graphics_context::resources::{
-            RenderAdapter, RenderDevice, RenderQueue, RenderSurface, RenderSurfaceConfig,
-        },
-        scheduling::RenderSchedule,
+use crate::render_world::{
+    global_extract::RenderWindowSizeResource,
+    graphics_context::resources::{
+        RenderAdapter, RenderDevice, RenderQueue, RenderSurface, RenderSurfaceConfig,
     },
+    scheduling::RenderSchedule,
 };
+use bevy::app::{App, Plugin};
 
 pub struct GraphicsContextPlugin {
     context: GraphicsContext,
@@ -37,13 +35,12 @@ impl GraphicsContextPlugin {
 }
 
 impl Plugin for GraphicsContextPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
-        builder
-            .add_resource(RenderDevice(self.context.device.clone()))
-            .add_resource(RenderQueue(self.context.queue.clone()))
-            .add_resource(RenderAdapter(self.context.adapter.clone()))
-            .add_resource(RenderSurface(self.context.surface.clone()))
-            .add_resource(RenderSurfaceConfig(self.context.config.clone()));
+    fn build(&self, app: &mut App) {
+        app.insert_resource(RenderDevice(self.context.device.clone()))
+            .insert_resource(RenderQueue(self.context.queue.clone()))
+            .insert_resource(RenderAdapter(self.context.adapter.clone()))
+            .insert_resource(RenderSurface(self.context.surface.clone()))
+            .insert_resource(RenderSurfaceConfig(self.context.config.clone()));
 
         // INFO: -----------------
         //         Startup
@@ -61,7 +58,8 @@ impl Plugin for GraphicsContextPlugin {
         //         Queue
         // ---------------------
 
-        builder.schedule_entry(RenderSchedule::Main).add_systems(
+        app.add_systems(
+            RenderSchedule::Main,
             // this isn't in a set because it doesnt really matter when it runs due to the fact
             // that RenderWindowSizeResource gets updated from extraction, which runs before main.
             reconfigure_wgpu_surface_system

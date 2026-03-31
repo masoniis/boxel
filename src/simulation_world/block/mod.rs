@@ -12,15 +12,14 @@ pub use targeted_block::TargetedBlock;
 //         Block plugin
 // ----------------------------
 
-use crate::prelude::*;
+use bevy::app::{App, Plugin};
 
 pub struct BlockPlugin;
 
 impl Plugin for BlockPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // insert resources
-        builder
-            .init_resource::<BlockRegistryResource>()
+        app.init_resource::<BlockRegistryResource>()
             .init_resource::<TargetedBlock>();
     }
 }

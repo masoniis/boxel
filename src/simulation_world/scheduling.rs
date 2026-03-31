@@ -1,21 +1,8 @@
-use crate::ecs_core::state_machine::State;
 use bevy::ecs::prelude::SystemSet;
-use bevy::ecs::schedule::ScheduleLabel;
 
 // INFO: -------------------------
 //         Core scheduling
 // -------------------------------
-
-/// Core pre-defined schedule labels
-#[derive(ScheduleLabel, Debug, Clone, PartialEq, Eq, Hash)]
-pub enum SimulationSchedule {
-    /// A schedule that runs once on application startup.
-    Startup,
-    /// A schedule that runs at a fixed timestep based on tickrate, the "simulation" itself.
-    FixedUpdate,
-    /// A schedule that runs every frame (and thus runs at an unpredictable rate), ideal for non-simulation state logic.
-    Main,
-}
 
 /// The sets for the startup schedule of the sim
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
@@ -49,19 +36,3 @@ pub enum SimulationSet {
     /// Collect all data needed for rendering into queues/buffers.
     RenderPrep,
 }
-
-// INFO: --------------------------------------
-//         Generic transition schedules
-// --------------------------------------------
-
-/// Schedule that runs once in the entering state.
-///
-/// It will run before any other system in that state.
-#[derive(ScheduleLabel, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct OnEnter<T: State>(pub T);
-
-/// Schedule that runs once in the exiting state as we transition to a new state.
-///
-/// This means it will run before any system in the new state we are entering.
-#[derive(ScheduleLabel, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct OnExit<T: State>(pub T);

@@ -12,35 +12,31 @@ pub use public::*;
 // ----------------------------------
 
 use crate::prelude::*;
-use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    simulation_world::input::ActionStateResource,
-};
+use crate::simulation_world::input::ActionStateResource;
+use bevy::app::{App, Plugin, Update};
 use bevy::ecs::prelude::{IntoScheduleConfigs, Res};
 pub use systems::{TerrainGeneratorLibrary, cycle_active_generator};
 
 pub struct TerrainGenerationPlugin;
 
 impl Plugin for TerrainGenerationPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
-        builder
-            .add_resource(ClimateNoiseGenerator::new(0)) // hardcode seed 0 for presentation reproducibility
-            .add_resource(ActiveClimateGenerator::default())
-            .add_resource(ActiveBiomeGenerator::default())
-            .add_resource(ActiveTerrainGenerator::default())
-            .add_resource(ActiveTerrainPainter::default())
+    fn build(&self, app: &mut App) {
+        app.insert_resource(ClimateNoiseGenerator::new(0)) // hardcode seed 0 for presentation reproducibility
+            .insert_resource(ActiveClimateGenerator::default())
+            .insert_resource(ActiveBiomeGenerator::default())
+            .insert_resource(ActiveTerrainGenerator::default())
+            .insert_resource(ActiveTerrainPainter::default())
             .init_resource::<TerrainGeneratorLibrary>();
 
         // INFO: -------------------------------
         //         keybind-based actions
         // -------------------------------------
 
-        builder
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(cycle_active_generator.run_if(
-                |action_state: Res<ActionStateResource>| {
-                    action_state.just_happened(SimulationAction::CycleActiveTerrainGenerator)
-                },
-            ));
+        app.add_systems(
+            Update,
+            cycle_active_generator.run_if(|action_state: Res<ActionStateResource>| {
+                action_state.just_happened(SimulationAction::CycleActiveTerrainGenerator)
+            }),
+        );
     }
 }

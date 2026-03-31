@@ -13,9 +13,8 @@ pub use types::*;
 // -----------------------------------
 
 use crate::{
-    ecs_core::{EcsBuilder, Plugin, state_machine::AppState},
+    ecs_core::state_machine::AppState,
     simulation_world::{
-        SimulationSchedule, SimulationSet,
         input::{
             messages::{
                 KeyboardInputMessage, MouseButtonInputMessage, MouseMoveMessage,
@@ -29,14 +28,16 @@ use crate::{
                 toggle_opaque_wireframe_mode_system,
             },
         },
-        scheduling::OnExit,
+        scheduling::SimulationSet,
     },
 };
+use bevy::app::{App, Plugin, Update};
 use bevy::ecs::{
     message::Messages,
     schedule::{IntoScheduleConfigs, SystemSet},
     system::Res,
 };
+use bevy::state::state::OnExit;
 use systems::processing;
 use winit::{event::MouseButton, keyboard::PhysicalKey};
 
@@ -49,91 +50,82 @@ pub enum InputSystemSet {
 pub struct InputModulePlugin;
 
 impl Plugin for InputModulePlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // resources
-        builder
-            .add_resource(InputActionMapResource::default())
-            .add_resource(ActionStateResource::default());
+        app.insert_resource(InputActionMapResource::default())
+            .insert_resource(ActionStateResource::default());
 
-        builder
-            .add_resource(Buttons::<PhysicalKey>::default())
-            .add_resource(Buttons::<MouseButton>::default())
-            .add_resource(CursorMovement::default());
+        app.insert_resource(Buttons::<PhysicalKey>::default())
+            .insert_resource(Buttons::<MouseButton>::default())
+            .insert_resource(CursorMovement::default());
 
         // external events (comes from the app wrapper)
-        builder
-            .init_resource::<Messages<RawWindowMessage>>()
+        app.init_resource::<Messages<RawWindowMessage>>()
             .init_resource::<Messages<RawDeviceMessage>>();
 
         // internal events (an ecs system fires them)
-        builder
-            .init_resource::<Messages<KeyboardInputMessage>>()
+        app.init_resource::<Messages<KeyboardInputMessage>>()
             .init_resource::<Messages<MouseMoveMessage>>()
             .init_resource::<Messages<MouseScrollMessage>>()
             .init_resource::<Messages<MouseResizeMessage>>()
             .init_resource::<Messages<MouseButtonInputMessage>>();
 
         // schedules
-        builder
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(
+        app.add_systems(
+            Update,
+            (
                 processing::window_events_system
                     .in_set(InputSystemSet::WindowEvents)
                     .in_set(SimulationSet::Input),
-            )
-            .add_systems(
                 processing::device_events_system
                     .in_set(InputSystemSet::DeviceEvents)
                     .in_set(SimulationSet::Input),
-            )
-            .add_systems(
                 processing::handle_resize_system
                     .after(InputSystemSet::WindowEvents)
                     .in_set(SimulationSet::Input),
-            )
-            .add_systems(
                 processing::update_action_state_system
                     .after(InputSystemSet::WindowEvents)
                     .after(InputSystemSet::DeviceEvents)
                     .in_set(SimulationSet::Input),
-            );
+            ),
+        );
 
-        builder
-            .schedule_entry(OnExit(AppState::StartingUp))
-            .add_systems(processing::clear_stale_input_events_system);
+        app.add_systems(
+            OnExit(AppState::StartingUp),
+            processing::clear_stale_input_events_system,
+        );
 
         // INFO: -------------------------------------
         //         keybind-based actions below
         // -------------------------------------------
 
         // set desired cursor state on pause action
-        builder
-            .add_resource(DesiredCursorState::default())
-            .schedule_entry(SimulationSchedule::Main)
+        app.insert_resource(DesiredCursorState::default())
             .add_systems(
+                Update,
                 toggle_cursor_system.run_if(|action_state: Res<ActionStateResource>| {
                     action_state.just_happened(SimulationAction::TogglePause)
                 }),
             );
 
         // toggle opaque wireframe mode
-        builder
-            .add_resource(OpaqueWireframeMode::default())
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(toggle_opaque_wireframe_mode_system.run_if(
-                |action_state: Res<ActionStateResource>| {
-                    action_state.just_happened(SimulationAction::ToggleOpaqueWireframeMode)
-                },
-            ));
+        app.insert_resource(OpaqueWireframeMode::default())
+            .add_systems(
+                Update,
+                toggle_opaque_wireframe_mode_system.run_if(
+                    |action_state: Res<ActionStateResource>| {
+                        action_state.just_happened(SimulationAction::ToggleOpaqueWireframeMode)
+                    },
+                ),
+            );
 
         // toggle chunk borders
-        builder
-            .add_resource(ChunkBoundsToggle::default())
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(toggle_chunk_borders_system.run_if(
-                |action_state: Res<ActionStateResource>| {
+        app.insert_resource(ChunkBoundsToggle::default())
+            .add_systems(
+                Update,
+                toggle_chunk_borders_system.run_if(|action_state: Res<ActionStateResource>| {
                     action_state.just_happened(SimulationAction::ToggleChunkBorders)
-                },
-            ));
+                }),
+            );
     }
 }

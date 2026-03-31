@@ -4,16 +4,15 @@ pub mod crosshair;
 //         Plugin
 // ----------------------
 
-use crate::ecs_core::{EcsBuilder, Plugin};
 use crate::prelude::*;
 use crate::simulation_world::user_interface::screens::game::crosshair::spawn_crosshair;
+use bevy::app::{App, Plugin};
+use bevy::state::state::OnEnter;
 
 pub struct GameScreenPlugin;
 
 impl Plugin for GameScreenPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
-        builder
-            .schedule_entry(OnEnter(GameState::Playing))
-            .add_systems(spawn_crosshair);
+    fn build(&self, app: &mut App) {
+        app.add_systems(OnEnter(GameState::Playing), spawn_crosshair);
     }
 }

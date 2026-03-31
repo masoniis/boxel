@@ -9,13 +9,17 @@ use bevy::ecs::prelude::*;
 #[instrument(skip_all)]
 pub fn reconfigure_wgpu_surface_system(
     // Input
-    window_size: Res<RenderWindowSizeResource>,
+    window_size: Option<Res<RenderWindowSizeResource>>,
 
     // Output
     surface: Res<RenderSurface>,
     device: Res<RenderDevice>,
     mut config: ResMut<RenderSurfaceConfig>,
 ) {
+    let Some(window_size) = window_size else {
+        return;
+    };
+
     // size of 0 is undefined in wgpu
     if window_size.width > 0.0 && window_size.height > 0.0 {
         debug!(

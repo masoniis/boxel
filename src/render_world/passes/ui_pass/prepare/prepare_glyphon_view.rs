@@ -15,11 +15,15 @@ use bevy::ecs::prelude::*;
 pub fn prepare_glyphon_view_system(
     // Input
     queue: Res<RenderQueue>,
-    window_size: Res<RenderWindowSizeResource>,
+    window_size: Option<Res<RenderWindowSizeResource>>,
 
     // Output (updated viewport)
     mut glyphon_viewport: ResMut<GlyphonViewportResource>,
 ) {
+    let Some(window_size) = window_size else {
+        return;
+    };
+
     debug!(
         target : "ui_efficiency",
         "Updating Glyphon viewport (this should only happen the screen was resized)..."

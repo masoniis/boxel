@@ -1,10 +1,8 @@
 use super::{
     apply_state_transition_system, {CurrentState, NextState, PrevState},
 };
-use crate::{
-    ecs_core::{EcsBuilder, Plugin},
-    simulation_world::{SimulationSchedule, SimulationSet},
-};
+use crate::simulation_world::scheduling::SimulationSet;
+use bevy::app::{App, Plugin, Update};
 use bevy::{ecs::prelude::*, state::state::States};
 use std::fmt::Debug;
 use std::hash::Hash;
@@ -28,14 +26,15 @@ impl<T: State> Default for StatePlugin<T> {
 /// Generic implementation just adds state transition systems for the
 /// state type to the the the main schedules that want/need them
 impl<T: State> Plugin for StatePlugin<T> {
-    fn build(&self, builder: &mut EcsBuilder) {
-        builder.world.init_resource::<CurrentState<T>>();
-        builder.world.init_resource::<NextState<T>>();
-        builder.world.init_resource::<PrevState<T>>();
+    fn build(&self, app: &mut App) {
+        app.init_resource::<CurrentState<T>>();
+        app.init_resource::<NextState<T>>();
+        app.init_resource::<PrevState<T>>();
 
         // Add the transition system for this specific state type
-        builder
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems(apply_state_transition_system::<T>.in_set(SimulationSet::PostUpdate));
+        app.add_systems(
+            Update,
+            apply_state_transition_system::<T>.in_set(SimulationSet::PostUpdate),
+        );
     }
 }

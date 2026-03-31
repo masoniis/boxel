@@ -8,9 +8,7 @@ pub use voxel::*;
 
 use crate::{
     SimulationAction, SimulationSet,
-    ecs_core::{EcsBuilder, Plugin},
     simulation_world::{
-        SimulationSchedule,
         input::ActionStateResource,
         player::{
             break_targeted_voxel::{BreakVoxelEvent, handle_break_voxel_events_system},
@@ -20,6 +18,7 @@ use crate::{
         },
     },
 };
+use bevy::app::{App, FixedUpdate, Plugin, Update};
 use bevy::ecs::{
     message::Messages,
     schedule::{IntoScheduleConfigs, SystemSet},
@@ -35,36 +34,36 @@ pub enum InputSystemSet {
 pub struct ActionPlugin;
 
 impl Plugin for ActionPlugin {
-    fn build(&self, builder: &mut EcsBuilder) {
+    fn build(&self, app: &mut App) {
         // update targeted block
-        builder
-            .schedule_entry(SimulationSchedule::FixedUpdate)
-            .add_systems(update_targeted_block_system);
+        app.add_systems(FixedUpdate, update_targeted_block_system);
 
         // break voxel on click
-        builder
-            .init_resource::<Messages<BreakVoxelEvent>>()
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems((
-                handle_break_voxel_events_system,
-                break_targeted_voxel_system
-                    .in_set(SimulationSet::Update)
-                    .run_if(|action_state: Res<ActionStateResource>| {
-                        action_state.just_happened(SimulationAction::BreakVoxel)
-                    }),
-            ));
+        app.init_resource::<Messages<BreakVoxelEvent>>()
+            .add_systems(
+                Update,
+                (
+                    handle_break_voxel_events_system,
+                    break_targeted_voxel_system
+                        .in_set(SimulationSet::Update)
+                        .run_if(|action_state: Res<ActionStateResource>| {
+                            action_state.just_happened(SimulationAction::BreakVoxel)
+                        }),
+                ),
+            );
 
         // add voxel on right click
-        builder
-            .init_resource::<Messages<PlaceVoxelEvent>>()
-            .schedule_entry(SimulationSchedule::Main)
-            .add_systems((
-                handle_place_voxel_events_system,
-                place_targeted_voxel_system
-                    .in_set(SimulationSet::Update)
-                    .run_if(|action_state: Res<ActionStateResource>| {
-                        action_state.just_happened(SimulationAction::PlaceVoxel)
-                    }),
-            ));
+        app.init_resource::<Messages<PlaceVoxelEvent>>()
+            .add_systems(
+                Update,
+                (
+                    handle_place_voxel_events_system,
+                    place_targeted_voxel_system
+                        .in_set(SimulationSet::Update)
+                        .run_if(|action_state: Res<ActionStateResource>| {
+                            action_state.just_happened(SimulationAction::PlaceVoxel)
+                        }),
+                ),
+            );
     }
 }
