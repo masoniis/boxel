@@ -16,12 +16,9 @@ pub use shared_resources::{
 // ---------------------------------
 
 use crate::{
-    ecs_core::{
-        EcsBuilder, Plugin,
-        state_machine::{AppState, in_state},
-    },
+    ecs_core::{EcsBuilder, Plugin},
     render_world::{
-        global_extract::RenderWindowSizeResource,
+        global_extract::{RenderCameraResource, RenderWindowSizeResource},
         graphics_context::reconfigure_wgpu_surface_system,
         passes::world::main_passes::{
             bounding_box_pass::WireframeRenderPassPlugin,
@@ -35,7 +32,10 @@ use crate::{
         scheduling::{RenderSchedule, RenderSet},
     },
 };
-use bevy::ecs::schedule::{IntoScheduleConfigs, common_conditions::resource_changed_or_removed};
+use bevy::ecs::schedule::{
+    IntoScheduleConfigs,
+    common_conditions::{resource_changed_or_removed, resource_exists},
+};
 
 /// A plugin that sets up all the necessary resources and render
 /// passes used in the rendering pipeline.
@@ -73,7 +73,7 @@ impl Plugin for PlayerCentricRenderPassPlugin {
                     update_camera_view_buffer_system,
                     update_environment_uniform_buffer_system,
                 )
-                    .run_if(in_state(AppState::Running)),
+                    .run_if(resource_exists::<RenderCameraResource>),
             )
                 .in_set(RenderSet::Prepare),
         );

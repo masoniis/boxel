@@ -1,10 +1,10 @@
 use crate::render_world::global_extract::run_extract_schedule::SimulationWorld;
 use crate::simulation_world::player::CameraComponent;
 use crate::{prelude::*, simulation_world::player::ActiveCamera};
-use bevy::ecs::prelude::{Res, ResMut, Resource};
+use bevy::ecs::prelude::{Commands, Res, ResMut, Resource};
 
 /// A resource in the render world holding the extracted camera matrices.
-#[derive(Resource, Debug, Default)]
+#[derive(Resource, Debug)]
 pub struct RenderCameraResource {
     pub view_matrix: Mat4,
     pub projection_matrix: Mat4,
@@ -15,10 +15,11 @@ pub struct RenderCameraResource {
 #[instrument(skip_all)]
 pub fn extract_active_camera_system(
     // Input
+    mut commands: Commands,
     simulation_world: Res<SimulationWorld>,
 
-    // Output
-    mut render_camera: ResMut<RenderCameraResource>,
+    // Output (optional because it might not exist yet)
+    render_camera: Option<ResMut<RenderCameraResource>>,
 ) {
     let sim_world = &simulation_world.val;
 
@@ -44,8 +45,16 @@ pub fn extract_active_camera_system(
         }
     };
 
+    let new_camera = RenderCameraResource {
+        view_matrix: source_component.view_matrix,
+        projection_matrix: source_component.projection_matrix,
+        world_position: source_component.position,
+    };
+
     // update the render world camera resource
-    render_camera.view_matrix = source_component.view_matrix;
-    render_camera.projection_matrix = source_component.projection_matrix;
-    render_camera.world_position = source_component.position;
+    if let Some(mut target) = render_camera {
+        *target = new_camera;
+    } else {
+        commands.insert_resource(new_camera);
+    }
 }

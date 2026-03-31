@@ -12,10 +12,7 @@ pub use utils::*;
 
 use self::time_extractor::RenderTimeExtractor;
 use crate::{
-    ecs_core::{
-        EcsBuilder, Plugin,
-        state_machine::{AppState, GameState},
-    },
+    ecs_core::{EcsBuilder, Plugin},
     render_world::scheduling::RenderSchedule,
     simulation_world::{
         asset_management::{AssetStorageResource, MeshAsset},
@@ -44,9 +41,6 @@ impl Plugin for SimulationExtractionPlugin {
                         .run_if(simulation_world_resource_changed::<WindowSizeResource>),
                     // shared sim clone
                     clone_resource_system::<AssetStorageResource<MeshAsset>>,
-                    // shared sim state extracting
-                    extract_state_system::<GameState>,
-                    extract_state_system::<AppState>,
                 ),
                 extract_active_camera_system,
             ));

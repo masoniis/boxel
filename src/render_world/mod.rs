@@ -12,16 +12,10 @@ pub use scheduling::{RenderSchedule, RenderSet};
 //         render world interface
 // --------------------------------------
 
-use crate::ecs_core::{
-    state_machine::{self, AppState, GameState, StatePlugin},
-    worlds::RenderWorldMarker,
-};
+use crate::ecs_core::worlds::RenderWorldMarker;
 use crate::prelude::*;
 use crate::render_world::{
-    global_extract::{
-        RenderCameraResource, RenderMeshStorageResource, RenderTimeResource,
-        SimulationExtractionPlugin,
-    },
+    global_extract::{RenderMeshStorageResource, RenderTimeResource, SimulationExtractionPlugin},
     graphics_context::{GraphicsContext, GraphicsContextPlugin},
     passes::{RenderPassManagerPlugin, core::setup_render_graph},
 };
@@ -72,20 +66,11 @@ impl RenderWorldInterface {
         builder
             .schedules
             .entry(RenderSchedule::Main)
-            .configure_sets(
-                (
-                    RenderSet::StateUpdate,
-                    RenderSet::Prepare,
-                    RenderSet::Queue,
-                    RenderSet::Render,
-                )
-                    .chain(),
-            );
+            .configure_sets((RenderSet::Prepare, RenderSet::Queue, RenderSet::Render).chain());
 
         // Resources for rendering
         builder
             .init_resource::<RenderTimeResource>()
-            .init_resource::<RenderCameraResource>()
             .init_resource::<RenderMeshStorageResource>();
 
         // Specifically implemented plugins
@@ -93,19 +78,6 @@ impl RenderWorldInterface {
             .add_plugin(GraphicsContextPlugin::new(graphics_context))
             .add_plugin(RenderPassManagerPlugin)
             .add_plugin(SimulationExtractionPlugin);
-        // Generic auto-constructed plugins
-        builder
-            .add_plugin(StatePlugin::<AppState>::default())
-            .add_plugin(StatePlugin::<GameState>::default());
-
-        builder.schedule_entry(RenderSchedule::Main).add_systems(
-            (
-                // these are applied by state changes detected in extraction
-                state_machine::apply_state_transition_system::<AppState>,
-                state_machine::apply_state_transition_system::<GameState>,
-            )
-                .in_set(RenderSet::StateUpdate),
-        );
 
         Self::build_render_world(builder)
     }

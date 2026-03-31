@@ -12,10 +12,7 @@ use startup::OpaquePipelines;
 // ---------------------------------
 
 use crate::{
-    ecs_core::{
-        EcsBuilder, Plugin,
-        state_machine::{AppState, in_state},
-    },
+    ecs_core::{EcsBuilder, Plugin},
     render_world::{
         global_extract::{ExtractComponentPlugin, extract_resource_system},
         passes::world::main_passes::opaque_pass::{
@@ -53,7 +50,7 @@ impl Plugin for OpaqueRenderPassPlugin {
         builder.schedule_entry(RenderSchedule::Main).add_systems(
             (
                 prepare::delete_gpu_buffers_system.before(prepare::prepare_opaque_meshes_system),
-                prepare::prepare_opaque_meshes_system.run_if(in_state(AppState::Running)),
+                prepare::prepare_opaque_meshes_system,
             )
                 .in_set(RenderSet::Prepare),
         );
