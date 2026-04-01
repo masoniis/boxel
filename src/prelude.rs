@@ -5,9 +5,7 @@
 //         crate imports
 // -----------------------------
 pub use crate::{
-    ecs_core::{
-        state_machine::{AppState, GameState, in_state},
-    },
+    ecs_core::state_machine::{AppState, GameState, in_state},
     render_world::scheduling::*,
     simulation_world::{input::SimulationAction, scheduling::*},
     utils::*,

@@ -224,10 +224,7 @@ impl ApplicationHandler for App {
                         self.frame_sync.wait_for_simulation();
                         {
                             let _main_loop_span = tracing::info_span!("Sim").entered();
-                            simulation_world
-                                .lock()
-                                .unwrap()
-                                .run_frame();
+                            simulation_world.lock().unwrap().run_frame();
 
                             // updated cursor if there is a change
                             if let (Some(window), Some(cursor_state)) = (

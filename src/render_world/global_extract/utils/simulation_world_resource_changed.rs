@@ -10,7 +10,9 @@ pub fn simulation_world_resource_changed<T: Resource>(
     let world = &simulation_world.val;
 
     // Check if the resource exists and if its "changed" flag is set.
-    let is_changed = world.get_resource::<T>().map_or(false, |_| world.is_resource_changed::<T>());
+    let is_changed = world
+        .get_resource::<T>()
+        .map_or(false, |_| world.is_resource_changed::<T>());
 
     if is_changed {
         debug!(

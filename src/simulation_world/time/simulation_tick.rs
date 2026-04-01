@@ -1,9 +1,6 @@
-use crate::{
-    prelude::*,
-    simulation_world::time::FrameClock,
-};
-use bevy::ecs::prelude::*;
+use crate::{prelude::*, simulation_world::time::FrameClock};
 use bevy::app::FixedUpdate;
+use bevy::ecs::prelude::*;
 use std::time::Duration;
 
 #[derive(Resource, Debug)]

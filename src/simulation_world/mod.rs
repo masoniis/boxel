@@ -21,6 +21,7 @@ use crate::render_world::{
     global_extract::utils::initialize_simulation_world_for_extract,
     textures::TextureRegistryResource,
 };
+use crate::simulation_world::app_lifecycle::AppLifecyclePlugin;
 use crate::simulation_world::{
     asset_management::AssetManagementPlugin,
     biome::BiomePlugin,
@@ -33,7 +34,6 @@ use crate::simulation_world::{
     time::TimeControlPlugin,
     user_interface::UiPlugin,
 };
-use crate::simulation_world::app_lifecycle::AppLifecyclePlugin;
 use bevy::app::{App, FixedUpdate, Plugin, Startup, Update};
 use bevy::ecs::prelude::*;
 use std::ops::{Deref, DerefMut};
@@ -119,9 +119,15 @@ impl SimulationWorldInterface {
             .insert_resource(texture_registry_resource);
 
         // configure schedule sets before adding plugins
-        app.configure_sets(Startup, (StartupSet::ResourceInitialization, StartupSet::Tasks).chain());
+        app.configure_sets(
+            Startup,
+            (StartupSet::ResourceInitialization, StartupSet::Tasks).chain(),
+        );
 
-        app.configure_sets(FixedUpdate, (FixedUpdateSet::PreUpdate, FixedUpdateSet::MainLogic).chain());
+        app.configure_sets(
+            FixedUpdate,
+            (FixedUpdateSet::PreUpdate, FixedUpdateSet::MainLogic).chain(),
+        );
 
         app.configure_sets(
             Update,
@@ -137,7 +143,8 @@ impl SimulationWorldInterface {
         );
 
         // now add plugins, which can safely use the configured sets
-        app.add_plugins(SharedPlugins).add_plugins(ClientOnlyPlugins);
+        app.add_plugins(SharedPlugins)
+            .add_plugins(ClientOnlyPlugins);
 
         Self::build_simulation_world(app)
     }
