@@ -16,11 +16,8 @@ pub use types::*;
 //         chunk loading plugin
 // ------------------------------------
 
-use crate::{
-    SimulationSet,
-    simulation_world::{player::ActiveCamera, scheduling::FixedUpdateSet},
-};
-use bevy::app::{App, FixedUpdate, Plugin, Update};
+use crate::simulation_world::{player::ActiveCamera, scheduling::FixedUpdateSet};
+use bevy::app::{App, FixedUpdate, Plugin, PreUpdate};
 use bevy::ecs::prelude::*;
 
 pub struct ChunkLoadingPlugin;
@@ -30,14 +27,12 @@ impl Plugin for ChunkLoadingPlugin {
         app.insert_resource(ChunkStateManager::default());
 
         app.add_systems(
-            Update,
-            (manage_distance_based_chunk_loading_targets_system)
-                .run_if(
-                    |camera: Res<ActiveCamera>, q: Query<(), Changed<ChunkCoord>>| {
-                        q.get(camera.0).is_ok()
-                    },
-                )
-                .in_set(SimulationSet::PreUpdate),
+            PreUpdate,
+            (manage_distance_based_chunk_loading_targets_system).run_if(
+                |camera: Res<ActiveCamera>, q: Query<(), Changed<ChunkCoord>>| {
+                    q.get(camera.0).is_ok()
+                },
+            ),
         );
 
         app.add_systems(

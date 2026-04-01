@@ -14,24 +14,20 @@ pub use types::*;
 
 use crate::{
     ecs_core::state_machine::AppState,
-    simulation_world::{
-        input::{
-            messages::{
-                KeyboardInputMessage, MouseButtonInputMessage, MouseMoveMessage,
-                MouseScrollMessage, RawDeviceMessage, RawWindowMessage,
-                internal::MouseResizeMessage,
-            },
-            resources::DesiredCursorState,
-            systems::{
-                toggle_chunk_borders::ChunkBoundsToggle, toggle_chunk_borders_system,
-                toggle_cursor_system, toggle_opaque_wireframe::OpaqueWireframeMode,
-                toggle_opaque_wireframe_mode_system,
-            },
+    simulation_world::input::{
+        messages::{
+            KeyboardInputMessage, MouseButtonInputMessage, MouseMoveMessage, MouseScrollMessage,
+            RawDeviceMessage, RawWindowMessage, internal::MouseResizeMessage,
         },
-        scheduling::SimulationSet,
+        resources::DesiredCursorState,
+        systems::{
+            toggle_chunk_borders::ChunkBoundsToggle, toggle_chunk_borders_system,
+            toggle_cursor_system, toggle_opaque_wireframe::OpaqueWireframeMode,
+            toggle_opaque_wireframe_mode_system,
+        },
     },
 };
-use bevy::app::{App, Plugin, Update};
+use bevy::app::{App, Plugin, PreUpdate, Update};
 use bevy::ecs::{
     message::Messages,
     schedule::{IntoScheduleConfigs, SystemSet},
@@ -72,21 +68,14 @@ impl Plugin for InputModulePlugin {
 
         // schedules
         app.add_systems(
-            Update,
+            PreUpdate,
             (
-                processing::window_events_system
-                    .in_set(InputSystemSet::WindowEvents)
-                    .in_set(SimulationSet::Input),
-                processing::device_events_system
-                    .in_set(InputSystemSet::DeviceEvents)
-                    .in_set(SimulationSet::Input),
-                processing::handle_resize_system
-                    .after(InputSystemSet::WindowEvents)
-                    .in_set(SimulationSet::Input),
+                processing::window_events_system.in_set(InputSystemSet::WindowEvents),
+                processing::device_events_system.in_set(InputSystemSet::DeviceEvents),
+                processing::handle_resize_system.after(InputSystemSet::WindowEvents),
                 processing::update_action_state_system
                     .after(InputSystemSet::WindowEvents)
-                    .after(InputSystemSet::DeviceEvents)
-                    .in_set(SimulationSet::Input),
+                    .after(InputSystemSet::DeviceEvents),
             ),
         );
 

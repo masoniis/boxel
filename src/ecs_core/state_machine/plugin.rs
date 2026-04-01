@@ -1,9 +1,8 @@
 use super::{
     apply_state_transition_system, {CurrentState, NextState, PrevState},
 };
-use crate::simulation_world::scheduling::SimulationSet;
-use bevy::app::{App, Plugin, Update};
-use bevy::{ecs::prelude::*, state::state::States};
+use bevy::app::{App, Plugin, PostUpdate};
+use bevy::state::state::States;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::marker::PhantomData;
@@ -32,9 +31,6 @@ impl<T: State> Plugin for StatePlugin<T> {
         app.init_resource::<PrevState<T>>();
 
         // Add the transition system for this specific state type
-        app.add_systems(
-            Update,
-            apply_state_transition_system::<T>.in_set(SimulationSet::PostUpdate),
-        );
+        app.add_systems(PostUpdate, apply_state_transition_system::<T>);
     }
 }

@@ -11,7 +11,7 @@ pub mod terrain;
 pub mod time;
 pub mod user_interface;
 
-pub use scheduling::{FixedUpdateSet, SimulationSet, StartupSet};
+pub use scheduling::{FixedUpdateSet, RenderPrepSet};
 
 // INFO: -----------------------------
 //         Simulation Setup
@@ -34,7 +34,7 @@ use crate::simulation_world::{
     time::TimeControlPlugin,
     user_interface::UiPlugin,
 };
-use bevy::app::{App, FixedUpdate, Plugin, Startup, Update};
+use bevy::app::{App, FixedUpdate, Plugin, PostUpdate};
 use bevy::prelude::IntoScheduleConfigs;
 use winit::window::Window;
 
@@ -53,27 +53,11 @@ pub fn setup_simulation_app(
 
     // configure schedule sets before adding plugins
     app.configure_sets(
-        Startup,
-        (StartupSet::ResourceInitialization, StartupSet::Tasks).chain(),
-    );
-
-    app.configure_sets(
         FixedUpdate,
         (FixedUpdateSet::PreUpdate, FixedUpdateSet::MainLogic).chain(),
     );
 
-    app.configure_sets(
-        Update,
-        (
-            SimulationSet::Input,
-            SimulationSet::PreUpdate,
-            SimulationSet::Update,
-            SimulationSet::Physics,
-            SimulationSet::PostUpdate,
-            SimulationSet::RenderPrep,
-        )
-            .chain(),
-    );
+    app.configure_sets(PostUpdate, RenderPrepSet);
 
     // now add plugins, which can safely use the configured sets
     app.add_plugins((SharedPlugins, ClientOnlyPlugins));

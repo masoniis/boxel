@@ -21,7 +21,7 @@ use crate::simulation_world::user_interface::screens::elements::{
     update_camera_chunk_coord_screen_text, update_camera_xyz_coord_screen_text,
     update_memory_counter_screen_text,
 };
-use bevy::app::{App, FixedUpdate, Plugin, Update};
+use bevy::app::{App, FixedUpdate, Plugin, PostUpdate};
 use bevy::ecs::prelude::*;
 
 pub struct DebugScreenPlugin;
@@ -35,7 +35,7 @@ impl Plugin for DebugScreenPlugin {
             .add_observer(mesh_remove_observer);
 
         app.add_systems(
-            Update,
+            PostUpdate,
             (
                 toggle_debug_diagnostics_system.run_if(
                     (|action_state: Res<ActionStateResource>| {
@@ -45,8 +45,7 @@ impl Plugin for DebugScreenPlugin {
                 ),
                 update_mesh_counter_screen_text_system
                     .run_if(resource_changed::<MeshCounterResource>),
-            )
-                .in_set(SimulationSet::PostUpdate),
+            ),
         );
 
         app.add_systems(
@@ -59,8 +58,7 @@ impl Plugin for DebugScreenPlugin {
                 update_memory_counter_screen_text,
                 update_active_gen_text_system,
             )
-                .run_if(diagnostic_ui_is_visible)
-                .in_set(SimulationSet::PostUpdate),
+                .run_if(diagnostic_ui_is_visible),
         );
     }
 }

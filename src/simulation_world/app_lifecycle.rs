@@ -1,16 +1,13 @@
-use crate::{
-    ecs_core::{
-        async_loading::{
-            OnLoadComplete, master_finalize_loading_system, poll_simulation_loading_tasks,
-            reset_loading_tracker_system, start_fake_work_system,
-        },
-        state_machine::{
-            AppState, GameState, StatePlugin, in_state, systems::apply_state_transition_system,
-        },
+use crate::ecs_core::{
+    async_loading::{
+        OnLoadComplete, master_finalize_loading_system, poll_simulation_loading_tasks,
+        reset_loading_tracker_system, start_fake_work_system,
     },
-    simulation_world::scheduling::SimulationSet,
+    state_machine::{
+        AppState, GameState, StatePlugin, in_state, systems::apply_state_transition_system,
+    },
 };
-use bevy::app::{App, Plugin, Startup, Update};
+use bevy::app::{App, Plugin, PreUpdate, Startup, Update};
 use bevy::ecs::schedule::IntoScheduleConfigs;
 use bevy::state::state::OnExit;
 
@@ -28,9 +25,7 @@ impl Plugin for AppLifecyclePlugin {
         // polling systems and tracking load state
         app.add_systems(
             Update,
-            (poll_simulation_loading_tasks
-                .in_set(SimulationSet::Update)
-                .run_if(in_state(AppState::StartingUp)),),
+            (poll_simulation_loading_tasks.run_if(in_state(AppState::StartingUp)),),
         );
 
         // load cleanup to run after transitions
@@ -48,14 +43,13 @@ impl Plugin for AppLifecyclePlugin {
         ));
 
         app.add_systems(
-            Update,
+            PreUpdate,
             (
                 apply_state_transition_system::<AppState>,
                 master_finalize_loading_system::<AppState>,
                 apply_state_transition_system::<GameState>,
                 master_finalize_loading_system::<GameState>,
-            )
-                .in_set(SimulationSet::PreUpdate),
+            ),
         );
 
         // initial startup loading state should take us from loading

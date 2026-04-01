@@ -17,7 +17,7 @@ use crate::{
         setup_simulation_app,
     },
 };
-use bevy::app::{App, Startup, SubApp};
+use bevy::app::{App, PreStartup, Startup, SubApp};
 use bevy::ecs::schedule::ScheduleLabel;
 use crossbeam::channel::unbounded;
 use futures_lite::future::block_on;
@@ -120,7 +120,9 @@ impl ApplicationHandler for BoxelApp {
             sub_app.insert_resource(render_receiver_resource);
 
             info!("Running startup systems...\n\n\n");
+            simulation_app.world_mut().run_schedule(PreStartup);
             simulation_app.world_mut().run_schedule(Startup);
+
             sub_app.world_mut().run_schedule(RenderSchedule::Startup);
 
             // Attach the SubApp using the bevy::render::RenderApp label

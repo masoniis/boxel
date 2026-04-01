@@ -8,12 +8,12 @@ pub mod text;
 // ----------------------
 
 use self::layout::handle_window_resize_system;
-use crate::simulation_world::scheduling::SimulationSet;
-use crate::simulation_world::scheduling::StartupSet;
+use crate::simulation_world::scheduling::RenderPrepSet;
 use crate::simulation_world::user_interface::screens::{
     DebugScreenPlugin, GameScreenPlugin, LoadingScreenPlugin,
 };
-use bevy::app::{App, Plugin, Startup, Update};
+use bevy::app::PreStartup;
+use bevy::app::{App, Plugin, PostUpdate, Update};
 use bevy::ecs::prelude::*;
 use {
     layout::{
@@ -48,26 +48,24 @@ impl Plugin for UiPlugin {
         // -----------------------
 
         app.add_systems(
-            Startup,
-            (setup_font_system, spawn_ui_root_system)
-                .in_set(StartupSet::ResourceInitialization)
-                .chain(),
+            PreStartup,
+            (setup_font_system, spawn_ui_root_system).chain(),
         );
 
+        app.add_systems(Update, (handle_window_resize_system,));
+
         app.add_systems(
-            Update,
+            PostUpdate,
             (
-                (handle_window_resize_system,).in_set(SimulationSet::Update),
                 (
                     handle_structural_changes_system,
                     handle_hierarchy_changes_system,
                     update_changed_styles_system,
                 )
-                    .chain()
-                    .in_set(SimulationSet::PostUpdate),
+                    .chain(),
                 (compute_and_apply_layout_system, compute_ui_depth_system)
                     .run_if(resource_equals(IsLayoutDirty(true)))
-                    .in_set(SimulationSet::RenderPrep),
+                    .in_set(RenderPrepSet),
             ),
         );
     }

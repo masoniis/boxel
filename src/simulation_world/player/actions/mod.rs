@@ -7,7 +7,7 @@ pub use voxel::*;
 // -------------------------------------
 
 use crate::{
-    SimulationAction, SimulationSet,
+    SimulationAction,
     simulation_world::{
         input::ActionStateResource,
         player::{
@@ -44,11 +44,9 @@ impl Plugin for ActionPlugin {
                 Update,
                 (
                     handle_break_voxel_events_system,
-                    break_targeted_voxel_system
-                        .in_set(SimulationSet::Update)
-                        .run_if(|action_state: Res<ActionStateResource>| {
-                            action_state.just_happened(SimulationAction::BreakVoxel)
-                        }),
+                    break_targeted_voxel_system.run_if(|action_state: Res<ActionStateResource>| {
+                        action_state.just_happened(SimulationAction::BreakVoxel)
+                    }),
                 ),
             );
 
@@ -58,11 +56,9 @@ impl Plugin for ActionPlugin {
                 Update,
                 (
                     handle_place_voxel_events_system,
-                    place_targeted_voxel_system
-                        .in_set(SimulationSet::Update)
-                        .run_if(|action_state: Res<ActionStateResource>| {
-                            action_state.just_happened(SimulationAction::PlaceVoxel)
-                        }),
+                    place_targeted_voxel_system.run_if(|action_state: Res<ActionStateResource>| {
+                        action_state.just_happened(SimulationAction::PlaceVoxel)
+                    }),
                 ),
             );
     }

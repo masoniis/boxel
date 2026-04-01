@@ -8,15 +8,13 @@ pub use mesh_asset::{MeshAsset, MeshDeletionRequest, delete_stale_mesh_assets};
 //         Asset Management Plugin
 // ---------------------------------------
 
-use crate::{
-    SimulationSet,
-    simulation_world::asset_management::mesh_asset::{
-        MeshRefCounts, OpaqueMeshShadow, TransparentMeshShadow, opaque_mesh_added_observer,
-        opaque_mesh_removed_observer, transparent_mesh_added_observer,
-        transparent_mesh_removed_observer,
-    },
+use crate::simulation_world::RenderPrepSet;
+use crate::simulation_world::asset_management::mesh_asset::{
+    MeshRefCounts, OpaqueMeshShadow, TransparentMeshShadow, opaque_mesh_added_observer,
+    opaque_mesh_removed_observer, transparent_mesh_added_observer,
+    transparent_mesh_removed_observer,
 };
-use bevy::app::{App, Plugin, Update};
+use bevy::app::{App, Plugin, PostUpdate};
 use bevy::ecs::{message::Messages, schedule::IntoScheduleConfigs};
 
 pub struct AssetManagementPlugin;
@@ -37,9 +35,6 @@ impl Plugin for AssetManagementPlugin {
 
         // mesh deletion handling
         app.init_resource::<Messages<MeshDeletionRequest>>()
-            .add_systems(
-                Update,
-                delete_stale_mesh_assets.in_set(SimulationSet::RenderPrep),
-            );
+            .add_systems(PostUpdate, delete_stale_mesh_assets.in_set(RenderPrepSet));
     }
 }
