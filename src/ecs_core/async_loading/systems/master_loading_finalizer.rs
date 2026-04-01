@@ -1,25 +1,27 @@
 use crate::{
-    ecs_core::{
-        async_loading::{LoadingTracker, OnLoadComplete},
-        state_machine::{State, resources::NextState},
-    },
+    ecs_core::async_loading::{LoadingTracker, OnLoadComplete},
     prelude::*,
 };
 use bevy::ecs::prelude::*;
+use bevy::prelude::{NextState, States};
+use bevy::state::state::FreelyMutableState;
 
 /// The master system that runs in the simulation world. It checks the shared
 /// LoadingTracker and the OnLoadComplete resource to make the final decision
 /// on when to transition the app's state.
 #[instrument(skip_all)]
-pub fn master_finalize_loading_system<T: State>(
+pub fn master_finalize_loading_system<T: States + FreelyMutableState + Copy>(
     // Input
-    loading_tracker: Res<LoadingTracker>,
+    loading_tracker: Option<Res<LoadingTracker>>,
     on_complete: Option<Res<OnLoadComplete<T>>>,
 
     // Output (set the next state)
     mut next_state: ResMut<NextState<T>>,
-    mut commands: Commands,
 ) {
+    let Some(loading_tracker) = loading_tracker else {
+        return;
+    };
+
     // if we have both the tracker and the "what to do next" instruction
     if let Some(on_complete) = on_complete
         && loading_tracker.is_ready()
@@ -29,10 +31,7 @@ pub fn master_finalize_loading_system<T: State>(
             on_complete.destination
         );
 
-        // Set the next state within our own world.
-        next_state.val = Some(on_complete.destination);
-
-        // Clean up the temporary resources for the next loading operation.
-        commands.remove_resource::<OnLoadComplete<T>>();
+        // set the next state
+        next_state.set(on_complete.destination);
     }
 }

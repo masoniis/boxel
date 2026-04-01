@@ -1,8 +1,8 @@
 use bevy::ecs::prelude::World;
 use boxel::ecs_core::config::load_config;
 use boxel::prelude::*;
-use boxel::render_world::textures::load_voxel_texture_assets;
-use boxel::simulation_world::{
+use boxel::render::textures::load_voxel_texture_assets;
+use boxel::simulation::{
     biome::biome_registry::BiomeRegistryResource,
     block::{BlockRegistryResource, SOLID_BLOCK_ID},
     chunk::{

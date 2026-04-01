@@ -13,8 +13,12 @@ pub fn poll_simulation_loading_tasks(
 
     // Output (updated states)
     mut commands: Commands,
-    loading_tracker: Res<LoadingTracker>,
+    loading_tracker: Option<Res<LoadingTracker>>,
 ) {
+    let Some(loading_tracker) = loading_tracker else {
+        return;
+    };
+
     // Local counter to track tasks that are still running this frame.
     // This correctly handles the case where 0 tasks were spawned.
     let mut remaining_tasks = 0;
