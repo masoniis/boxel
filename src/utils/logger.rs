@@ -12,8 +12,20 @@ pub fn attach_logger() {
         "error"
     };
 
-    let env_filter =
+    let mut env_filter =
         EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(default_level));
+
+    let directives = [
+        "wgpu=error",
+        "wgpu_hal=error",
+        "naga=warn",
+        "bevy_render=info",
+        "bevy_app=info",
+        "symphonia=warn",
+    ];
+    for directive in directives {
+        env_filter = env_filter.add_directive(directive.parse().unwrap());
+    }
 
     let fmt_layer = fmt::layer()
         .with_target(false)

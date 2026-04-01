@@ -76,7 +76,7 @@ trace *args:
 	cargo run --features tracy {{args}}
 
 debug_bevy *args:
-	cargo run --features bevy/trace --features bevy/track_location
+  cargo run --features bevy/trace,bevy/track_location,bevy/debug
 
 debug_wgpu *args:
 	RUST_LOG=wgpu=trace cargo run {{args}}
