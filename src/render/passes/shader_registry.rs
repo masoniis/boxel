@@ -37,9 +37,9 @@ use bevy::prelude::*;
 use wesl::include_wesl;
 
 /// A plugin that registers all the WESL shaders needed for rendering
-pub struct BoxelShaderPlugin;
+pub struct VantablockShaderPlugin;
 
-impl Plugin for BoxelShaderPlugin {
+impl Plugin for VantablockShaderPlugin {
     fn build(&self, app: &mut App) {
         let mut shaders = app.world_mut().resource_mut::<Assets<Shader>>();
 

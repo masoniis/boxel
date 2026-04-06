@@ -1,9 +1,9 @@
 use bevy::log::LogPlugin;
 use bevy::{app::App, prelude::*, window::WindowResolution};
-use boxel::ecs_core::{LoadingTracker, load_config};
-use boxel::prelude::*;
-use boxel::render::BoxelRenderPlugin;
-use boxel::simulation::SimulationPlugin;
+use vantablock::ecs_core::{LoadingTracker, load_config};
+use vantablock::prelude::*;
+use vantablock::render::VantablockRenderPlugin;
+use vantablock::simulation::SimulationPlugin;
 
 #[instrument(skip_all, fields(name = "main"))]
 fn main() {
@@ -15,7 +15,7 @@ fn main() {
         DefaultPlugins
             .set(WindowPlugin {
                 primary_window: Some(Window {
-                    title: "🅱️oxel".to_string(),
+                    title: "Vantablock".to_string(),
                     resolution: WindowResolution::new(1280, 720),
                     ..default()
                 }),
@@ -30,7 +30,7 @@ fn main() {
 
     // initialize simulation and renderer
     app.add_plugins(SimulationPlugin);
-    app.add_plugins(BoxelRenderPlugin);
+    app.add_plugins(VantablockRenderPlugin);
 
     // run the app...
     app.run();

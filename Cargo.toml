@@ -1,23 +1,23 @@
 [package]
-name = "boxel"
+name = "vantablock"
 version = "0.4.0"
 edition = "2024"
-default-run = "boxel"
+default-run = "vantablock"
 
 [package.metadata.packager]
-product-name = "Boxel"
-identifier = "com.masoniis.boxel"
+product-name = "Vantablock"
+identifier = "com.masoniis.vantablock"
 resources = ["assets", "readme.md"]
 icons = ["assets/icon.png"]
 before-packaging-command = "cargo build --profile distribution --features final_release"
-binaries = [{ path = "boxel", main = true }]
+binaries = [{ path = "vantablock", main = true }]
 
 [lib]
-name = "boxel"
+name = "vantablock"
 path = "src/lib.rs"
 
 [[bin]]
-name = "boxel"
+name = "vantablock"
 path = "src/main.rs"
 
 [[bench]]
@@ -49,7 +49,7 @@ wesl = "0.2.0" # shader compliation from WESL to WGSL
 
 [dev-dependencies]
 criterion = { version = "0.5", features = ["html_reports"] }
-boxel = { path = "." }
+vantablock = { path = "." }
 
 # INFO: --------------------------
 #         util bin scripts

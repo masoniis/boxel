@@ -10,7 +10,7 @@ pub use gpu_resources::*;
 // ---------------------------------
 
 use crate::{
-    BoxelNode,
+    VantablockNode,
     render::passes::{
         main_passes::PlayerCentricRenderPassPlugin, shadow_pass::ShadowRenderPassPlugin,
     },
@@ -49,7 +49,7 @@ impl Plugin for RenderGraphEdgesPlugin {
             bevy::core_pipeline::core_3d::graph::Core3d,
             (
                 bevy::core_pipeline::core_3d::graph::Node3d::StartMainPass,
-                BoxelNode::ShadowPass,
+                VantablockNode::ShadowPass,
                 bevy::core_pipeline::core_3d::graph::Node3d::MainOpaquePass,
             ),
         );
@@ -58,8 +58,8 @@ impl Plugin for RenderGraphEdgesPlugin {
             bevy::core_pipeline::core_3d::graph::Core3d,
             (
                 bevy::core_pipeline::core_3d::graph::Node3d::MainOpaquePass,
-                BoxelNode::OpaquePass,
-                BoxelNode::TransparentPass,
+                VantablockNode::OpaquePass,
+                VantablockNode::TransparentPass,
                 bevy::core_pipeline::core_3d::graph::Node3d::MainTransparentPass,
             ),
         );
@@ -68,7 +68,7 @@ impl Plugin for RenderGraphEdgesPlugin {
             bevy::core_pipeline::core_3d::graph::Core3d,
             (
                 bevy::core_pipeline::core_3d::graph::Node3d::MainTransparentPass,
-                BoxelNode::BoundingBoxPass,
+                VantablockNode::BoundingBoxPass,
                 bevy::core_pipeline::core_3d::graph::Node3d::EndMainPass,
             ),
         );

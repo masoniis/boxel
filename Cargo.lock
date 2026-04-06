@@ -1780,35 +1780,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "boxel"
-version = "0.4.0"
-dependencies = [
- "bevy",
- "boxel",
- "bytemuck",
- "criterion",
- "crossbeam",
- "derive_more",
- "directories",
- "futures-lite",
- "glob",
- "image",
- "noise",
- "offset-allocator",
- "rand 0.9.2",
- "rayon",
- "ron 0.11.0",
- "serde",
- "sysinfo",
- "time",
- "tracing",
- "tracing-subscriber",
- "tracing-tracy",
- "tracy-client",
- "wesl",
-]
-
-[[package]]
 name = "bumpalo"
 version = "3.20.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5644,6 +5615,35 @@ name = "valuable"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba73ea9cf16a25df0c8caa16c51acb937d5712a8429db78a3ee29d5dcacd3a65"
+
+[[package]]
+name = "vantablock"
+version = "0.4.0"
+dependencies = [
+ "bevy",
+ "bytemuck",
+ "criterion",
+ "crossbeam",
+ "derive_more",
+ "directories",
+ "futures-lite",
+ "glob",
+ "image",
+ "noise",
+ "offset-allocator",
+ "rand 0.9.2",
+ "rayon",
+ "ron 0.11.0",
+ "serde",
+ "sysinfo",
+ "time",
+ "tracing",
+ "tracing-subscriber",
+ "tracing-tracy",
+ "tracy-client",
+ "vantablock",
+ "wesl",
+]
 
 [[package]]
 name = "variadics_please"
