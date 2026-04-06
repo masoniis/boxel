@@ -8,7 +8,7 @@ pub mod render;
 
 use crate::render::passes::shadow_pass::prepare::update_shadow_view_buffer_system;
 use crate::render::passes::shadow_pass::render::ShadowRenderPassNode;
-use crate::render::scheduling::BoxelNode;
+use crate::render::scheduling::VantablockNode;
 use bevy::app::{App, Plugin};
 use bevy::prelude::IntoScheduleConfigs;
 use bevy::render::render_graph::{RenderGraphExt, ViewNodeRunner};
@@ -37,7 +37,7 @@ impl Plugin for ShadowRenderPassPlugin {
 
         app.add_render_graph_node::<ViewNodeRunner<ShadowRenderPassNode>>(
             bevy::core_pipeline::core_3d::graph::Core3d,
-            BoxelNode::ShadowPass,
+            VantablockNode::ShadowPass,
         );
     }
 

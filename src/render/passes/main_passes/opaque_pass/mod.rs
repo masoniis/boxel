@@ -10,7 +10,7 @@ pub use render::OpaquePassRenderNode;
 //         Plugin definition
 // ---------------------------------
 
-use crate::{BoxelNode, render::passes::main_passes::opaque_pass::queue::Opaque3dRenderPhase};
+use crate::{VantablockNode, render::passes::main_passes::opaque_pass::queue::Opaque3dRenderPhase};
 use bevy::app::{App, Plugin};
 use bevy::prelude::IntoScheduleConfigs;
 use bevy::render::render_graph::{RenderGraphExt, ViewNodeRunner};
@@ -49,7 +49,7 @@ impl Plugin for OpaqueRenderPassPlugin {
 
         app.add_render_graph_node::<ViewNodeRunner<OpaquePassRenderNode>>(
             bevy::core_pipeline::core_3d::graph::Core3d,
-            BoxelNode::OpaquePass,
+            VantablockNode::OpaquePass,
         );
     }
 

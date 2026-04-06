@@ -12,7 +12,7 @@ use startup::TransparentPipeline;
 // ---------------------------------
 
 use crate::{
-    BoxelNode,
+    VantablockNode,
     render::passes::main_passes::transparent_pass::{
         prepare::prepare_transparent_meshes_system,
         queue::{Transparent3dRenderPhase, queue_and_prepare_transparent_system},
@@ -55,7 +55,7 @@ impl Plugin for TransparentRenderPassPlugin {
 
         app.add_render_graph_node::<ViewNodeRunner<TransparentPassRenderNode>>(
             bevy::core_pipeline::core_3d::graph::Core3d,
-            BoxelNode::TransparentPass,
+            VantablockNode::TransparentPass,
         );
     }
 

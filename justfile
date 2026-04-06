@@ -50,7 +50,7 @@ ready *args:
 	cargo test {{args}}
 
 sign:
-	xattr -cr /Applications/Boxel.app
+	xattr -cr /Applications/Vantablock.app
 
 # INFO: ---------------------------
 #         advanced commands
@@ -59,7 +59,7 @@ sign:
 # Shows the ASM associated with a rust file.
 # requires https://crates.io/crates/cargo-show-asm
 asm path:
-    cargo asm --bin boxel --color {{path}}
+    cargo asm --bin vantablock --color {{path}}
 
 trace *args:
 	#!/usr/bin/env bash
@@ -103,7 +103,7 @@ debug *args:
 	for target in "$@"; do
 	        log_targets="$log_targets$target=trace,"
 	done
-	export RUST_LOG="${log_targets%,},boxel=info"
+	export RUST_LOG="${log_targets%,},vantablock=info"
 
 	echo -e "\033[1;32mRunning with RUST_LOG=\033[0m$RUST_LOG"
 	cargo run

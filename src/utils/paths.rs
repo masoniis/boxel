@@ -4,11 +4,11 @@ use std::path::{Path, PathBuf};
 /// Returns the platform-specific path where user configuration should be stored.
 ///
 /// Uses the `directories` crate to resolve standard platform config directories:
-/// - macOS: `~/Library/Application Support/com.masoniis.boxel/config.ron`
-/// - Windows: `%AppData%\masoniis\boxel\config\config.ron`
-/// - Linux: `~/.config/boxel/config.ron`
+/// - macOS: `~/Library/Application Support/com.masoniis.vantablock/config.ron`
+/// - Windows: `%AppData%\masoniis\vantablock\config\config.ron`
+/// - Linux: `~/.config/vantablock/config.ron`
 pub fn get_user_config_path() -> Option<PathBuf> {
-    ProjectDirs::from("com", "masoniis", "boxel")
+    ProjectDirs::from("com", "masoniis", "vantablock")
         .map(|proj_dirs| proj_dirs.config_dir().join("config.ron"))
 }
 

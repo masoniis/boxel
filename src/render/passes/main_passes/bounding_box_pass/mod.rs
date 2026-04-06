@@ -10,7 +10,7 @@ pub use render::BoundingBoxNode;
 // ---------------------------------
 
 use crate::{
-    BoxelNode, render::passes::main_passes::bounding_box_pass::queue::queue_wireframe_system,
+    VantablockNode, render::passes::main_passes::bounding_box_pass::queue::queue_wireframe_system,
 };
 use bevy::app::{App, Plugin};
 use bevy::prelude::IntoScheduleConfigs;
@@ -37,7 +37,7 @@ impl Plugin for WireframeRenderPassPlugin {
 
         app.add_render_graph_node::<ViewNodeRunner<BoundingBoxNode>>(
             bevy::core_pipeline::core_3d::graph::Core3d,
-            BoxelNode::BoundingBoxPass,
+            VantablockNode::BoundingBoxPass,
         );
     }
 

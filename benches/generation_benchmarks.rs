@@ -1,8 +1,9 @@
 use bevy::ecs::prelude::World;
-use boxel::ecs_core::config::load_config;
-use boxel::prelude::*;
-use boxel::render::textures::load_voxel_texture_assets;
-use boxel::simulation::{
+use criterion::{Criterion, criterion_group, criterion_main};
+use vantablock::ecs_core::config::load_config;
+use vantablock::prelude::*;
+use vantablock::render::textures::load_voxel_texture_assets;
+use vantablock::simulation::{
     biome::biome_registry::BiomeRegistryResource,
     block::{BlockRegistryResource, SOLID_BLOCK_ID},
     chunk::{
@@ -17,7 +18,6 @@ use boxel::simulation::{
         SimpleSurfacePainter, SinwaveShaper, TerrainPainter, TerrainShaper,
     },
 };
-use criterion::{Criterion, criterion_group, criterion_main};
 
 const CLIMATE_NOISE_SEED: u32 = 42;
 

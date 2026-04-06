@@ -1,6 +1,6 @@
-# 🅱️oxel
+# Vanta🅱️lock
 
-[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?style=flat&logo=github)](https://github.com/masoniis/boxel)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?style=flat&logo=github)](https://github.com/masoniis/vantablock)
 ![Rust Version](https://img.shields.io/badge/rustc-1.88.0%2B-orange.svg)
 
 ## Table of contents
@@ -92,17 +92,3 @@ Assuming rust is properly setup, `cargo` can be used like any standard Rust proj
 3. Rendering and simulation run in parallel using a binary semaphore
 
 </details>
-
-## Acknowledgments
-
-The "biggest" dependencies this project relies on are...
-
-1. `winit` for an abstraction layer on creating and managing OS windows and events
-2. `wgpu` for an abstraction layer on communicating with the gpu and ultimately rendering the graphics
-3. `wesl` as a `wgsl` preprocessor, enabling import statements in shaders and other QOL features
-4. `glyphon` for handling text rendering (with a glyph atlas), font loading, and vectorization (using underlying `cosmic-text`)
-5. `bevy::ecs` for a framework to implement the entity component system the simulation relies on
-6. `taffy` for computing UI layouts, particularly flex-box set ups, given a set of input styles.
-7. `noise` (rust library) for providing a very simple Simplex noise interface to use in generation.
-
-A full list of dependencies with exact version can be seen in the [cargo.toml](./Cargo.toml).

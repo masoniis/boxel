@@ -28,11 +28,11 @@ use bevy::render::extract_component::ExtractComponentPlugin;
 use bevy::render::extract_resource::ExtractResourcePlugin;
 
 /// Plugin responsible for attaching our custom render logic to Bevy's native RenderApp
-pub struct BoxelRenderPlugin;
+pub struct VantablockRenderPlugin;
 
-impl Plugin for BoxelRenderPlugin {
+impl Plugin for VantablockRenderPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(passes::shader_registry::BoxelShaderPlugin);
+        app.add_plugins(passes::shader_registry::VantablockShaderPlugin);
 
         app.init_asset::<VoxelChunkMeshAsset>();
 
