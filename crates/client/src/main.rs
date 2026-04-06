@@ -3,7 +3,8 @@ use bevy::{app::App, prelude::*, window::WindowResolution};
 use client::prelude::*;
 use client::render::VantablockRenderPlugin;
 use client::simulation::SimulationPlugin;
-use shared::ecs_core::{LoadingTracker, load_config};
+use shared::ecs_core::LoadingTracker;
+use utils::PersistentPaths;
 
 #[instrument(skip_all, fields(name = "main"))]
 fn main() {
@@ -11,6 +12,10 @@ fn main() {
 
     // setup default bevy app
     let mut app = App::new();
+
+    // Resolve platform paths and initialize application paths
+    let persistent_paths = PersistentPaths::resolve();
+
     app.add_plugins(
         DefaultPlugins
             .set(WindowPlugin {
@@ -22,15 +27,15 @@ fn main() {
                 ..default()
             })
             .set(AssetPlugin {
-                // Ensure the client points to the root assets folder
-                file_path: "../../assets".to_string(),
+                file_path: "assets".to_string(),
                 ..default()
             })
             .disable::<LogPlugin>(),
     );
 
     // load config & loading trackers into main world
-    app.insert_resource(load_config());
+    app.insert_resource(ClientSettings::load_or_create(&persistent_paths));
+    app.insert_resource(persistent_paths);
     app.insert_resource(LoadingTracker::default());
 
     // initialize simulation and renderer

@@ -8,9 +8,6 @@ use std::sync::Arc;
 // -----------------------------------
 
 /// A 3D voxel-based mesh asset consisting of packed face data.
-///
-/// This is a custom asset that we now integrate with Bevy's native asset
-/// system by deriving Asset and TypePath.
 #[derive(Asset, Reflect, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct VoxelChunkMeshAsset {
     pub name: String,

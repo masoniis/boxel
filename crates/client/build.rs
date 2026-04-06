@@ -8,7 +8,7 @@ fn main() {
     // run condition
     println!("cargo:rerun-if-changed=src/shaders");
 
-    let compiler = Wesl::new("../../assets/shaders");
+    let compiler = Wesl::new("../../assets/client/shaders");
 
     // opaque shaders
     compiler.build_artifact(

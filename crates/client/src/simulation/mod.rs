@@ -6,12 +6,12 @@ pub mod showcase;
 //         Simulation Setup
 // -----------------------------------
 
-use crate::render::textures::{BlockTextureArray, load_voxel_texture_assets};
+use crate::render::textures::{BlockTextureArray, VoxelTextureProcessor};
+use crate::settings::ClientSettings;
 use crate::simulation::{input::InputModulePlugin, player::PlayerPlugin, showcase::ShowcasePlugin};
 use bevy::app::{App, FixedUpdate, Plugin, PostUpdate, PreStartup};
 use bevy::asset::Assets;
 use bevy::prelude::{Image, IntoScheduleConfigs, World, info};
-use shared::ecs_core::config::AppConfig;
 use shared::simulation::app_lifecycle::AppLifecyclePlugin;
 use shared::simulation::asset_management::AssetManagementPlugin;
 use shared::simulation::block::BlockRegistryResource;
@@ -43,10 +43,13 @@ impl Plugin for SimulationPlugin {
 
 fn initialize_simulation_registries_system(world: &mut World) {
     info!("Initializing simulation registries (textures, blocks)...");
-    let app_config = world.resource::<AppConfig>().clone();
+    let client_settings = world.resource::<ClientSettings>().clone();
 
     // Load textures (CPU-side registry + the stitched texture array image)
-    let (texture_array_image, texture_registry) = load_voxel_texture_assets(&app_config).unwrap();
+    let (texture_array_image, texture_registry) =
+        VoxelTextureProcessor::new(&client_settings.texture_pack)
+            .load_and_stitch()
+            .unwrap();
 
     // Add the image to Bevy's native Assets<Image>
     let mut image_assets = world.resource_mut::<Assets<Image>>();

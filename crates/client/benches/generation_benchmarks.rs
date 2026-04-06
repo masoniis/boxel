@@ -1,7 +1,9 @@
 use bevy::ecs::prelude::World;
 use client::prelude::*;
-use client::render::textures::load_voxel_texture_assets;
-use client::simulation::{
+use client::render::textures::VoxelTextureProcessor;
+use client::settings::ClientSettings;
+use criterion::{Criterion, criterion_group, criterion_main};
+use shared::simulation::{
     biome::biome_registry::BiomeRegistryResource,
     block::{BlockRegistryResource, SOLID_BLOCK_ID},
     chunk::{
@@ -16,8 +18,7 @@ use client::simulation::{
         SimpleSurfacePainter, SinwaveShaper, TerrainPainter, TerrainShaper,
     },
 };
-use criterion::{Criterion, criterion_group, criterion_main};
-use shared::ecs_core::config::load_config;
+use utils::PersistentPaths;
 
 const CLIMATE_NOISE_SEED: u32 = 42;
 
@@ -29,10 +30,17 @@ fn bench_chunk_generation(c: &mut Criterion) {
     //         setup
     // ---------------------
 
-    let app_config = load_config();
+    let persistent_paths = PersistentPaths::resolve_dev();
+    let client_settings = ClientSettings::load_or_create(&persistent_paths);
 
     let mut world = World::new();
-    world.insert_resource(load_voxel_texture_assets(&app_config).unwrap().1);
+    world.insert_resource(
+        VoxelTextureProcessor::new(&client_settings.texture_pack)
+            .create_registry()
+            .unwrap(),
+    );
+    world.insert_resource(persistent_paths.clone());
+
     world.init_resource::<BlockRegistryResource>();
     world.init_resource::<BiomeRegistryResource>();
 
@@ -58,7 +66,7 @@ fn bench_chunk_generation(c: &mut Criterion) {
     //         biome benching
     // ------------------------------
 
-    let biome_generator = BasicBiomeGenerator::default();
+    let biome_generator = BasicBiomeGenerator;
     let origin_noise = climate_noise_generator.generate(origin_chunk_coord.clone());
 
     group.bench_function("biome_mapping", |b| {
@@ -119,10 +127,16 @@ fn bench_chunk_meshing(c: &mut Criterion) {
     //         setup
     // ---------------------
 
-    let app_config = load_config();
+    let persistent_paths = PersistentPaths::resolve_dev();
+    let client_settings = ClientSettings::load_or_create(&persistent_paths);
 
     let mut world = World::new();
-    world.insert_resource(load_voxel_texture_assets(&app_config).unwrap().1);
+    world.insert_resource(
+        VoxelTextureProcessor::new(&client_settings.texture_pack)
+            .create_registry()
+            .unwrap(),
+    );
+    world.insert_resource(persistent_paths.clone());
     world.init_resource::<BlockRegistryResource>();
 
     let block_registry = world.resource::<BlockRegistryResource>().clone();
@@ -135,6 +149,7 @@ fn bench_chunk_meshing(c: &mut Criterion) {
     let solid_chunk =
         ChunkDataOption::Generated(ChunkBlocksComponent::new_uniform_solid(ChunkLod(0)));
 
+    #[allow(clippy::needless_range_loop)]
     for x in 0..3 {
         for y in 0..3 {
             for z in 0..3 {
@@ -182,6 +197,7 @@ fn bench_chunk_meshing(c: &mut Criterion) {
     let empty_chunk =
         ChunkDataOption::Generated(ChunkBlocksComponent::new_uniform_empty(ChunkLod(0)));
 
+    #[allow(clippy::needless_range_loop)]
     for x in 0..3 {
         for y in 0..3 {
             for z in 0..3 {

@@ -40,13 +40,13 @@ impl ChunkState {
 
     /// Returns true if the chunk has been generated (at least DataReady).
     pub fn is_generated(&self) -> bool {
-        match *self {
+        matches!(
+            *self,
             ChunkState::DataReady { .. }
-            | ChunkState::WantsMeshing { .. }
-            | ChunkState::Meshing { .. }
-            | ChunkState::Loaded { .. } => true,
-            _ => false,
-        }
+                | ChunkState::WantsMeshing { .. }
+                | ChunkState::Meshing { .. }
+                | ChunkState::Loaded { .. }
+        )
     }
 }
 

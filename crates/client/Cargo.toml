@@ -7,8 +7,8 @@ default-run = "client"
 [package.metadata.packager]
 product-name = "Vantablock"
 identifier = "com.masoniis.vantablock"
-resources = ["../../assets", "../../readme.md"]
-icons = ["../../assets/icon.png"]
+resources = ["../../assets/shared", "../../assets/client", "../../readme.md"]
+icons = ["../../assets/client/icon.png"]
 before-packaging-command = "cargo build -p client --profile distribution --features final_release"
 binaries = [{ path = "client", main = true }]
 

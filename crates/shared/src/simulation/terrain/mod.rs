@@ -11,7 +11,6 @@ pub use public::*;
 //         terrain gen plugin
 // ----------------------------------
 
-use crate::prelude::*;
 use crate::simulation::input::resources::ActionStateResource;
 use crate::simulation::input::types::SimulationAction;
 use bevy::app::{App, Plugin, Update};

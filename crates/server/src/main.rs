@@ -1,26 +1,41 @@
-use bevy::app::{App, ScheduleRunnerPlugin};
-use bevy::prelude::*;
-use shared::ecs_core::{LoadingTracker, load_config};
-use shared::simulation::app_lifecycle::AppLifecyclePlugin;
-use shared::simulation::asset_management::AssetManagementPlugin;
-use shared::simulation::biome::BiomePlugin;
-use shared::simulation::block::BlockPlugin;
-use shared::simulation::chunk::ChunkLoadingPlugin;
-use shared::simulation::terrain::TerrainGenerationPlugin;
-use shared::simulation::time::TimeControlPlugin;
+use bevy::{
+    MinimalPlugins,
+    app::{App, ScheduleRunnerPlugin},
+    asset::AssetPlugin,
+    prelude::{PluginGroup, default, info},
+};
+use shared::{
+    ecs_core::LoadingTracker,
+    simulation::{
+        app_lifecycle::AppLifecyclePlugin, asset_management::AssetManagementPlugin,
+        biome::BiomePlugin, block::BlockPlugin, chunk::ChunkLoadingPlugin,
+        terrain::TerrainGenerationPlugin, time::TimeControlPlugin,
+    },
+};
 use std::time::Duration;
+use utils::PersistentPaths;
 
 fn main() {
     // setup headless bevy app
     let mut app = App::new();
+
+    // Resolve platform paths and initialize application paths
+    let persistent_paths = PersistentPaths::resolve();
+
     app.add_plugins(
         MinimalPlugins.set(ScheduleRunnerPlugin::run_loop(Duration::from_secs_f64(
             1.0 / 60.0,
         ))),
     );
 
+    // AssetServer is required for registry logic to function in a standardized way.
+    app.add_plugins(AssetPlugin {
+        file_path: "assets".to_string(),
+        ..default()
+    });
+
     // load config & loading trackers into main world
-    app.insert_resource(load_config());
+    app.insert_resource(persistent_paths);
     app.insert_resource(LoadingTracker::default());
 
     // add shared simulation plugins

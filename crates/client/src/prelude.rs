@@ -5,6 +5,7 @@
 //         crate imports
 // -----------------------------
 pub use crate::render::scheduling::*;
+pub use crate::settings::ClientSettings;
 pub use utils::*;
 
 // INFO: ----------------------

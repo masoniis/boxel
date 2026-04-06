@@ -1,6 +1,3 @@
-use bevy::asset::LoadState;
-pub type TextureLoadError = String;
-
 use bevy::asset::Handle;
 use bevy::ecs::resource::Resource;
 use bevy::prelude::Image;
@@ -9,6 +6,8 @@ use std::{collections::HashMap, sync::Arc};
 
 /// A numeric ID for a texture, representing its index in the texture array.
 pub type TextureId = u32;
+
+pub type TextureLoadError = String;
 
 /// A resource holding the handle to the stitched voxel texture array.
 #[derive(Resource, Clone, Debug, ExtractResource)]

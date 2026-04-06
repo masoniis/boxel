@@ -6,138 +6,124 @@ use bevy::render::render_resource::{
     Extent3d, TextureDimension, TextureFormat, TextureViewDescriptor, TextureViewDimension,
 };
 use image::RgbaImage;
-use shared::ecs_core::config::AppConfig;
 use shared::simulation::block::texture_registry::{TextureId, TextureRegistryResource};
 use std::collections::HashMap;
+use std::path::PathBuf;
 
-// INFO: ----------------------------
-//         public loading API
-// ----------------------------------
+/// Responsible for handling voxel textures and stiching them together and stuff
+pub struct VoxelTextureProcessor {
+    base_path: PathBuf,
+    texture_pack: String,
+}
 
-/// Loads texture assets from disk, stitches them into a 2D Texture Array,
-/// and returns the native Bevy Image alongside the registry.
-pub fn load_voxel_texture_assets(
-    config: &AppConfig,
-) -> Result<(Image, TextureRegistryResource), TextureLoadError> {
-    info!("Loading texture assets from disk...");
-
-    // load loose images
-    let (images, texture_map) = load_images_from_disk(&config.texture_pack)?;
-
-    // validate
-    let (width, height) = determine_texture_dimensions(&images)?;
-    validate_image_dimensions(&images, width, height)?;
-
-    // Combine all pixel data into a single flat byte vector for the array
-    let layer_count = images.len() as u32;
-    let mut all_bytes = Vec::with_capacity((width * height * 4 * layer_count) as usize);
-    for img in &images {
-        all_bytes.extend_from_slice(img.as_raw());
+impl VoxelTextureProcessor {
+    pub fn new(texture_pack: &str) -> Self {
+        Self {
+            base_path: PathBuf::from("assets/client/textures"),
+            texture_pack: texture_pack.to_string(),
+        }
     }
 
-    // Define the Bevy Image as a 2D Array
-    let mut texture_array = Image::new(
-        Extent3d {
-            width,
-            height,
-            depth_or_array_layers: layer_count,
-        },
-        TextureDimension::D2,
-        all_bytes,
-        TextureFormat::Rgba8UnormSrgb,
-        // Drop the CPU memory once it is uploaded to the GPU!
-        RenderAssetUsages::RENDER_WORLD,
-    );
+    /// Scans the directory to build a registry of names and IDs.
+    pub fn create_registry(&self) -> Result<TextureRegistryResource, TextureLoadError> {
+        let paths = self.get_sorted_texture_paths()?;
+        let mut texture_map = HashMap::new();
 
-    // Explicitly set the view dimension to 2DArray so Bevy creates the correct view
-    texture_array.texture_view_descriptor = Some(TextureViewDescriptor {
-        label: Some("Voxel Texture Array View"),
-        dimension: Some(TextureViewDimension::D2Array),
-        ..Default::default()
-    });
+        texture_map.insert("missing".to_string(), 0);
+        for (i, path) in paths.iter().enumerate() {
+            let name = path.file_stem().unwrap().to_str().unwrap().to_string();
+            texture_map.insert(name, (i + 1) as TextureId);
+        }
 
-    let registry = TextureRegistryResource::new(texture_map)?;
+        Ok(TextureRegistryResource::new(texture_map)?)
+    }
 
-    Ok((texture_array, registry))
+    /// Scans, loads, and stitches all textures into an Image.
+    pub fn load_and_stitch(&self) -> Result<(Image, TextureRegistryResource), TextureLoadError> {
+        info!("Stitching texture array for pack: {}", self.texture_pack);
+
+        let paths = self.get_sorted_texture_paths()?;
+        let registry = self.create_registry()?;
+
+        // Use the paths to load pixels
+        let mut images = Vec::with_capacity(paths.len() + 1);
+
+        // 1. Load/Generate first image to get dimensions
+        let first_pixels = if let Some(first_path) = paths.first() {
+            image::open(first_path)
+                .map_err(|e| TextureLoadError::ImageError(first_path.display().to_string(), e))?
+                .to_rgba8()
+        } else {
+            RgbaImage::new(2, 2)
+        };
+
+        let (width, height) = first_pixels.dimensions();
+        images.push(generate_missing_texture_image(width, height));
+        images.push(first_pixels);
+
+        // 2. Load the rest
+        for path in paths.iter().skip(1) {
+            let img = image::open(path)
+                .map_err(|e| TextureLoadError::ImageError(path.display().to_string(), e))?
+                .to_rgba8();
+
+            if img.dimensions() != (width, height) {
+                return Err(TextureLoadError::DimensionMismatch(
+                    path.display().to_string(),
+                    img.width(),
+                    img.height(),
+                    width,
+                    height,
+                ));
+            }
+            images.push(img);
+        }
+
+        // 3. Stitch
+        let layer_count = images.len() as u32;
+        let mut all_bytes = Vec::with_capacity((width * height * 4 * layer_count) as usize);
+        for img in images {
+            all_bytes.extend_from_slice(img.as_raw());
+        }
+
+        let mut texture_array = Image::new(
+            Extent3d {
+                width,
+                height,
+                depth_or_array_layers: layer_count,
+            },
+            TextureDimension::D2,
+            all_bytes,
+            TextureFormat::Rgba8UnormSrgb,
+            RenderAssetUsages::RENDER_WORLD,
+        );
+
+        texture_array.texture_view_descriptor = Some(TextureViewDescriptor {
+            label: Some("Voxel Texture Array View"),
+            dimension: Some(TextureViewDimension::D2Array),
+            ..Default::default()
+        });
+
+        Ok((texture_array, registry))
+    }
+
+    fn get_sorted_texture_paths(&self) -> Result<Vec<PathBuf>, TextureLoadError> {
+        let path = self.base_path.join(&self.texture_pack);
+        let glob_path = path.join("*.png");
+
+        let mut paths: Vec<_> = glob::glob(glob_path.to_str().unwrap())
+            .expect("Failed to read glob pattern")
+            .filter_map(|e| e.ok())
+            .collect();
+
+        paths.sort();
+        Ok(paths)
+    }
 }
 
 // INFO: ----------------------------------
 //         private helper functions
 // ----------------------------------------
-
-/// Iterates the `TextureId` manifest and loads the corresponding PNG files.
-fn load_images_from_disk(
-    texture_pack: &str,
-) -> Result<(Vec<RgbaImage>, HashMap<String, TextureId>), TextureLoadError> {
-    let base_path = get_resource_path("assets/textures");
-    let path = base_path.join(texture_pack);
-    let glob_path = path.join("*.png");
-
-    let mut images = Vec::new();
-    let mut texture_map = HashMap::new();
-
-    // take in and sort paths
-    let mut paths: Vec<_> = glob::glob(glob_path.to_str().unwrap())
-        .expect("Failed to read glob pattern")
-        .filter_map(|e| e.ok())
-        .collect();
-    paths.sort();
-
-    // get size for images based on first image
-    let (w, h) = if let Some(first_path) = paths.first() {
-        image::image_dimensions(first_path)
-            .map_err(|e| TextureLoadError::ImageError(first_path.display().to_string(), e))?
-    } else {
-        (2, 2) // default size if folder is empty
-    };
-
-    images.push(generate_missing_texture_image(w, h));
-    texture_map.insert("missing".to_string(), 0);
-
-    // load remaining
-    for (i, path) in paths.iter().enumerate() {
-        let name = path.file_stem().unwrap().to_str().unwrap().to_string();
-
-        let image = image::open(path)
-            .map_err(|e| TextureLoadError::ImageError(path.display().to_string(), e))?
-            .to_rgba8();
-
-        images.push(image);
-
-        texture_map.insert(name, (i + 1) as TextureId);
-    }
-
-    Ok((images, texture_map))
-}
-
-/// Finds the first valid, non-placeholder image to determine the reference dimensions.
-fn determine_texture_dimensions(images: &[RgbaImage]) -> Result<(u32, u32), TextureLoadError> {
-    images
-        .iter()
-        .find(|img| img.width() > 0 && img.height() > 0)
-        .map(|img| img.dimensions())
-        .ok_or(TextureLoadError::NoTexturesFound)
-}
-
-/// Validates that all images in the vector match the reference dimensions.
-fn validate_image_dimensions(
-    images: &[RgbaImage],
-    width: u32,
-    height: u32,
-) -> Result<(), TextureLoadError> {
-    for (i, img) in images.iter().enumerate() {
-        if img.dimensions() != (width, height) {
-            return Err(TextureLoadError::DimensionMismatch(
-                i.to_string(),
-                img.width(),
-                img.height(),
-                width,
-                height,
-            ));
-        }
-    }
-    Ok(())
-}
 
 /// Generates the missing texture programmatically as a purple and black checkerboard pattern.
 fn generate_missing_texture_image(width: u32, height: u32) -> RgbaImage {

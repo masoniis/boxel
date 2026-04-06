@@ -2,18 +2,30 @@ use crate::{
     prelude::*,
     simulation::biome::biome_definition::{BiomeDefinition, load_biome_from_str},
 };
+use bevy::asset::AssetServer;
 use bevy::ecs::prelude::*;
-use std::{collections::HashMap, fs, sync::Arc};
+use std::{collections::HashMap, sync::Arc};
+use utils::PersistentPaths;
 
 pub type BiomeId = u8;
 
-#[derive(Resource, Default, Clone)]
+#[derive(Resource, Clone)]
 pub struct BiomeRegistryResource {
     /// Stores definitions indexed by BiomeId enum variant.
     definitions: Arc<Vec<BiomeDefinition>>,
 
     /// Maps a string name to the runtime ID.
     name_to_id: Arc<HashMap<String, BiomeId>>,
+}
+
+impl FromWorld for BiomeRegistryResource {
+    fn from_world(world: &mut World) -> Self {
+        let persistent_paths = world
+            .get_resource::<PersistentPaths>()
+            .cloned()
+            .unwrap_or_else(PersistentPaths::resolve);
+        Self::load_from_disk(&persistent_paths)
+    }
 }
 
 impl BiomeRegistryResource {
@@ -53,6 +65,80 @@ impl BiomeRegistryResource {
     pub fn get_biome_id_or_default(&self, name: &str) -> BiomeId {
         self.get_id_by_name(name).unwrap_or(0)
     }
+
+    /// Internal util to load all biomes from disk into a new registry instance.
+    fn load_from_disk(persistent_paths: &PersistentPaths) -> Self {
+        info!("Loading biome definitions from disk...");
+
+        let mut biome_definitions: Vec<BiomeDefinition> = Vec::new();
+        let mut name_to_id: HashMap<String, BiomeId> = HashMap::new();
+
+        // helper closure for local registration
+        let mut register = |name: String, definition: BiomeDefinition| -> BiomeId {
+            let id = biome_definitions.len() as BiomeId;
+            biome_definitions.push(definition);
+            name_to_id.insert(name.to_lowercase(), id);
+            id
+        };
+
+        let full_path = persistent_paths.assets_dir.join("shared/biomes");
+
+        // load the default biome
+        let default_biome_name = "ocean";
+        let default_ron_path = full_path.join(format!("{}.ron", default_biome_name));
+        let default_definition = match std::fs::read_to_string(&default_ron_path)
+            .map_err(|e| e.to_string())
+            .and_then(|ron_string| load_biome_from_str(&ron_string).map_err(|e| e.to_string()))
+        {
+            Ok(def) => def,
+            Err(e) => {
+                panic!(
+                    "CRITICAL: Failed to load or parse default biome file ({:?}): {}. Cannot proceed.",
+                    default_ron_path, e
+                );
+            }
+        };
+        let default_id = register(default_biome_name.to_string(), default_definition);
+        if default_id != 0 {
+            panic!(
+                "Default biome '{}' did not get ID 0! Check loading logic.",
+                default_biome_name
+            );
+        }
+
+        // now parse the rest of the biomes
+        if full_path.is_dir() {
+            for entry in std::fs::read_dir(&full_path)
+                .unwrap_or_else(|e| {
+                    panic!("Failed to read biome directory {:?}: {}", full_path, e);
+                })
+                .flatten()
+            {
+                let path = entry.path();
+                if path.is_file() && path.extension().is_some_and(|s| s == "ron") {
+                    let name = match path.file_stem().and_then(|s| s.to_str()) {
+                        Some(name_str) => name_str.to_string(),
+                        None => continue,
+                    };
+
+                    if name == default_biome_name || name.starts_with("_") {
+                        continue;
+                    }
+
+                    if let Ok(ron_string) = std::fs::read_to_string(&path)
+                        && let Ok(definition) = load_biome_from_str(&ron_string)
+                    {
+                        register(name.clone(), definition);
+                    }
+                }
+            }
+        }
+
+        Self {
+            definitions: Arc::new(biome_definitions),
+            name_to_id: Arc::new(name_to_id),
+        }
+    }
 }
 
 // INFO: ------------------------------
@@ -62,122 +148,11 @@ impl BiomeRegistryResource {
 /// A system that is built to run once at startup. It scans the biome directory and
 /// loads all definitions found into the `BiomeRegistryResource` for global access.
 #[instrument(skip_all)]
-pub fn initialize_biome_registry_system(mut commands: Commands) {
-    let registry = load_biome_defs_from_disk();
+pub fn initialize_biome_registry_system(
+    mut commands: Commands,
+    _asset_server: Res<AssetServer>,
+    persistent_paths: Res<PersistentPaths>,
+) {
+    let registry = BiomeRegistryResource::load_from_disk(&persistent_paths);
     commands.insert_resource(registry);
-}
-
-/// A util that scans the biome asset directory and loads all valid biome definitions
-/// found into a `BiomeRegistryResource` struct.
-#[instrument(skip_all)]
-pub fn load_biome_defs_from_disk() -> BiomeRegistryResource {
-    info!("Loading biome definitions...");
-
-    let mut biome_definitions: Vec<BiomeDefinition> = Vec::new();
-    let mut name_to_id: HashMap<String, BiomeId> = HashMap::new();
-    let biome_dir = get_resource_path("assets/biomes");
-
-    // helper closure for local registration (identical to block loading)
-    let mut register = |name: String, definition: BiomeDefinition| -> BiomeId {
-        let id = biome_definitions.len() as BiomeId;
-        biome_definitions.push(definition);
-        name_to_id.insert(name.to_lowercase(), id);
-        id
-    };
-
-    // load the default biome
-    let default_biome_name = "ocean";
-    let default_ron_path = biome_dir.join(format!("{}.ron", default_biome_name));
-    let default_definition = match fs::read_to_string(&default_ron_path)
-        .map_err(|e| e.to_string())
-        .and_then(|ron_string| load_biome_from_str(&ron_string).map_err(|e| e.to_string()))
-    {
-        Ok(def) => def,
-        Err(e) => {
-            panic!(
-                "CRITICAL: Failed to load or parse default biome file ({:?}): {}. Cannot proceed.",
-                default_ron_path, e
-            );
-        }
-    };
-    let default_id = register(default_biome_name.to_string(), default_definition);
-    if default_id != 0 {
-        panic!(
-            "Default biome '{}' did not get ID 0! Check loading logic.",
-            default_biome_name
-        );
-    }
-    info!("Registered default biome '{}' as ID 0", default_biome_name);
-
-    // now parse the rest of the biomes
-    if biome_dir.is_dir() {
-        for entry in fs::read_dir(&biome_dir).unwrap_or_else(|e| {
-            panic!("Failed to read biome directory {:?}: {}", biome_dir, e);
-        }) {
-            let entry = match entry {
-                Ok(e) => e,
-                Err(e) => {
-                    warn!("Failed to read entry in biome directory: {}", e);
-                    continue;
-                }
-            };
-            let path = entry.path();
-
-            if path.is_file() && path.extension().is_some_and(|s| s == "biome" || s == "ron") {
-                // name is the file stem
-                let name = match path.file_stem().and_then(|s| s.to_str()) {
-                    Some(name_str) => name_str.to_string(),
-                    None => {
-                        warn!(
-                            "Skipping biome definition with invalid filename: {:?}",
-                            path.file_name()
-                        );
-                        continue;
-                    }
-                };
-
-                // skip default or _ files
-                if name == default_biome_name || name.starts_with("_") {
-                    continue;
-                }
-
-                let ron_string = match fs::read_to_string(&path) {
-                    Ok(s) => s,
-                    Err(e) => {
-                        error!("Failed to read biome file {:?}: {}", path, e);
-                        continue;
-                    }
-                };
-
-                // construct concrete biome definition object
-                match load_biome_from_str(&ron_string) {
-                    Ok(definition) => {
-                        let runtime_id = register(name.clone(), definition);
-                        info!("Loaded biome '{}' (runtime id={})", name, runtime_id);
-                    }
-                    Err(e) => {
-                        error!("Failed to parse biome file {:?}: {}", path, e);
-                    }
-                }
-            }
-        }
-    } else {
-        warn!(
-            "Biome directory not found at: {:?}. Only default biome was loaded.",
-            biome_dir
-        );
-    }
-
-    let registry = BiomeRegistryResource {
-        definitions: Arc::new(biome_definitions),
-        name_to_id: Arc::new(name_to_id),
-    };
-
-    if registry.definitions.len() <= 1 {
-        warn!(
-            "Only the default biome was loaded. Check 'assets/biomes/' directory for other biome files."
-        );
-    }
-
-    registry
 }
