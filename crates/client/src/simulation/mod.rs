@@ -13,7 +13,7 @@ use bevy::app::{App, FixedUpdate, Plugin, PostUpdate, PreStartup};
 use bevy::asset::Assets;
 use bevy::prelude::{Image, IntoScheduleConfigs, World, info};
 use shared::simulation::{
-    app_lifecycle::AppLifecyclePlugin, asset_management::AssetManagementPlugin, biome::BiomePlugin,
+    app_lifecycle::AppLifecyclePlugin, asset::AssetPlugin, biome::BiomePlugin,
     block::BlockPlugin, block::BlockRegistryResource, chunk::ChunkLoadingPlugin,
     terrain::TerrainGenerationPlugin, time::TimeControlPlugin,
 };
@@ -77,7 +77,7 @@ impl Plugin for SharedPlugins {
     fn build(&self, app: &mut App) {
         app.add_plugins((
             AppLifecyclePlugin,
-            AssetManagementPlugin,
+            AssetPlugin,
             BlockPlugin,
             BiomePlugin,
             ChunkLoadingPlugin,

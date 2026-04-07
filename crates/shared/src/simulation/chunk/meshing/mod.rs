@@ -9,7 +9,7 @@ pub mod packed_face;
 
 use crate::prelude::*;
 use crate::simulation::{
-    asset_management::VoxelChunkMeshAsset,
+    asset::VoxelChunkMeshAsset,
     block::{
         BlockRegistryResource,
         block_registry::{AIR_BLOCK_ID, BlockId},

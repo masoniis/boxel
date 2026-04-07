@@ -7,7 +7,7 @@ use bevy::{
 use shared::{
     ecs_core::LoadingTracker,
     simulation::{
-        app_lifecycle::AppLifecyclePlugin, asset_management::AssetManagementPlugin,
+        app_lifecycle::AppLifecyclePlugin, asset::AssetPlugin as SimulationAssetPlugin,
         biome::BiomePlugin, block::BlockPlugin, chunk::ChunkLoadingPlugin,
         terrain::TerrainGenerationPlugin, time::TimeControlPlugin,
     },
@@ -41,7 +41,7 @@ fn main() {
     // add shared simulation plugins
     app.add_plugins((
         AppLifecyclePlugin,
-        AssetManagementPlugin,
+        SimulationAssetPlugin,
         BlockPlugin,
         BiomePlugin,
         ChunkLoadingPlugin,

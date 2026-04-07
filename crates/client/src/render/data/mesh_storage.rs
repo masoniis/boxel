@@ -1,8 +1,8 @@
 use crate::render::pipeline::VoxelMesh;
-use bevy::asset::AssetId;
+use bevy::asset::{AssetId};
 use bevy::ecs::prelude::*;
 use bevy::math::Vec3;
-use shared::simulation::asset_management::mesh_asset::VoxelChunkMeshAsset;
+use shared::simulation::asset::VoxelChunkMeshAsset;
 use std::{collections::HashMap, sync::Arc};
 
 #[derive(Resource, Default)]

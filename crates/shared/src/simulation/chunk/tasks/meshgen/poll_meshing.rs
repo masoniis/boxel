@@ -1,9 +1,9 @@
 use crate::prelude::*;
-use crate::simulation::asset_management::VoxelChunkMeshAsset;
+use crate::simulation::asset::VoxelChunkMeshAsset;
 use crate::simulation::chunk::{
-    CHUNK_SIDE_LENGTH, CheckForMeshing, ChunkCoord, ChunkMeshingTaskComponent, ChunkState,
-    ChunkStateManager, OpaqueMeshComponent, TransformComponent, TransparentMeshComponent,
-    WantsMeshing,
+    CheckForMeshing, ChunkCoord, ChunkMeshingTaskComponent, ChunkState, ChunkStateManager,
+    OpaqueMeshComponent, TransformComponent, TransparentMeshComponent, WantsMeshing,
+    CHUNK_SIDE_LENGTH,
 };
 use bevy::asset::Assets;
 use bevy::ecs::prelude::*;
@@ -12,14 +12,14 @@ use crossbeam::channel::TryRecvError;
 /// Polls chunk meshing tasks and adds the MeshComponent when ready.
 #[instrument(skip_all)]
 pub fn poll_chunk_meshing_tasks(
-    // Input
+    // input
     mut tasks_query: Query<(Entity, &mut ChunkMeshingTaskComponent, &ChunkCoord)>,
     existing_meshes: Query<(
         Option<&OpaqueMeshComponent>,
         Option<&TransparentMeshComponent>,
     )>,
 
-    // Output
+    // output
     mut commands: Commands,
     mut chunk_manager: ResMut<ChunkStateManager>,
     mut mesh_assets: ResMut<Assets<VoxelChunkMeshAsset>>,

@@ -24,7 +24,7 @@ use bevy::render::ExtractSchedule;
 use bevy::render::RenderApp;
 use bevy::render::extract_resource::ExtractResourcePlugin;
 use bevy::render::sync_world::SyncToRenderWorld;
-use shared::simulation::asset_management::mesh_asset::VoxelChunkMeshAsset;
+use shared::simulation::asset::VoxelChunkMeshAsset;
 use shared::simulation::block::TargetedBlock;
 use shared::simulation::chunk::{OpaqueMeshComponent, TransparentMeshComponent};
 

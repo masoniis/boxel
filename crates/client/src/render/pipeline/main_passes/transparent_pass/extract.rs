@@ -3,7 +3,7 @@ use bevy::asset::Handle;
 use bevy::ecs::prelude::*;
 use bevy::render::Extract;
 use bevy::render::sync_world::RenderEntity;
-use shared::simulation::asset_management::mesh_asset::VoxelChunkMeshAsset;
+use shared::simulation::asset::VoxelChunkMeshAsset;
 use shared::simulation::chunk::{TransformComponent, mesh::TransparentMeshComponent};
 
 // INFO: --------------------------------
