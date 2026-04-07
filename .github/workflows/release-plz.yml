@@ -88,17 +88,23 @@ jobs:
           tool: cargo-packager
 
       - name: Build and Package
-        run: cargo packager -p client --profile distribution
+        run: |
+          cargo build -p client --profile distribution --features final_release
+          cargo packager -p client --profile distribution
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ fromJSON(needs.release-plz-release.outputs.releases)[0].tag }}
           files: |
-            crates/client/target/distribution/packager/*.${{ matrix.suffix }}
-            crates/client/target/distribution/packager/*.exe
-            crates/client/target/distribution/packager/*.AppImage
-            crates/client/target/distribution/packager/*.tar.gz
+            crates/client/target/distribution/Vantablock*.${{ matrix.suffix }}
+            crates/client/target/distribution/Vantablock*.exe
+            crates/client/target/distribution/Vantablock*.AppImage
+            crates/client/target/distribution/Vantablock*.tar.gz
+            crates/client/target/distribution/client*.${{ matrix.suffix }}
+            crates/client/target/distribution/client*.exe
+            crates/client/target/distribution/client*.AppImage
+            crates/client/target/distribution/client*.tar.gz
           fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
