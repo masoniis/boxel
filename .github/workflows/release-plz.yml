@@ -92,10 +92,34 @@ jobs:
           cargo build -p client --profile distribution --features final_release
           cargo packager -p client --profile distribution
 
+      - name: Extract Client Release Tag
+        id: client_tag
+        shell: bash
+        run: |
+          # extract tag from package_name='client' to append release assets to
+          TAG=$(echo '${{ needs.release-plz-release.outputs.releases }}' | jq -r '.[] | select(.package_name == "client") | .tag')
+          if [ -z "$TAG" ] || [ "$TAG" == "null" ]; then
+            echo "Error: Could not find tag for client package."
+            exit 1
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Rename client assets to Vantablock
+        shell: bash
+        run: |
+          cd crates/client/target/distribution/ || exit 0
+
+          # loop through all files starting with "client" and change to "Vantablock"
+          for file in client*; do
+            if [[ -f "$file" ]]; then
+              mv "$file" "${file/client/Vantablock}"
+            fi
+          done
+
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ fromJSON(needs.release-plz-release.outputs.releases)[0].tag }}
+          tag_name: ${{ steps.client_tag.outputs.tag }}
           files: |
             crates/client/target/distribution/Vantablock*.${{ matrix.suffix }}
             crates/client/target/distribution/Vantablock*.exe

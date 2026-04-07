@@ -4,7 +4,6 @@ pr_labels = ["autorelease"]
 publish = false                   # don't publish to crates.io
 git_tag_enable = false            # default no tag for workspace crates
 git_release_enable = false        # default no release for workspace crates
-release = false                   # disable release for workspace creates
 
 # client package is the main release entrypoint
 [[package]]
