@@ -42,7 +42,6 @@ impl ViewNode for ShadowRenderPassNode {
             Some(shadow_view_buffer),
             Some(shadow_depth_texture),
             // opaque mesh to base shadow depth on
-            Some(phase),
             Some(mesh_storage),
             Some(chunk_memory_manager),
             Some(pipeline_cache),
@@ -50,12 +49,29 @@ impl ViewNode for ShadowRenderPassNode {
             world.get_resource::<ShadowPassPipeline>(),
             world.get_resource::<ShadowViewBuffer>(),
             world.get_resource::<ShadowDepthTextureResource>(),
-            world.get_resource::<Opaque3dRenderPhase>(),
             world.get_resource::<RenderMeshStorageResource>(),
             world.get_resource::<ChunkStorageManager>(),
             world.get_resource::<PipelineCache>(),
         )
         else {
+            return Ok(());
+        };
+
+        // Get the phase from any view that has it.
+        let mut phase = None;
+        for archetype in world.archetypes().iter() {
+            if archetype.contains(world.components().get_id(std::any::TypeId::of::<Opaque3dRenderPhase>()).unwrap()) {
+                for entity in archetype.entities() {
+                    if let Some(p) = world.get::<Opaque3dRenderPhase>(entity.id()) {
+                        phase = Some(p);
+                        break;
+                    }
+                }
+            }
+            if phase.is_some() { break; }
+        }
+
+        let Some(phase) = phase else {
             return Ok(());
         };
 

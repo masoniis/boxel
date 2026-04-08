@@ -29,14 +29,14 @@ use bevy::render::view::ViewTarget;
 pub struct OpaquePassRenderNode;
 
 impl ViewNode for OpaquePassRenderNode {
-    type ViewQuery = &'static ViewTarget;
+    type ViewQuery = (&'static ViewTarget, &'static Opaque3dRenderPhase);
 
     #[instrument(skip_all, name = "opaque_pass_render_node")]
     fn run(
         &self,
         _graph: &mut RenderGraphContext,
         render_context: &mut RenderContext,
-        view_target: QueryItem<Self::ViewQuery>,
+        (view_target, phase): QueryItem<Self::ViewQuery>,
         world: &World,
     ) -> Result<(), NodeRunError> {
         // INFO: -------------------------------------
@@ -44,7 +44,6 @@ impl ViewNode for OpaquePassRenderNode {
         // -------------------------------------------
 
         let (
-            Some(phase),
             Some(mesh_storage),
             Some(view_buffer),
             Some(material_bind_group),
@@ -54,7 +53,6 @@ impl ViewNode for OpaquePassRenderNode {
             Some(chunk_memory_manager),
             Some(pipeline_cache),
         ) = (
-            world.get_resource::<Opaque3dRenderPhase>(),
             world.get_resource::<RenderMeshStorageResource>(),
             world.get_resource::<CentralCameraViewUniform>(),
             world.get_resource::<TextureArrayUniforms>(),

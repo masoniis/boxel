@@ -1,6 +1,7 @@
 use crate::player::CAMERA_NEAR_PLANE;
 use crate::prelude::*;
 use crate::render::data::ExtractedSun;
+use crate::render::pipeline::main_passes::opaque_pass::queue::Opaque3dRenderPhase;
 use crate::render::pipeline::shadow_pass::gpu_resources::SHADOW_MAP_RESOLUTION;
 use crate::render::pipeline::shadow_pass::gpu_resources::{ShadowViewBuffer, ShadowViewData};
 use bevy::ecs::prelude::*;
@@ -9,19 +10,19 @@ use bevy::render::renderer::RenderQueue;
 use bevy::render::view::ExtractedView;
 
 /// The max distance at which shadows render
-const SHADOW_DISTANCE: f32 = 64.0;
+const SHADOW_DISTANCE: f32 = 256.0;
 
 #[instrument(skip_all)]
 pub fn update_shadow_view_buffer_system(
     // input
     view_buffer: Res<ShadowViewBuffer>,
-    view_query: Query<&ExtractedView>,
+    view_query: Query<(&ExtractedView, &Opaque3dRenderPhase)>,
     sun: Res<ExtractedSun>,
 
     // output (writing buffer to queue)
     queue: Res<RenderQueue>,
 ) {
-    let Some(extracted_view) = view_query.iter().next() else {
+    let Some((extracted_view, _)) = view_query.iter().next() else {
         return;
     };
 

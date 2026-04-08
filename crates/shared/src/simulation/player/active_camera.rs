@@ -3,7 +3,7 @@ use crate::{
     simulation::chunk::{CHUNK_SIDE_LENGTH, ChunkCoord},
 };
 use bevy::ecs::prelude::*;
-use bevy::prelude::{Camera3d, Transform, Vec3};
+use bevy::prelude::{Camera3d, PerspectiveProjection, Projection, Transform, Vec3};
 
 const DEFAULT_CAMERA_STARTING_X: f32 = (CHUNK_SIDE_LENGTH / 2) as f32;
 const DEFAULT_CAMERA_STARTING_Y: f32 = 64.0;
@@ -28,6 +28,12 @@ impl FromWorld for ActiveCamera {
         let camera_entity = world
             .spawn((
                 Camera3d::default(),
+                Projection::Perspective(PerspectiveProjection {
+                    fov: 45.0f32.to_radians(),
+                    near: 1.0,
+                    far: f32::INFINITY,
+                    ..Default::default()
+                }),
                 Transform::from_translation(start_position),
                 ChunkCoord { pos: start_chunk },
             ))

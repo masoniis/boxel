@@ -19,8 +19,10 @@ use crate::{
     },
 };
 use bevy::app::{App, Plugin};
+use bevy::ecs::prelude::*;
 use bevy::prelude::IntoScheduleConfigs;
 use bevy::render::render_graph::{RenderGraphExt, ViewNodeRunner};
+use bevy::render::view::ExtractedView;
 use bevy::render::{Render, RenderSystems};
 
 pub struct TransparentRenderPassPlugin;
@@ -40,14 +42,21 @@ impl Plugin for TransparentRenderPassPlugin {
         //         Queue
         // ---------------------
 
-        app
-            // resources
-            .init_resource::<Transparent3dRenderPhase>()
-            // systems
-            .add_systems(
-                Render,
-                queue_and_prepare_transparent_system.in_set(RenderSystems::Queue),
-            );
+        app.add_systems(
+            Render,
+            (
+                |mut commands: Commands, query: Query<Entity, Added<ExtractedView>>| {
+                    for entity in query.iter() {
+                        commands
+                            .entity(entity)
+                            .insert(Transparent3dRenderPhase::default());
+                    }
+                },
+                queue_and_prepare_transparent_system,
+            )
+                .chain()
+                .in_set(RenderSystems::Queue),
+        );
 
         // INFO: -----------------------------------------
         //         Render Graph Integration

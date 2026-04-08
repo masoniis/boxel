@@ -11,11 +11,13 @@ pub use render::OpaquePassRenderNode;
 // ---------------------------------
 
 use crate::{
-    VantablockNode, render::pipeline::main_passes::opaque_pass::queue::Opaque3dRenderPhase,
+    render::pipeline::main_passes::opaque_pass::queue::Opaque3dRenderPhase, VantablockNode,
 };
 use bevy::app::{App, Plugin};
+use bevy::ecs::prelude::*;
 use bevy::prelude::IntoScheduleConfigs;
 use bevy::render::render_graph::{RenderGraphExt, ViewNodeRunner};
+use bevy::render::view::ExtractedView;
 use bevy::render::{Render, RenderSystems};
 use startup::OpaquePipelines;
 
@@ -24,7 +26,7 @@ pub struct OpaqueRenderPassPlugin;
 impl Plugin for OpaqueRenderPassPlugin {
     fn build(&self, app: &mut App) {
         // INFO: -----------------
-        //         Prepare
+        //         prepare
         // -----------------------
 
         app.add_systems(
@@ -33,20 +35,27 @@ impl Plugin for OpaqueRenderPassPlugin {
         );
 
         // INFO: ---------------
-        //         Queue
+        //         queue
         // ---------------------
 
-        app
-            // resources
-            .init_resource::<Opaque3dRenderPhase>()
-            // systems
-            .add_systems(
-                Render,
-                queue::queue_opaque_system.in_set(RenderSystems::Queue),
-            );
+        app.add_systems(
+            Render,
+            (
+                |mut commands: Commands, query: Query<Entity, Added<ExtractedView>>| {
+                    for entity in query.iter() {
+                        commands
+                            .entity(entity)
+                            .insert(Opaque3dRenderPhase::default());
+                    }
+                },
+                queue::queue_opaque_system,
+            )
+                .chain()
+                .in_set(RenderSystems::Queue),
+        );
 
         // INFO: -----------------------------------------
-        //         Render Graph Integration
+        //         render graph integration
         // -----------------------------------------------
 
         app.add_render_graph_node::<ViewNodeRunner<OpaquePassRenderNode>>(

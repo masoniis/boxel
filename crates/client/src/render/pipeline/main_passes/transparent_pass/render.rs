@@ -28,41 +28,43 @@ use bevy::render::view::ViewTarget;
 pub struct TransparentPassRenderNode;
 
 impl ViewNode for TransparentPassRenderNode {
-    type ViewQuery = &'static ViewTarget;
+    type ViewQuery = (&'static ViewTarget, &'static Transparent3dRenderPhase);
 
     #[instrument(skip_all, name = "transparent_pass_render_node")]
     fn run(
         &self,
         _graph: &mut RenderGraphContext,
         render_context: &mut RenderContext,
-        view_target: QueryItem<Self::ViewQuery>,
+        (view_target, phase): QueryItem<Self::ViewQuery>,
         world: &World,
     ) -> Result<(), NodeRunError> {
         // INFO: -------------------------------------
         //         collect rendering resources
         // -------------------------------------------
+
         let (
-            Some(phase),
             Some(mesh_storage),
             Some(view_buffer),
             Some(material_bind_group),
-            Some(depth_texture),
             Some(pipeline_res),
             Some(skybox_params),
             Some(chunk_memory_manager),
             Some(pipeline_cache),
         ) = (
-            world.get_resource::<Transparent3dRenderPhase>(),
             world.get_resource::<RenderMeshStorageResource>(),
             world.get_resource::<CentralCameraViewUniform>(),
             world.get_resource::<TextureArrayUniforms>(),
-            world.get_resource::<MainDepthTextureResource>(),
             world.get_resource::<TransparentPipeline>(),
             world.get_resource::<EnvironmentUniforms>(),
             world.get_resource::<ChunkStorageManager>(),
             world.get_resource::<PipelineCache>(),
         )
         else {
+            return Ok(());
+        };
+
+        // Get depth texture (assuming it's still globally available for now)
+        let Some(depth_texture) = world.get_resource::<MainDepthTextureResource>() else {
             return Ok(());
         };
 

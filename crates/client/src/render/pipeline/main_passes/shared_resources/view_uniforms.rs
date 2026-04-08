@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use crate::render::pipeline::main_passes::opaque_pass::queue::Opaque3dRenderPhase;
 use crate::render::pipeline::shadow_pass::gpu_resources::{
     ShadowDepthTextureResource, ShadowViewBuffer,
 };
@@ -171,13 +172,13 @@ impl FromWorld for CentralCameraViewUniform {
 #[instrument(skip_all)]
 pub fn update_camera_view_buffer_system(
     // Input
-    view_query: Query<&ExtractedView>,
+    view_query: Query<(&ExtractedView, &Opaque3dRenderPhase)>,
     view_buffer: Res<CentralCameraViewUniform>,
 
     // Output (writing buffer to queue)
     queue: Res<RenderQueue>,
 ) {
-    if let Some(extracted_view) = view_query.iter().next() {
+    if let Some((extracted_view, _)) = view_query.iter().next() {
         let view_matrix = extracted_view.world_from_view.to_matrix().inverse();
         let projection_matrix = extracted_view.clip_from_view;
         let view_proj_matrix = projection_matrix * view_matrix;
