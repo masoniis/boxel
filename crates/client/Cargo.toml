@@ -27,8 +27,9 @@ name = "generation_benchmarks"
 harness = false
 
 [features]
+dev = ["bevy/dev"]
 tracy = ["dep:tracy-client", "dep:tracing-tracy"]
-final_release = ["tracing/release_max_level_error"]
+distribution = ["tracing/release_max_level_error"]
 
 [build-dependencies]
 wesl = { workspace = true } # shader compliation from WESL to WGSL

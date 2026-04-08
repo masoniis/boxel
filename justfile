@@ -16,7 +16,7 @@ default: run
 
 # runs the client via debug profile
 run *args:
-    cargo run -p {{client}} {{args}}
+    cargo run -p {{client}} --features {{args}}
 
 # runs the server via debug profile
 server *args:
@@ -24,12 +24,12 @@ server *args:
 
 # runs the client via max-optimization release profile
 release *args:
-    cargo run -p {{client}} --profile distribution --features {{client}}/final_release {{args}}
+    cargo run -p {{client}} --profile distribution --features {{client}}/distribution {{args}}
 
 # compiles and runs the client natively on Windows from within WSL
 wsl *args:
-    WSL_PATH=$(wslpath -w .)
-    powershell.exe -Command "if (!(Test-Path '{{wsl_target}}')) { New-Item -ItemType Directory -Force -Path '{{wsl_target}}' }; cd '$WSL_PATH'; \$env:CARGO_TARGET_DIR='{{wsl_target}}'; cargo run -p {{client}} {{args}}"
+    @WSL_PATH=$(wslpath -w .)
+    @powershell.exe -Command "if (!(Test-Path '{{wsl_target}}')) { New-Item -ItemType Directory -Force -Path '{{wsl_target}}' }; cd '$WSL_PATH'; \$env:CARGO_TARGET_DIR='{{wsl_target}}'; cargo run -p {{client}} {{args}}"
 
 alias run-fast := release
 
@@ -88,7 +88,7 @@ ready *args:
 
 # packages the client for distribution
 package profile="distribution":
-    cargo build -p client --profile {{profile}} --features final_release
+    cargo build -p client --profile {{profile}} --features distribution
     cargo packager -p client --profile {{ if profile == "dev" { "debug" } else { profile } }}
 
 # runs the texture processor utility
