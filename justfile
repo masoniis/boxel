@@ -128,7 +128,7 @@ debug_bevy *args:
 debug_wgpu *args:
     RUST_LOG=wgpu=trace cargo run -p {{client}} {{args}}
 
-# targeted tracing. Call without args to list targets found in source.
+# targeted tracing, call without args to list targets found in source.
 debug *args:
     #!/usr/bin/env bash
     set -euo pipefail

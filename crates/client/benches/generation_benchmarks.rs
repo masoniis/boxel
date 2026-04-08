@@ -2,15 +2,16 @@ use bevy::ecs::prelude::World;
 use client::prelude::*;
 use client::render::texture::VoxelTextureProcessor;
 use client::settings::ClientSettings;
-use criterion::{Criterion, criterion_group, criterion_main};
+use criterion::{criterion_group, criterion_main, Criterion};
 use shared::simulation::{
     biome::biome_registry::BiomeRegistryResource,
     block::{BlockRegistryResource, SOLID_BLOCK_ID},
     chunk::{
-        ChunkDataOption, NeighborLODs, PaddedChunk, build_chunk_mesh,
+        build_chunk_mesh,
         components::{ChunkBlocksComponent, ChunkCoord},
         thread_buffer_pool::acquire_buffer,
         types::ChunkLod,
+        ChunkDataOption, NeighborLODs, PaddedChunk,
     },
     terrain::{
         BasicBiomeGenerator, BiomeGenerator, BiomeMapComponent, BiomeResultBuilder,
@@ -30,7 +31,7 @@ fn bench_chunk_generation(c: &mut Criterion) {
     //         setup
     // ---------------------
 
-    let persistent_paths = PersistentPaths::resolve_dev();
+    let persistent_paths = PersistentPaths::resolve();
     let client_settings = ClientSettings::load_or_create(&persistent_paths);
 
     let mut world = World::new();
@@ -130,7 +131,7 @@ fn bench_chunk_meshing(c: &mut Criterion) {
     //         setup
     // ---------------------
 
-    let persistent_paths = PersistentPaths::resolve_dev();
+    let persistent_paths = PersistentPaths::resolve();
     let client_settings = ClientSettings::load_or_create(&persistent_paths);
 
     let mut world = World::new();

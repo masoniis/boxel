@@ -42,11 +42,7 @@ fn main() {
     let mut app = App::new();
 
     // resolve platform paths
-    let persistent_paths = if cfg!(debug_assertions) {
-        PersistentPaths::resolve_dev()
-    } else {
-        PersistentPaths::resolve()
-    };
+    let persistent_paths = PersistentPaths::resolve();
 
     // config of default bevy plugins
     app.add_plugins(
