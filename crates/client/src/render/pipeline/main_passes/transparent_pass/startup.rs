@@ -1,9 +1,8 @@
 use super::super::shared_resources::{
-    CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout,
+    CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout, TextureArrayBindGroupLayout,
+    MAIN_DEPTH_FORMAT,
 };
 use crate::render::pipeline::gpu_resources::world_uniforms::ChunkStorageBindGroupLayout;
-use crate::render::pipeline::main_passes::shared_resources::TextureArrayBindGroupLayout;
-use crate::render::pipeline::main_passes::shared_resources::main_depth_texture::MAIN_DEPTH_FORMAT;
 use crate::render::pipeline::shader_registry::{
     TRANSPARENT_FRAG_SHADER_HANDLE, TRANSPARENT_VERT_SHADER_HANDLE,
 };
@@ -66,7 +65,10 @@ impl FromWorld for TransparentPipeline {
                 polygon_mode: PolygonMode::Fill,
                 ..Default::default()
             },
-            multisample: MultisampleState::default(),
+            multisample: MultisampleState {
+                count: 4,
+                ..Default::default()
+            },
             zero_initialize_workgroup_memory: true,
         };
 

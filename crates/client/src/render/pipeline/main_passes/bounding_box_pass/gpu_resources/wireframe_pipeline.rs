@@ -1,7 +1,6 @@
 use crate::render::pipeline::main_passes::bounding_box_pass::WireframeObjectBindGroupLayout;
-use crate::render::pipeline::main_passes::shared_resources::main_depth_texture::MAIN_DEPTH_FORMAT;
 use crate::render::pipeline::main_passes::shared_resources::{
-    CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout,
+    CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout, MAIN_DEPTH_FORMAT,
 };
 use crate::render::pipeline::shader_registry::{
     WIREFRAME_FRAG_SHADER_HANDLE, WIREFRAME_VERT_SHADER_HANDLE,
@@ -65,7 +64,10 @@ impl FromWorld for WireframePipeline {
                 polygon_mode: PolygonMode::Line,
                 ..Default::default()
             },
-            multisample: MultisampleState::default(),
+            multisample: MultisampleState {
+                count: 4,
+                ..Default::default()
+            },
             zero_initialize_workgroup_memory: true,
         };
 

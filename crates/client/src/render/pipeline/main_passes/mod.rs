@@ -6,9 +6,7 @@ pub mod transparent_pass;
 use shared_resources::{
     CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout, TextureArrayBindGroupLayout,
 };
-pub use shared_resources::{
-    CentralCameraViewUniform, EnvironmentUniforms, MAIN_DEPTH_FORMAT, MainDepthTextureResource,
-};
+pub use shared_resources::{CentralCameraViewUniform, EnvironmentUniforms, MAIN_DEPTH_FORMAT};
 
 // INFO: ---------------------------
 //         plugin definition
@@ -18,8 +16,7 @@ use crate::render::pipeline::main_passes::{
     bounding_box_pass::WireframeRenderPassPlugin,
     opaque_pass::OpaqueRenderPassPlugin,
     shared_resources::{
-        resize_main_depth_texture_system, update_camera_view_buffer_system,
-        update_environment_uniform_buffer_system,
+        update_camera_view_buffer_system, update_environment_uniform_buffer_system,
     },
     transparent_pass::TransparentRenderPassPlugin,
 };
@@ -40,7 +37,6 @@ impl Plugin for PlayerCentricRenderPassPlugin {
         app.add_systems(
             Render,
             (
-                resize_main_depth_texture_system,
                 update_camera_view_buffer_system,
                 update_environment_uniform_buffer_system,
                 shared_resources::prepare_texture_array_system,
@@ -68,7 +64,6 @@ impl Plugin for PlayerCentricRenderPassPlugin {
         app.init_resource::<EnvironmentBindGroupLayout>();
         app.init_resource::<EnvironmentUniforms>();
         app.init_resource::<TextureArrayBindGroupLayout>();
-        app.init_resource::<MainDepthTextureResource>();
 
         app.init_resource::<CentralCameraViewUniform>();
     }

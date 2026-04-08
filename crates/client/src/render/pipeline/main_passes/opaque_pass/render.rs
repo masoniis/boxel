@@ -9,40 +9,40 @@ use crate::render::{
             queue::Opaque3dRenderPhase,
             startup::{OpaquePipelines, OpaqueRenderMode},
         },
-        shared_resources::{
-            CentralCameraViewUniform, EnvironmentUniforms,
-            main_depth_texture::MainDepthTextureResource,
-        },
+        shared_resources::{CentralCameraViewUniform, EnvironmentUniforms},
     },
 };
 use bevy::ecs::prelude::*;
 use bevy::ecs::query::QueryItem;
 use bevy::render::render_graph::{NodeRunError, RenderGraphContext, ViewNode};
 use bevy::render::render_resource::{
-    LoadOp, Operations, PipelineCache, RenderPassColorAttachment, RenderPassDepthStencilAttachment,
-    RenderPassDescriptor, StoreOp,
+    LoadOp, Operations, PipelineCache, RenderPassDepthStencilAttachment, RenderPassDescriptor,
+    StoreOp,
 };
 use bevy::render::renderer::RenderContext;
-use bevy::render::view::ViewTarget;
+use bevy::render::view::{ViewDepthTexture, ViewTarget};
 
 #[derive(Default)]
 pub struct OpaquePassRenderNode;
 
 impl ViewNode for OpaquePassRenderNode {
-    type ViewQuery = (&'static ViewTarget, &'static Opaque3dRenderPhase);
+    type ViewQuery = (
+        &'static ViewTarget,
+        &'static Opaque3dRenderPhase,
+        &'static ViewDepthTexture,
+    );
 
     #[instrument(skip_all, name = "opaque_pass_render_node")]
     fn run(
         &self,
         _graph: &mut RenderGraphContext,
         render_context: &mut RenderContext,
-        (view_target, phase): QueryItem<Self::ViewQuery>,
+        (view_target, phase, depth_texture): QueryItem<Self::ViewQuery>,
         world: &World,
     ) -> Result<(), NodeRunError> {
         // INFO: -------------------------------------
         //         collect rendering resources
         // -------------------------------------------
-
         let (
             Some(mesh_storage),
             Some(view_buffer),
@@ -66,13 +66,7 @@ impl ViewNode for OpaquePassRenderNode {
             return Ok(());
         };
 
-        // Get depth texture (assuming it's still globally available for now)
-        let Some(depth_texture) = world.get_resource::<MainDepthTextureResource>() else {
-            return Ok(());
-        };
-
         let skybox_pipeline = pipeline_cache.get_render_pipeline(pipelines.skybox_id);
-
         let active_pipeline = match *render_mode {
             OpaqueRenderMode::Fill => pipeline_cache.get_render_pipeline(pipelines.fill_id),
             OpaqueRenderMode::Wireframe => {
@@ -80,7 +74,6 @@ impl ViewNode for OpaquePassRenderNode {
             }
         };
 
-        // If pipelines aren't ready, skip
         if skybox_pipeline.is_none() || active_pipeline.is_none() {
             return Ok(());
         }
@@ -88,23 +81,14 @@ impl ViewNode for OpaquePassRenderNode {
         // INFO: --------------------------------
         //         set up the render pass
         // --------------------------------------
-
         let mut render_pass =
             render_context
                 .command_encoder()
                 .begin_render_pass(&RenderPassDescriptor {
                     label: Some("Opaque Pass"),
-                    color_attachments: &[Some(RenderPassColorAttachment {
-                        view: view_target.main_texture_view(),
-                        resolve_target: None,
-                        ops: Operations {
-                            load: LoadOp::Load,
-                            store: StoreOp::Store,
-                        },
-                        depth_slice: None,
-                    })],
+                    color_attachments: &[Some(view_target.get_color_attachment())],
                     depth_stencil_attachment: Some(RenderPassDepthStencilAttachment {
-                        view: &depth_texture.view,
+                        view: depth_texture.view(),
                         depth_ops: Some(Operations {
                             load: LoadOp::Clear(0.0),
                             store: StoreOp::Store,
@@ -121,14 +105,12 @@ impl ViewNode for OpaquePassRenderNode {
         render_pass.set_pipeline(skybox_pipeline.unwrap());
         render_pass.set_bind_group(0, &view_buffer.bind_group, &[]);
         render_pass.set_bind_group(1, &skybox_params.bind_group, &[]);
-
         render_pass.draw(0..6, 0..1);
 
         // INFO: -----------------------------------------
         //         mesh pipeline: iterate and draw
         // -----------------------------------------------
         render_pass.set_pipeline(active_pipeline.unwrap());
-
         render_pass.set_bind_group(0, &view_buffer.bind_group, &[]);
         render_pass.set_bind_group(1, &skybox_params.bind_group, &[]);
         render_pass.set_bind_group(2, &material_bind_group.bind_group, &[]);

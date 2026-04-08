@@ -4,10 +4,7 @@ use crate::render::pipeline::main_passes::shared_resources::TextureArrayUniforms
 use crate::render::{
     data::RenderMeshStorageResource,
     pipeline::main_passes::{
-        shared_resources::{
-            CentralCameraViewUniform, EnvironmentUniforms,
-            main_depth_texture::MainDepthTextureResource,
-        },
+        shared_resources::{CentralCameraViewUniform, EnvironmentUniforms},
         transparent_pass::{
             extract::TransparentRenderMeshComponent, queue::Transparent3dRenderPhase,
             startup::TransparentPipeline,
@@ -18,24 +15,28 @@ use bevy::ecs::prelude::*;
 use bevy::ecs::query::QueryItem;
 use bevy::render::render_graph::{NodeRunError, RenderGraphContext, ViewNode};
 use bevy::render::render_resource::{
-    LoadOp, Operations, PipelineCache, RenderPassColorAttachment, RenderPassDepthStencilAttachment,
-    RenderPassDescriptor, StoreOp,
+    LoadOp, Operations, PipelineCache, RenderPassDepthStencilAttachment, RenderPassDescriptor,
+    StoreOp,
 };
 use bevy::render::renderer::RenderContext;
-use bevy::render::view::ViewTarget;
+use bevy::render::view::{ViewDepthTexture, ViewTarget};
 
 #[derive(Default)]
 pub struct TransparentPassRenderNode;
 
 impl ViewNode for TransparentPassRenderNode {
-    type ViewQuery = (&'static ViewTarget, &'static Transparent3dRenderPhase);
+    type ViewQuery = (
+        &'static ViewTarget,
+        &'static Transparent3dRenderPhase,
+        &'static ViewDepthTexture,
+    );
 
     #[instrument(skip_all, name = "transparent_pass_render_node")]
     fn run(
         &self,
         _graph: &mut RenderGraphContext,
         render_context: &mut RenderContext,
-        (view_target, phase): QueryItem<Self::ViewQuery>,
+        (view_target, phase, depth_texture): QueryItem<Self::ViewQuery>,
         world: &World,
     ) -> Result<(), NodeRunError> {
         // INFO: -------------------------------------
@@ -63,11 +64,6 @@ impl ViewNode for TransparentPassRenderNode {
             return Ok(());
         };
 
-        // Get depth texture (assuming it's still globally available for now)
-        let Some(depth_texture) = world.get_resource::<MainDepthTextureResource>() else {
-            return Ok(());
-        };
-
         let pipeline = pipeline_cache.get_render_pipeline(pipeline_res.pipeline_id);
         if pipeline.is_none() {
             return Ok(());
@@ -82,17 +78,9 @@ impl ViewNode for TransparentPassRenderNode {
                 .command_encoder()
                 .begin_render_pass(&RenderPassDescriptor {
                     label: Some("Transparent Render Pass"),
-                    color_attachments: &[Some(RenderPassColorAttachment {
-                        view: view_target.main_texture_view(),
-                        resolve_target: None,
-                        ops: Operations {
-                            load: LoadOp::Load, // Load the existing frame
-                            store: StoreOp::Store,
-                        },
-                        depth_slice: None,
-                    })],
+                    color_attachments: &[Some(view_target.get_color_attachment())],
                     depth_stencil_attachment: Some(RenderPassDepthStencilAttachment {
-                        view: &depth_texture.view,
+                        view: depth_texture.view(),
                         depth_ops: Some(Operations {
                             load: LoadOp::Load, // Load the depth buffer
                             store: StoreOp::Store,

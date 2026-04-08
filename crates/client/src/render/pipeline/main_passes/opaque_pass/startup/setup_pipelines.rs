@@ -3,7 +3,7 @@ use crate::render::pipeline::{
     gpu_resources::world_uniforms::ChunkStorageBindGroupLayout,
     main_passes::shared_resources::{
         CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout, TextureArrayBindGroupLayout,
-        main_depth_texture::MAIN_DEPTH_FORMAT,
+        MAIN_DEPTH_FORMAT,
     },
     shader_registry::{
         OPAQUE_FRAG_SHADER_HANDLE, OPAQUE_VERT_SHADER_HANDLE, SKYBOX_FRAG_SHADER_HANDLE,
@@ -104,7 +104,10 @@ impl FromWorld for OpaquePipelines {
                 ..Default::default()
             },
             depth_stencil: opaque_depth_stencil.clone(),
-            multisample: MultisampleState::default(),
+            multisample: MultisampleState {
+                count: 4,
+                ..Default::default()
+            },
             zero_initialize_workgroup_memory: true,
         };
 
@@ -141,7 +144,10 @@ impl FromWorld for OpaquePipelines {
                 ..Default::default()
             },
             depth_stencil: opaque_depth_stencil,
-            multisample: MultisampleState::default(),
+            multisample: MultisampleState {
+                count: 4,
+                ..Default::default()
+            },
             zero_initialize_workgroup_memory: true,
         };
 
@@ -184,7 +190,10 @@ impl FromWorld for OpaquePipelines {
                 ..Default::default()
             },
             depth_stencil: skybox_depth_stencil,
-            multisample: MultisampleState::default(),
+            multisample: MultisampleState {
+                count: 4,
+                ..Default::default()
+            },
             zero_initialize_workgroup_memory: true,
         };
 
