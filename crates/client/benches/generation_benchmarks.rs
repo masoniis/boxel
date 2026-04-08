@@ -2,16 +2,15 @@ use bevy::ecs::prelude::World;
 use client::prelude::*;
 use client::render::texture::VoxelTextureProcessor;
 use client::settings::ClientSettings;
-use criterion::{criterion_group, criterion_main, Criterion};
+use criterion::{Criterion, criterion_group, criterion_main};
 use shared::simulation::{
     biome::biome_registry::BiomeRegistryResource,
     block::{BlockRegistryResource, SOLID_BLOCK_ID},
     chunk::{
-        build_chunk_mesh,
+        ChunkDataOption, NeighborLODs, PaddedChunk, build_chunk_mesh,
         components::{ChunkBlocksComponent, ChunkCoord},
         thread_buffer_pool::acquire_buffer,
         types::ChunkLod,
-        ChunkDataOption, NeighborLODs, PaddedChunk,
     },
     terrain::{
         BasicBiomeGenerator, BiomeGenerator, BiomeMapComponent, BiomeResultBuilder,

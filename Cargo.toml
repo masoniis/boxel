@@ -42,7 +42,7 @@ debug = false
 # --------------------------------------
 
 time = { version = "0.3.43", features = ["formatting", "macros"] }
-tracing = { version = "0.1.41", features = ["release_max_level_warn"] }
+tracing = { version = "0.1.41", features = ["release_max_level_info"] }
 tracing-subscriber = { version = "0.3.20", features = [
   "time",
   "local-time",
