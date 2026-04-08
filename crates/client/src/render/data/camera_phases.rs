@@ -1,9 +1,10 @@
 use crate::render::pipeline::main_passes::{
-    opaque_pass::queue::Opaque3dRenderPhase, transparent_pass::queue::Transparent3dRenderPhase,
+    bounding_box_pass::queue::BoundingBoxPhase, opaque_pass::queue::Opaque3dRenderPhase,
+    transparent_pass::queue::Transparent3dRenderPhase,
 };
 use bevy::prelude::*;
-use bevy::render::Extract;
 use bevy::render::sync_world::RenderEntity;
+use bevy::render::Extract;
 
 /// System to extract active 3D cameras and initialize their custom render phases.
 pub fn extract_custom_camera_phases_system(
@@ -17,6 +18,7 @@ pub fn extract_custom_camera_phases_system(
             commands.entity(render_entity.id()).insert((
                 Opaque3dRenderPhase::default(),
                 Transparent3dRenderPhase::default(),
+                BoundingBoxPhase::default(),
             ));
         }
     }
