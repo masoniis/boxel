@@ -7,7 +7,7 @@ pub use movement::*;
 // -----------------------------
 
 use bevy::prelude::{App, IntoScheduleConfigs, Plugin, Startup, Update, in_state};
-use shared::ecs_core::AppState;
+use crate::state::ClientAppState;
 use shared::simulation::player::initialize_camera::spawn_camera_system;
 
 pub struct CameraPlugin;
@@ -20,7 +20,7 @@ impl Plugin for CameraPlugin {
             Update,
             (camera_movement_system, update_camera_chunk_chord_system)
                 .chain()
-                .run_if(in_state(AppState::Running)),
+                .run_if(in_state(ClientAppState::Running)),
         );
     }
 }

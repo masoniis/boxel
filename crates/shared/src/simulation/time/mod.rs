@@ -10,7 +10,7 @@ use world_clock::{jump_world_clock_backwards_system, jump_world_clock_forward_sy
 //         Time plugin
 // ---------------------------
 
-use crate::ecs_core::AppState;
+use crate::state::SimulationState;
 use crate::simulation::{
     input::{resources::ActionStateResource, types::simulation_action::SimulationAction},
     time::{
@@ -31,13 +31,13 @@ impl Plugin for TimeControlPlugin {
         // Maintain a clock that tracks frame time and provides timing info
         app.insert_resource(FrameClock::default()).add_systems(
             PreUpdate,
-            (update_frame_clock_system).run_if(in_state(AppState::Running)),
+            (update_frame_clock_system).run_if(in_state(SimulationState::Running)),
         );
 
         // Trigger the simulation ticks when appropriate
         app.insert_resource(SimulationTick::default()).add_systems(
             Update,
-            run_fixed_update_schedule.run_if(in_state(AppState::Running)),
+            run_fixed_update_schedule.run_if(in_state(SimulationState::Running)),
         );
 
         // Maintain world clock that depends on ticks rather that frames

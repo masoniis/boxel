@@ -17,16 +17,17 @@ use client::{
         texture::{BlockTextureArray, VoxelTextureProcessor},
     },
     showcase::ShowcasePlugin,
+    state::ClientLifecyclePlugin,
     ui::VantablockUiPlugin,
 };
 use shared::{
     ecs_core::LoadingTracker,
     simulation::{
-        app_lifecycle::AppLifecyclePlugin,
         asset::AssetPlugin as SimulationAssetPlugin,
         biome::BiomePlugin,
         block::{BlockPlugin, BlockRegistryResource},
         chunk::ChunkLoadingPlugin,
+        lifecycle::SimulationLifecyclePlugin,
         scheduling::{FixedUpdateSet, RenderPrepSet},
         terrain::TerrainGenerationPlugin,
         time::TimeControlPlugin,
@@ -78,11 +79,12 @@ fn main() {
     // initialize simulation and renderer
     app.add_plugins((
         // client-specific simulation
+        ClientLifecyclePlugin,
         InputModulePlugin,
         PlayerPlugin,
         ShowcasePlugin,
         // shared simulation
-        AppLifecyclePlugin,
+        SimulationLifecyclePlugin,
         SimulationAssetPlugin,
         BiomePlugin,
         BlockPlugin,
