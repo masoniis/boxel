@@ -1,8 +1,12 @@
 use crate::state::enums::{ClientAppState, ClientGameState};
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
-use shared::load::{
-    master_finalize_loading_system, reset_loading_tracker_system, LoadingTracker, OnLoadComplete,
+use shared::{
+    load::{
+        master_finalize_loading_system, reset_loading_tracker_system, LoadingTracker,
+        OnLoadComplete,
+    },
+    FixedUpdateSet, RenderPrepSet,
 };
 
 pub struct ClientLifecyclePlugin;
@@ -13,6 +17,21 @@ impl Plugin for ClientLifecyclePlugin {
         app.add_systems(
             OnExit(ClientAppState::StartingUp),
             reset_loading_tracker_system,
+        );
+
+        // configure system sets to be state-bound
+        app.configure_sets(
+            FixedUpdate,
+            (FixedUpdateSet::PreUpdate, FixedUpdateSet::MainLogic).run_if(
+                in_state(ClientGameState::Playing).or(in_state(ClientGameState::Connecting)),
+            ),
+        );
+
+        app.configure_sets(
+            PostUpdate,
+            RenderPrepSet.run_if(
+                in_state(ClientGameState::Playing).or(in_state(ClientGameState::Connecting)),
+            ),
         );
 
         // INFO: ---------------------------
