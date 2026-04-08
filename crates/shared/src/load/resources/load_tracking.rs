@@ -7,7 +7,6 @@ use std::sync::{Arc, Mutex};
 #[derive(Default)]
 struct LoadingTrackerInner {
     pub is_simulation_ready: bool,
-    pub is_renderer_ready: bool,
 }
 
 #[derive(Resource, Clone, Default)]
@@ -26,7 +25,6 @@ impl LoadingTracker {
     pub fn reset(&self) {
         let mut guard = self.inner.lock().unwrap();
         guard.is_simulation_ready = false;
-        guard.is_renderer_ready = false;
     }
 
     pub fn set_simulation_ready(&self, is_ready: bool) {

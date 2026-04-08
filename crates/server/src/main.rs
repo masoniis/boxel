@@ -5,7 +5,7 @@ use bevy::{
     prelude::{PluginGroup, default, info},
 };
 use shared::{
-    ecs_core::LoadingTracker,
+    load::LoadingTracker,
     simulation::{
         asset::AssetPlugin as SimulationAssetPlugin, biome::BiomePlugin, block::BlockPlugin,
         chunk::ChunkLoadingPlugin, lifecycle::SimulationLifecyclePlugin,

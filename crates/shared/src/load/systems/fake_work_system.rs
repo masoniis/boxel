@@ -1,7 +1,5 @@
 use crate::{
-    ecs_core::async_loading::loading_task::{
-        SimulationWorldLoadingTaskComponent, TaskResultCallback,
-    },
+    load::{SimulationWorldLoadingTaskComponent, TaskResultCallback},
     prelude::*,
 };
 use bevy::ecs::system::Commands;

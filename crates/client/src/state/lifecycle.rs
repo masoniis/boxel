@@ -1,6 +1,6 @@
 use bevy::prelude::*;
-use shared::ecs_core::async_loading::{
-    OnLoadComplete, master_finalize_loading_system, poll_simulation_loading_tasks,
+use shared::load::{
+    OnLoadComplete, master_finalize_loading_system,
     reset_loading_tracker_system,
 };
 use crate::state::enums::{ClientAppState, ClientGameState};
@@ -9,12 +9,6 @@ pub struct ClientLifecyclePlugin;
 
 impl Plugin for ClientLifecyclePlugin {
     fn build(&self, app: &mut App) {
-        // polling systems and tracking load state
-        app.add_systems(
-            Update,
-            (poll_simulation_loading_tasks.run_if(in_state(ClientAppState::StartingUp)),),
-        );
-
         // load cleanup to run after transitions
         app.add_systems(OnExit(ClientAppState::StartingUp), reset_loading_tracker_system);
 

@@ -1,4 +1,4 @@
-pub mod ecs_core;
+pub mod load;
 pub mod prelude;
 pub mod simulation;
 pub mod state;

@@ -1,5 +1,5 @@
 use crate::{
-    ecs_core::async_loading::{LoadingTracker, OnLoadComplete},
+    load::{LoadingTracker, OnLoadComplete},
     prelude::*,
 };
 use bevy::ecs::prelude::*;

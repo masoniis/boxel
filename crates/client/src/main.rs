@@ -21,7 +21,7 @@ use client::{
     ui::VantablockUiPlugin,
 };
 use shared::{
-    ecs_core::LoadingTracker,
+    load::LoadingTracker,
     simulation::{
         asset::AssetPlugin as SimulationAssetPlugin,
         biome::BiomePlugin,
