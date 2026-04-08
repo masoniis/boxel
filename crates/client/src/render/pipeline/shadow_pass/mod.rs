@@ -14,8 +14,8 @@ use bevy::prelude::IntoScheduleConfigs;
 use bevy::render::render_graph::{RenderGraphExt, ViewNodeRunner};
 use bevy::render::{Render, RenderSystems};
 use gpu_resources::{
-    shadow_view_uniform::ShadowViewBindGroupLayout, ShadowDepthTextureResource, ShadowPassPipeline,
-    ShadowViewBuffer,
+    ShadowDepthTextureResource, ShadowPassPipeline, ShadowViewBuffer,
+    shadow_view_uniform::ShadowViewBindGroupLayout,
 };
 
 pub struct ShadowRenderPassPlugin;

@@ -4,5 +4,6 @@ pub mod prelude;
 pub mod render;
 pub mod settings;
 pub mod showcase;
+pub mod ui;
 
 pub use prelude::*;

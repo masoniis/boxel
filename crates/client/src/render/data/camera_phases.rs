@@ -3,8 +3,8 @@ use crate::render::pipeline::main_passes::{
     transparent_pass::queue::Transparent3dRenderPhase,
 };
 use bevy::prelude::*;
-use bevy::render::sync_world::RenderEntity;
 use bevy::render::Extract;
+use bevy::render::sync_world::RenderEntity;
 
 /// System to extract active 3D cameras and initialize their custom render phases.
 pub fn extract_custom_camera_phases_system(

@@ -10,7 +10,7 @@ pub use render::BoundingBoxNode;
 // ---------------------------------
 
 use crate::{
-    render::pipeline::main_passes::bounding_box_pass::queue::queue_wireframe_system, VantablockNode,
+    VantablockNode, render::pipeline::main_passes::bounding_box_pass::queue::queue_wireframe_system,
 };
 use bevy::core_pipeline::core_3d;
 use bevy::prelude::{App, IntoScheduleConfigs, Plugin};
@@ -20,8 +20,8 @@ use bevy::render::{
     {Render, RenderSystems},
 };
 use gpu_resources::{
-    object_binding::WireframeObjectBindGroupLayout, UnitCubeMesh, WireframeObjectBuffer,
-    WireframePipeline,
+    UnitCubeMesh, WireframeObjectBuffer, WireframePipeline,
+    object_binding::WireframeObjectBindGroupLayout,
 };
 
 pub struct WireframeRenderPassPlugin;

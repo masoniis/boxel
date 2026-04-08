@@ -12,10 +12,10 @@ use startup::TransparentPipeline;
 // ---------------------------------
 
 use crate::{
+    VantablockNode,
     render::pipeline::main_passes::transparent_pass::{
         prepare::prepare_transparent_meshes_system, queue::queue_and_prepare_transparent_system,
     },
-    VantablockNode,
 };
 use bevy::prelude::IntoScheduleConfigs;
 use bevy::{

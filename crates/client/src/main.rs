@@ -3,8 +3,8 @@ use bevy::{
     asset::Assets,
     log::LogPlugin,
     prelude::{
-        AssetPlugin, DefaultPlugins, Image, IntoScheduleConfigs, PluginGroup, Window, WindowPlugin,
-        World, default, info,
+        default, info, AssetPlugin, DefaultPlugins, Image, IntoScheduleConfigs, PluginGroup,
+        Window, WindowPlugin, World,
     },
     window::WindowResolution,
 };
@@ -13,10 +13,11 @@ use client::{
     player::PlayerPlugin,
     prelude::*,
     render::{
-        VantablockRenderPlugin,
         texture::{BlockTextureArray, VoxelTextureProcessor},
+        VantablockRenderPlugin,
     },
     showcase::ShowcasePlugin,
+    ui::VantablockUiPlugin,
 };
 use shared::{
     ecs_core::LoadingTracker,
@@ -41,7 +42,11 @@ fn main() {
     let mut app = App::new();
 
     // resolve platform paths
-    let persistent_paths = PersistentPaths::resolve();
+    let persistent_paths = if cfg!(debug_assertions) {
+        PersistentPaths::resolve_dev()
+    } else {
+        PersistentPaths::resolve()
+    };
 
     // config of default bevy plugins
     app.add_plugins(
@@ -89,6 +94,7 @@ fn main() {
         TerrainGenerationPlugin,
         TimeControlPlugin,
         // rendering
+        VantablockUiPlugin,
         VantablockRenderPlugin,
     ));
 

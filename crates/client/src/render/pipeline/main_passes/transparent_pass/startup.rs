@@ -1,6 +1,6 @@
 use super::super::shared_resources::{
-    CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout, TextureArrayBindGroupLayout,
-    MAIN_DEPTH_FORMAT,
+    CentralCameraViewBindGroupLayout, EnvironmentBindGroupLayout, MAIN_DEPTH_FORMAT,
+    TextureArrayBindGroupLayout,
 };
 use crate::render::pipeline::{
     gpu_resources::world_uniforms::ChunkStorageBindGroupLayout,

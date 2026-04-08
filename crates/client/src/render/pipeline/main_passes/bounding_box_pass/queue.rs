@@ -4,8 +4,8 @@ use crate::{
         pipeline::main_passes::bounding_box_pass::{
             extract::WireframeToggleState,
             gpu_resources::{
-                object_binding::WireframeObjectBindGroupLayout, wireframe_pipeline::*,
                 WireframeObjectBuffer, WireframeObjectData,
+                object_binding::WireframeObjectBindGroupLayout, wireframe_pipeline::*,
             },
         },
         types::RenderTransformComponent,

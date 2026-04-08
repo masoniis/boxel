@@ -65,11 +65,10 @@ offset-allocator = "0.2.0"                                                   # g
 # --------------------------------
 
 bevy = { version = "0.18.1", default-features = false, features = [
-  "default_app",
-  "default_platform",
+  "default_app",      # core app/ecs/etc
+  "default_platform", # core OS features, windowing, input, etc
   "3d_bevy_render",
-  "ui_api",
-  "bevy_render",
+  "ui_bevy_render",
   "bevy_asset",
   "bevy_state",
 ] }

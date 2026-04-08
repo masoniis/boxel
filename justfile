@@ -16,7 +16,7 @@ default: run
 
 # runs the client via debug profile
 run *args:
-    cargo run -p {{client}} --features {{args}}
+    cargo run -p {{client}} {{args}}
 
 # runs the server via debug profile
 server *args:

@@ -1,10 +1,10 @@
 use crate::render::types::RenderTransformComponent;
 use bevy::asset::Handle;
 use bevy::ecs::prelude::*;
-use bevy::render::sync_world::RenderEntity;
 use bevy::render::Extract;
+use bevy::render::sync_world::RenderEntity;
 use shared::simulation::asset::VoxelMeshAsset;
-use shared::simulation::chunk::{mesh::TransparentMeshComponent, TransformComponent};
+use shared::simulation::chunk::{TransformComponent, mesh::TransparentMeshComponent};
 
 // INFO: -------------------------------
 //         render app components

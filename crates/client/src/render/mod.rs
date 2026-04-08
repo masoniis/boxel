@@ -13,12 +13,12 @@ pub use data::*;
 use crate::prelude::*;
 use crate::render::{
     pipeline::{
+        RenderGraphEdgesPlugin, WorldRenderPassesPlugin,
         main_passes::{
             bounding_box_pass::extract::WireframeToggleState,
             opaque_pass::{extract::extract_opaque_meshes, startup::OpaqueRenderMode},
             transparent_pass::extract::extract_transparent_meshes,
         },
-        RenderGraphEdgesPlugin, WorldRenderPassesPlugin,
     },
     texture::BlockTextureArray,
 };
@@ -27,8 +27,8 @@ use bevy::{
     asset::AssetApp,
     prelude::{Add, Commands, On},
     render::{
-        extract_resource::ExtractResourcePlugin, sync_world::SyncToRenderWorld, ExtractSchedule,
-        RenderApp,
+        ExtractSchedule, RenderApp, extract_resource::ExtractResourcePlugin,
+        sync_world::SyncToRenderWorld,
     },
 };
 use shared::simulation::{
