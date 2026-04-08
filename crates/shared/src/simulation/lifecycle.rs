@@ -25,7 +25,10 @@ impl Plugin for SimulationLifecyclePlugin {
         );
 
         // load cleanup to run after transitions
-        app.add_systems(OnExit(SimulationState::Loading), reset_loading_tracker_system);
+        app.add_systems(
+            OnExit(SimulationState::Loading),
+            reset_loading_tracker_system,
+        );
 
         // systems to ensure rigidity
         app.add_systems(Startup, start_fake_work_system);
@@ -37,9 +40,7 @@ impl Plugin for SimulationLifecyclePlugin {
 
         app.add_systems(
             Update,
-            (
-                master_finalize_loading_system::<SimulationState>,
-            )
+            (master_finalize_loading_system::<SimulationState>,)
                 .run_if(in_state(SimulationState::Loading)),
         );
 

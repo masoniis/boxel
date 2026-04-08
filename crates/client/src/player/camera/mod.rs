@@ -6,8 +6,8 @@ pub use movement::*;
 //         camera plugin
 // -----------------------------
 
-use bevy::prelude::{App, IntoScheduleConfigs, Plugin, Startup, Update, in_state};
 use crate::state::ClientAppState;
+use bevy::prelude::{App, IntoScheduleConfigs, Plugin, Startup, Update, in_state};
 use shared::simulation::player::initialize_camera::spawn_camera_system;
 
 pub struct CameraPlugin;

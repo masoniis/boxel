@@ -1,5 +1,5 @@
-use bevy::prelude::*;
 use crate::state::ClientAppState;
+use bevy::prelude::*;
 
 pub mod systems;
 

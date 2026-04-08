@@ -1,16 +1,16 @@
-use bevy::prelude::*;
-use shared::load::{
-    OnLoadComplete, master_finalize_loading_system,
-    reset_loading_tracker_system,
-};
 use crate::state::enums::{ClientAppState, ClientGameState};
+use bevy::prelude::*;
+use shared::load::{OnLoadComplete, master_finalize_loading_system, reset_loading_tracker_system};
 
 pub struct ClientLifecyclePlugin;
 
 impl Plugin for ClientLifecyclePlugin {
     fn build(&self, app: &mut App) {
         // load cleanup to run after transitions
-        app.add_systems(OnExit(ClientAppState::StartingUp), reset_loading_tracker_system);
+        app.add_systems(
+            OnExit(ClientAppState::StartingUp),
+            reset_loading_tracker_system,
+        );
 
         // INFO: ---------------------------
         //         state transitions

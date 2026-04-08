@@ -1,9 +1,9 @@
-pub mod lifecycle;
 pub mod asset;
 pub mod biome;
 pub mod block;
 pub mod chunk;
 pub mod input;
+pub mod lifecycle;
 pub mod player;
 pub mod scheduling;
 pub mod terrain;

@@ -26,7 +26,6 @@ bytemuck = { workspace = true } # gpu friendly data
 # --------------------------------
 
 bevy = { workspace = true }
-rayon = { workspace = true }        # multi threaded pooling
 futures-lite = { workspace = true } # future utils
 
 # INFO: ---------------

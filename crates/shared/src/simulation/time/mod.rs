@@ -10,7 +10,6 @@ use world_clock::{jump_world_clock_backwards_system, jump_world_clock_forward_sy
 //         Time plugin
 // ---------------------------
 
-use crate::state::SimulationState;
 use crate::simulation::{
     input::{resources::ActionStateResource, types::simulation_action::SimulationAction},
     time::{
@@ -18,6 +17,7 @@ use crate::simulation::{
         simulation_tick::run_fixed_update_schedule, world_clock::update_world_clock_system,
     },
 };
+use crate::state::SimulationState;
 use bevy::{
     app::{App, FixedUpdate, Plugin, PreUpdate, Update},
     ecs::prelude::*,

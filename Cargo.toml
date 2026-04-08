@@ -72,7 +72,6 @@ bevy = { version = "0.18.1", default-features = false, features = [
   "bevy_asset",
   "bevy_state",
 ] }
-rayon = "1.11.0" # multi threaded pooling
 futures-lite = "2.6.1" # future utils
 
 # INFO: ---------------

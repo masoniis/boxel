@@ -13,6 +13,7 @@ use crate::simulation::{
     },
 };
 use bevy::ecs::prelude::*;
+use bevy::tasks::ComputeTaskPool;
 use crossbeam::channel::unbounded;
 
 /// A system that detects chunks marked as dirty and prepares them for re-meshing.
@@ -172,22 +173,26 @@ pub fn start_pending_meshing_tasks_system(
         trace!(target: "chunk_loading", "Starting meshing task for {}.", chunk_coord.pos);
 
         let (sender, receiver) = unbounded();
-        rayon::spawn(move || {
-            let buffer = acquire_buffer();
 
-            let padded_view = PaddedChunk::new(&chunks, center_lod, original_neighbor_lods, buffer);
+        ComputeTaskPool::get()
+            .spawn(async move {
+                let buffer = acquire_buffer();
 
-            let (opaque_mesh_option, transparent_mesh_option) = build_chunk_mesh(
-                &coord_clone.to_string(),
-                &padded_view,
-                &block_registry_clone,
-            );
+                let padded_view =
+                    PaddedChunk::new(&chunks, center_lod, original_neighbor_lods, buffer);
 
-            let used_buffer = padded_view.take_buffer();
-            release_buffer(used_buffer);
+                let (opaque_mesh_option, transparent_mesh_option) = build_chunk_mesh(
+                    &coord_clone.to_string(),
+                    &padded_view,
+                    &block_registry_clone,
+                );
 
-            let _ = sender.send((opaque_mesh_option, transparent_mesh_option));
-        });
+                let used_buffer = padded_view.take_buffer();
+                release_buffer(used_buffer);
+
+                let _ = sender.send((opaque_mesh_option, transparent_mesh_option));
+            })
+            .detach();
 
         // update entity and manager
         commands
