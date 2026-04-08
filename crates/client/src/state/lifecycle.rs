@@ -1,6 +1,9 @@
 use crate::state::enums::{ClientAppState, ClientGameState};
 use bevy::prelude::*;
-use shared::load::{OnLoadComplete, master_finalize_loading_system, reset_loading_tracker_system};
+use bevy::window::PrimaryWindow;
+use shared::load::{
+    master_finalize_loading_system, reset_loading_tracker_system, LoadingTracker, OnLoadComplete,
+};
 
 pub struct ClientLifecyclePlugin;
 
@@ -15,14 +18,15 @@ impl Plugin for ClientLifecyclePlugin {
         // INFO: ---------------------------
         //         state transitions
         // ---------------------------------
-        app.init_state::<ClientAppState>();
-        app.init_state::<ClientGameState>();
+        app.init_state::<ClientAppState>()
+            .add_sub_state::<ClientGameState>();
 
         app.add_systems(
             Update,
             (
                 master_finalize_loading_system::<ClientAppState>,
                 master_finalize_loading_system::<ClientGameState>,
+                show_window_when_ready,
             )
                 .run_if(in_state(ClientAppState::StartingUp)),
         );
@@ -31,5 +35,17 @@ impl Plugin for ClientLifecyclePlugin {
         // to running/playing once they finish.
         app.insert_resource(OnLoadComplete::new(ClientAppState::Running))
             .insert_resource(OnLoadComplete::new(ClientGameState::Playing));
+    }
+}
+
+/// A system that makes the window visible once the loading tracker reports readiness.
+fn show_window_when_ready(
+    mut query: Query<&mut Window, With<PrimaryWindow>>,
+    loading_tracker: Res<LoadingTracker>,
+) {
+    if loading_tracker.is_ready()
+        && let Ok(mut window) = query.single_mut()
+    {
+        window.visible = true;
     }
 }

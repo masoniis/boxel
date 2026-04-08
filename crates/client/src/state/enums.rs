@@ -1,9 +1,10 @@
 use bevy::prelude::{Resource, StateSet, States, SubStates};
+use bevy::render::extract_resource::ExtractResource;
 
 /// The state of the overall client app runtime.
 ///
 /// This represents the wrapping program itself, unrelated to game logic.
-#[derive(States, Resource, Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+#[derive(States, Resource, Debug, Clone, Copy, PartialEq, Eq, Hash, Default, ExtractResource)]
 pub enum ClientAppState {
     /// The client is loading up essential data. The app loop has not started.
     #[default]

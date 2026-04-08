@@ -1,7 +1,7 @@
 use bevy::ecs::prelude::SystemSet;
 
 // INFO: -------------------------
-//         Core scheduling
+//         core scheduling
 // -------------------------------
 
 /// The sets for the fixed timestep schedule.

@@ -54,6 +54,7 @@ fn main() {
                 primary_window: Some(Window {
                     title: "Vantablock".to_string(),
                     resolution: WindowResolution::new(1280, 720),
+                    visible: false,
                     ..default()
                 }),
                 ..default()
