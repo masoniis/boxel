@@ -4,23 +4,21 @@ pub mod scheduling;
 pub mod texture;
 pub mod types;
 
+pub use data::*;
+
 // INFO: --------------------------------
 //         render world interface
 // --------------------------------------
 
 use crate::prelude::*;
 use crate::render::{
-    data::{
-        ExtractedSun, MeshesToUploadQueue, RenderMeshStorageResource, RenderTimeResource,
-        SimulationExtractionPlugin,
-    },
     pipeline::{
-        RenderGraphEdgesPlugin, WorldRenderPassesPlugin,
         main_passes::{
             bounding_box_pass::extract::WireframeToggleState,
             opaque_pass::{extract::extract_opaque_meshes, startup::OpaqueRenderMode},
             transparent_pass::extract::extract_transparent_meshes,
         },
+        RenderGraphEdgesPlugin, WorldRenderPassesPlugin,
     },
     texture::BlockTextureArray,
 };
@@ -29,8 +27,8 @@ use bevy::{
     asset::AssetApp,
     prelude::{Add, Commands, On},
     render::{
-        ExtractSchedule, RenderApp, extract_resource::ExtractResourcePlugin,
-        sync_world::SyncToRenderWorld,
+        extract_resource::ExtractResourcePlugin, sync_world::SyncToRenderWorld, ExtractSchedule,
+        RenderApp,
     },
 };
 use shared::simulation::{
@@ -62,11 +60,11 @@ impl Plugin for VantablockRenderPlugin {
             ExtractResourcePlugin::<BlockTextureArray>::default(),
         ));
 
-        // INFO: ----------------------------------------------------------------
-        //         Main World Synchronization
-        // ----------------------------------------------------------------------
+        // INFO: ------------------------------------
+        //         main world synchronization
+        // ------------------------------------------
 
-        // Register observers to mark mesh entities for synchronization to the render world
+        // register observers to mark mesh entities for synchronization to the render world
         app.add_observer(
             |add: On<Add, OpaqueMeshComponent>, mut commands: Commands| {
                 commands.entity(add.entity).insert(SyncToRenderWorld);
@@ -96,13 +94,13 @@ impl Plugin for VantablockRenderPlugin {
 
 /// Configures a sub-app with its base configuration, before graphics context is ready.
 pub fn pre_setup_render_sub_app(sub_app: &mut SubApp) {
-    // Resources for rendering
+    // resources for rendering
     sub_app
         .init_resource::<RenderTimeResource>()
         .init_resource::<RenderMeshStorageResource>()
         .init_resource::<MeshesToUploadQueue>();
 
-    // Specifically implemented plugins (These run strictly in the Render World)
+    // specifically implemented plugins (these run strictly in the Render World)
     sub_app.add_plugins((
         WorldRenderPassesPlugin,
         SimulationExtractionPlugin,

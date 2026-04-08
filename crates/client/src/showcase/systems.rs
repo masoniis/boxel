@@ -1,9 +1,8 @@
 use bevy::ecs::prelude::*;
 use bevy::math::{Quat, Vec3};
-use bevy::prelude::{Camera3d, Projection, Transform};
+use bevy::prelude::{Camera, Camera3d, Projection, Transform};
 use shared::simulation::input::resources::ActionStateResource;
 use shared::simulation::input::types::SimulationAction;
-use shared::simulation::player::active_camera::ActiveCamera;
 use shared::simulation::terrain::{ActiveTerrainGenerator, TerrainGeneratorLibrary};
 use shared::simulation::time::{WorldClockResource, world_clock::SECONDS_IN_A_DAY};
 use std::time::Duration;
@@ -77,8 +76,7 @@ const SHOWCASES: &[Showcase] = &[
 
 pub fn apply_showcase_system(
     action_state: Res<ActionStateResource>,
-    mut active_cam_q: Query<(&mut Transform, &Camera3d, &mut Projection)>,
-    active_camera: Res<ActiveCamera>,
+    mut active_cam_q: Query<(&mut Transform, &Camera, &mut Projection), With<Camera3d>>,
     mut active_generator: ResMut<ActiveTerrainGenerator>,
     terrain_gen_lib: Res<TerrainGeneratorLibrary>,
     mut world_clock: ResMut<WorldClockResource>,
@@ -112,7 +110,11 @@ pub fn apply_showcase_system(
     world_clock.time_of_day = Duration::from_secs_f32(SECONDS_IN_A_DAY * showcase.time_of_day);
 
     // set camera position and rotation
-    if let Ok((mut transform, _, _)) = active_cam_q.get_mut(active_camera.0) {
+    for (mut transform, camera, _) in active_cam_q.iter_mut() {
+        if !camera.is_active {
+            continue;
+        }
+
         transform.translation = showcase.position;
 
         // map yaw/pitch to Bevy rotation
@@ -124,8 +126,7 @@ pub fn apply_showcase_system(
 }
 
 pub fn apply_default_showcase_system(
-    mut active_cam_q: Query<(&mut Transform, &Camera3d, &mut Projection)>,
-    active_camera: Res<ActiveCamera>,
+    mut active_cam_q: Query<(&mut Transform, &Camera, &mut Projection), With<Camera3d>>,
     mut active_generator: ResMut<ActiveTerrainGenerator>,
     terrain_gen_lib: Res<TerrainGeneratorLibrary>,
     mut world_clock: ResMut<WorldClockResource>,
@@ -141,7 +142,11 @@ pub fn apply_default_showcase_system(
     world_clock.time_of_day = Duration::from_secs_f32(SECONDS_IN_A_DAY * showcase.time_of_day);
 
     // set camera position and rotation
-    if let Ok((mut transform, _, _)) = active_cam_q.get_mut(active_camera.0) {
+    for (mut transform, camera, _) in active_cam_q.iter_mut() {
+        if !camera.is_active {
+            continue;
+        }
+
         transform.translation = showcase.position;
 
         // map yaw/pitch to Bevy rotation

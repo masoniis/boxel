@@ -6,14 +6,15 @@ pub use movement::*;
 //         camera plugin
 // -----------------------------
 
-use bevy::prelude::{App, IntoScheduleConfigs, Plugin, Update, in_state};
+use bevy::prelude::{App, IntoScheduleConfigs, Plugin, Startup, Update, in_state};
 use shared::ecs_core::AppState;
+use shared::simulation::player::initialize_camera::spawn_camera_system;
 
 pub struct CameraPlugin;
 
 impl Plugin for CameraPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<shared::simulation::player::active_camera::ActiveCamera>();
+        app.add_systems(Startup, spawn_camera_system);
 
         app.add_systems(
             Update,

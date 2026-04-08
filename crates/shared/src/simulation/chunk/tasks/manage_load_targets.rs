@@ -1,13 +1,11 @@
 use crate::prelude::*;
-use crate::simulation::{
-    chunk::{
-        CheckForMeshing, ChunkCoord, ChunkLod, ChunkState, ChunkStateManager, LOAD_DISTANCE,
-        NeedsGenerating, RENDER_DISTANCE, WORLD_MAX_Y_CHUNK, WORLD_MIN_Y_CHUNK, WantsMeshing,
-    },
-    player::active_camera::ActiveCamera,
+use crate::simulation::chunk::{
+    CheckForMeshing, ChunkCoord, ChunkLod, ChunkState, ChunkStateManager, LOAD_DISTANCE,
+    NeedsGenerating, RENDER_DISTANCE, WORLD_MAX_Y_CHUNK, WORLD_MIN_Y_CHUNK, WantsMeshing,
 };
 use bevy::ecs::prelude::*;
 use bevy::math::IVec3;
+use bevy::prelude::{Camera, Camera3d};
 use std::collections::HashSet;
 
 /// Determines chunks to unload/load based on the camera position and render/loading distance.
@@ -16,14 +14,23 @@ use std::collections::HashSet;
 #[instrument(skip_all)]
 pub fn manage_distance_based_chunk_loading_targets_system(
     // Input
-    active_camera: Res<ActiveCamera>,
-    camera_query: Query<&ChunkCoord>,
+    camera_query: Query<(&Camera, &ChunkCoord), With<Camera3d>>,
 
     // Output
     mut chunk_manager: ResMut<ChunkStateManager>, // for marking loaded/unloaded
     mut commands: Commands,                       // for spawning chunk entities
 ) {
-    let camera_chunk_pos = camera_query.get(active_camera.0).unwrap().pos;
+    let mut active_camera_chunk_pos = None;
+    for (camera, chunk_coord) in camera_query.iter() {
+        if camera.is_active {
+            active_camera_chunk_pos = Some(chunk_coord.pos);
+            break;
+        }
+    }
+
+    let Some(camera_chunk_pos) = active_camera_chunk_pos else {
+        return;
+    };
 
     // desired chunks based on camera location for loading or meshing
     let mut desired_load_chunks = HashSet::new();

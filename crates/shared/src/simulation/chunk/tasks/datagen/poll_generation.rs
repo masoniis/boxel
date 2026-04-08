@@ -4,8 +4,8 @@ use crate::simulation::chunk::{
     WORLD_MIN_Y_CHUNK, WantsMeshing,
 };
 use crate::simulation::chunk::{ChunkCoord, ChunkStateManager};
-use crate::simulation::player::active_camera::ActiveCamera;
 use bevy::ecs::prelude::*;
+use bevy::prelude::{Camera, Camera3d};
 use crossbeam::channel::TryRecvError;
 
 /// Assesses whether a chunk coordinate is within the meshing radius of the camera.
@@ -25,14 +25,19 @@ pub fn chunk_is_in_mesh_radius(camera_chunk_pos: IVec3, chunk_coord: IVec3) -> b
 pub fn poll_chunk_generation_tasks(
     // Input
     mut tasks_query: Query<(Entity, &mut ChunkGenerationTaskComponent, &ChunkCoord)>,
-    active_camera: Res<ActiveCamera>, // to gauge if chunk is in meshing range
-    camera_query: Query<&ChunkCoord>,
+    camera_query: Query<(&Camera, &ChunkCoord), With<Camera3d>>,
 
     // Output
     mut commands: Commands,
     mut chunk_manager: ResMut<ChunkStateManager>,
 ) {
-    let camera_chunk_pos = camera_query.get(active_camera.0).map(|c| c.pos);
+    let mut active_camera_chunk_pos = None;
+    for (camera, chunk_coord) in camera_query.iter() {
+        if camera.is_active {
+            active_camera_chunk_pos = Some(chunk_coord.pos);
+            break;
+        }
+    }
 
     // poll all generation tasks
     for (entity, generation_task_component, coord) in tasks_query.iter_mut() {
@@ -43,7 +48,7 @@ pub fn poll_chunk_generation_tasks(
                     Some(ChunkState::Generating { entity: gen_entity }) if gen_entity == entity => {
                         if let Some(chunk_blocks) = gen_bundle.chunk_blocks {
                             let mut is_in_mesh_radius = false;
-                            if let Ok(cam_pos) = camera_chunk_pos {
+                            if let Some(cam_pos) = active_camera_chunk_pos {
                                 is_in_mesh_radius = chunk_is_in_mesh_radius(cam_pos, coord.pos);
                             }
 

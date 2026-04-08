@@ -22,26 +22,20 @@ use bevy::render::renderer::RenderContext;
 pub struct ShadowRenderPassNode;
 
 impl ViewNode for ShadowRenderPassNode {
-    type ViewQuery = ();
+    type ViewQuery = &'static Opaque3dRenderPhase;
 
     #[instrument(skip_all, name = "shadow_pass_render_node")]
     fn run(
         &self,
         _graph: &mut RenderGraphContext,
         render_context: &mut RenderContext,
-        _view_target: QueryItem<Self::ViewQuery>,
+        opaque_phase: QueryItem<Self::ViewQuery>,
         world: &World,
     ) -> Result<(), NodeRunError> {
-        // INFO: --------------------------------------
-        //          collect rendering resources
-        // --------------------------------------------
-
         let (
-            // shadow-specific stuff
             Some(pipeline_res),
             Some(shadow_view_buffer),
             Some(shadow_depth_texture),
-            // opaque mesh to base shadow depth on
             Some(mesh_storage),
             Some(chunk_memory_manager),
             Some(pipeline_cache),
@@ -57,32 +51,10 @@ impl ViewNode for ShadowRenderPassNode {
             return Ok(());
         };
 
-        // Get the phase from any view that has it.
-        let mut phase = None;
-        for archetype in world.archetypes().iter() {
-            if archetype.contains(world.components().get_id(std::any::TypeId::of::<Opaque3dRenderPhase>()).unwrap()) {
-                for entity in archetype.entities() {
-                    if let Some(p) = world.get::<Opaque3dRenderPhase>(entity.id()) {
-                        phase = Some(p);
-                        break;
-                    }
-                }
-            }
-            if phase.is_some() { break; }
-        }
-
-        let Some(phase) = phase else {
-            return Ok(());
-        };
-
         let pipeline = pipeline_cache.get_render_pipeline(pipeline_res.pipeline_id);
         if pipeline.is_none() {
             return Ok(());
         }
-
-        // INFO: --------------------------------
-        //         set up the render pass
-        // --------------------------------------
 
         let mut render_pass =
             render_context
@@ -102,16 +74,12 @@ impl ViewNode for ShadowRenderPassNode {
                     occlusion_query_set: None,
                 });
 
-        // INFO: -------------------------------------------
-        //         shadow pipeline: iterate and draw
-        // -------------------------------------------------
-
         render_pass.set_pipeline(pipeline.unwrap());
-
         render_pass.set_bind_group(0, &shadow_view_buffer.bind_group, &[]);
         render_pass.set_bind_group(1, &chunk_memory_manager.bind_group, &[]);
 
-        for item in phase.items.iter() {
+        // iterate directly over the phase passed into the method
+        for item in opaque_phase.items.iter() {
             if let Some(render_mesh_comp) = world.get::<OpaqueRenderMeshComponent>(item.entity)
                 && let Some(gpu_mesh) = mesh_storage.meshes.get(&render_mesh_comp.mesh_handle.id())
             {
