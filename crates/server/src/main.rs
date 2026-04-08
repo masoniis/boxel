@@ -1,16 +1,16 @@
 use bevy::{
-    MinimalPlugins,
     app::{App, ScheduleRunnerPlugin},
     asset::AssetPlugin,
-    prelude::{PluginGroup, default, info},
+    prelude::{default, info, PluginGroup},
+    MinimalPlugins,
 };
 use shared::{
     load::LoadingTracker,
     simulation::{
         asset::AssetPlugin as SimulationAssetPlugin, biome::BiomePlugin, block::BlockPlugin,
-        chunk::ChunkLoadingPlugin, lifecycle::SimulationLifecyclePlugin,
-        terrain::TerrainGenerationPlugin, time::TimeControlPlugin,
+        chunk::ChunkLoadingPlugin, terrain::TerrainGenerationPlugin, time::TimeControlPlugin,
     },
+    state::SimulationLifecyclePlugin,
 };
 use std::time::Duration;
 use utils::PersistentPaths;

@@ -29,11 +29,11 @@ use shared::{
         biome::BiomePlugin,
         block::{BlockPlugin, BlockRegistryResource},
         chunk::ChunkLoadingPlugin,
-        lifecycle::SimulationLifecyclePlugin,
         scheduling::{FixedUpdateSet, RenderPrepSet},
         terrain::TerrainGenerationPlugin,
         time::TimeControlPlugin,
     },
+    state::SimulationLifecyclePlugin,
 };
 use utils::PersistentPaths;
 
