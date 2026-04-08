@@ -1,6 +1,6 @@
 use crate::{
     prelude::*,
-    simulation::chunk::{ChunkCoord, CHUNK_SIDE_LENGTH},
+    simulation::chunk::{CHUNK_SIDE_LENGTH, ChunkCoord},
 };
 use bevy::ecs::prelude::*;
 use bevy::prelude::{Camera3d, Transform, Vec3};

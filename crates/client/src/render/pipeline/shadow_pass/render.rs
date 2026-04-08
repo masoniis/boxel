@@ -9,10 +9,8 @@ use crate::render::{
         ShadowDepthTextureResource, ShadowPassPipeline, ShadowViewBuffer,
     },
 };
-
 use bevy::ecs::prelude::*;
 use bevy::ecs::query::QueryItem;
-
 use bevy::render::render_graph::{NodeRunError, RenderGraphContext, ViewNode};
 use bevy::render::render_resource::{
     LoadOp, Operations, PipelineCache, RenderPassDepthStencilAttachment, RenderPassDescriptor,

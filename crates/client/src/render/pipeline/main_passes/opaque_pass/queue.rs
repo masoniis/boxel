@@ -1,10 +1,10 @@
 use crate::prelude::*;
 use crate::render::{
-    data::RenderCameraResource,
     pipeline::main_passes::opaque_pass::extract::OpaqueRenderMeshComponent,
     types::RenderTransformComponent,
 };
 use bevy::ecs::prelude::*;
+use bevy::render::view::ExtractedView;
 
 #[derive(Debug)]
 pub struct PhaseItem {
@@ -29,21 +29,25 @@ struct SortableOpaqueItem {
 /// world and adds them to a list of draw calls for the renderer to consume.
 #[instrument(skip_all)]
 pub fn queue_opaque_system(
-    // Input
-    camera_info: Res<RenderCameraResource>,
+    // input
+    view_query: Query<&ExtractedView>,
     meshes_query: Query<(
         Entity,
         &OpaqueRenderMeshComponent,
         &RenderTransformComponent,
     )>,
 
-    // Output
+    // output
     mut opaque_phase: ResMut<Opaque3dRenderPhase>,
 ) {
+    let Some(extracted_view) = view_query.iter().next() else {
+        return;
+    };
+
     opaque_phase.items.clear();
 
     // collect sortable items for the render pass
-    let camera_position = camera_info.world_position;
+    let camera_position = extracted_view.world_from_view.translation();
     let mut sortable_items: Vec<SortableOpaqueItem> = Vec::with_capacity(meshes_query.iter().len());
     for (entity, _mesh, transform) in meshes_query.iter() {
         // TODO: Frustum culling here
