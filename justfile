@@ -40,6 +40,7 @@ alias run-fast := release
 # runs cargo check across the workspace
 check *args:
     cargo check {{args}}
+    cargo check --benches
 
 # runs clippy across the workspace
 clippy *args:

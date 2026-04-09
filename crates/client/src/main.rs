@@ -9,23 +9,10 @@ use bevy::{
     },
     window::WindowResolution,
 };
-use client::{
-    input::InputModulePlugin, load::ClientLoadPlugin, player::PlayerPlugin, prelude::*,
-    render::VantablockRenderPlugin, showcase::ShowcasePlugin, state::ClientLifecyclePlugin,
-    ui::VantablockUiPlugin,
-};
+use client::prelude::*;
 use shared::{
     load::LoadingTracker,
-    simulation::{
-        asset::AssetPlugin as SimulationAssetPlugin,
-        biome::BiomePlugin,
-        block::BlockPlugin,
-        chunk::ChunkLoadingPlugin,
-        scheduling::{FixedUpdateSet, RenderPrepSet},
-        terrain::TerrainGenerationPlugin,
-        time::TimeControlPlugin,
-    },
-    state::SimulationLifecyclePlugin,
+    simulation::scheduling::{FixedUpdateSet, RenderPrepSet},
 };
 use utils::PersistentPaths;
 
@@ -75,25 +62,7 @@ fn main() {
     app.configure_sets(PostUpdate, RenderPrepSet);
 
     // initialize simulation and renderer
-    app.add_plugins((
-        // client-specific simulation
-        ClientLifecyclePlugin,
-        ClientLoadPlugin,
-        InputModulePlugin,
-        PlayerPlugin,
-        ShowcasePlugin,
-        // shared simulation
-        SimulationLifecyclePlugin,
-        SimulationAssetPlugin,
-        BiomePlugin,
-        BlockPlugin,
-        ChunkLoadingPlugin,
-        TerrainGenerationPlugin,
-        TimeControlPlugin,
-        // rendering
-        VantablockUiPlugin,
-        VantablockRenderPlugin,
-    ));
+    app.add_plugins((shared::SharedPlugins, client::ClientPlugins));
 
     app.run();
     info!("App exited safely!");

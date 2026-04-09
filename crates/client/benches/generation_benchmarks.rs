@@ -3,11 +3,12 @@ use client::prelude::*;
 use client::render::{block::BlockRenderDataRegistry, texture::VoxelTextureProcessor};
 use client::settings::ClientSettings;
 use criterion::{Criterion, criterion_group, criterion_main};
+use client::render::chunk::meshing::build_chunk_mesh;
 use shared::simulation::{
     biome::biome_registry::BiomeRegistryResource,
     block::{BlockRegistry, SOLID_BLOCK_ID},
     chunk::{
-        ChunkDataOption, NeighborLODs, PaddedChunk, build_chunk_mesh,
+        ChunkDataOption, NeighborLODs, PaddedChunk,
         components::{ChunkBlocksComponent, ChunkCoord},
         thread_buffer_pool::acquire_buffer,
         types::ChunkLod,
