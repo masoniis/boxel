@@ -4,8 +4,8 @@ use bevy::{
     app::{App, FixedUpdate, PostUpdate},
     log::LogPlugin,
     prelude::{
-        default, info, AssetPlugin, ClearColor, Color, DefaultPlugins, IntoScheduleConfigs,
-        PluginGroup, Window, WindowPlugin,
+        AssetPlugin, ClearColor, Color, DefaultPlugins, IntoScheduleConfigs, PluginGroup, Window,
+        WindowPlugin, default, info,
     },
     window::WindowResolution,
 };

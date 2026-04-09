@@ -16,20 +16,20 @@ use crate::simulation::{
     },
 };
 use bevy::ecs::prelude::*;
-use bevy::tasks::ComputeTaskPool;
+use bevy::tasks::AsyncComputeTaskPool;
 use crossbeam::channel::unbounded;
 
 /// Queries for entities needing generation and starts a limited number per frame.
 #[instrument(skip_all)]
 #[allow(clippy::too_many_arguments)]
 pub fn start_pending_generation_tasks_system(
-    // Input
+    // input
     mut pending_chunks_query: Query<
         (Entity, &NeedsGenerating, &ChunkCoord),
         Without<ChunkGenerationTaskComponent>,
     >,
 
-    // Output/Resources
+    // output
     mut commands: Commands,
     mut chunk_manager: ResMut<ChunkStateManager>,
     block_registry: Res<BlockRegistry>,
@@ -106,7 +106,7 @@ pub fn start_pending_generation_tasks_system(
         let climate_gen = climate_generator.0.clone();
         let coord_clone = coord.clone();
 
-        ComputeTaskPool::get()
+        AsyncComputeTaskPool::get()
             .spawn(async move {
                 // for testing, override the chunk lod
                 // let mut lod = ChunkLod(0);

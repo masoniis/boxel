@@ -146,14 +146,14 @@ pub fn manage_distance_based_chunk_meshing_targets_system(
     }
 
     for (coord, state) in chunk_manager.chunk_states.iter_mut() {
-        if desired_mesh_chunks.contains(coord) {
-            if let ChunkState::DataReady { entity } = state {
-                debug!(target:"chunk_meshing", "Promoting chunk {:?} to WantsMeshing", coord);
-                commands
-                    .entity(*entity)
-                    .insert((WantsMeshing, CheckForMeshing));
-                *state = ChunkState::WantsMeshing { entity: *entity };
-            }
+        if desired_mesh_chunks.contains(coord)
+            && let ChunkState::DataReady { entity } = state
+        {
+            debug!(target:"chunk_meshing", "Promoting chunk {:?} to WantsMeshing", coord);
+            commands
+                .entity(*entity)
+                .insert((WantsMeshing, CheckForMeshing));
+            *state = ChunkState::WantsMeshing { entity: *entity };
         }
     }
 }

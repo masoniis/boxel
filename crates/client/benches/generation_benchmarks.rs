@@ -1,9 +1,9 @@
 use bevy::ecs::prelude::World;
 use client::prelude::*;
+use client::render::chunk::meshing::build_chunk_mesh;
 use client::render::{block::BlockRenderDataRegistry, texture::VoxelTextureProcessor};
 use client::settings::ClientSettings;
 use criterion::{Criterion, criterion_group, criterion_main};
-use client::render::chunk::meshing::build_chunk_mesh;
 use shared::simulation::{
     biome::biome_registry::BiomeRegistryResource,
     block::{BlockRegistry, SOLID_BLOCK_ID},

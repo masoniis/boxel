@@ -7,7 +7,7 @@ use crate::render::chunk::{
 };
 use bevy::asset::Assets;
 use bevy::ecs::prelude::*;
-use bevy::tasks::ComputeTaskPool;
+use bevy::tasks::AsyncComputeTaskPool;
 use crossbeam::channel::{TryRecvError, unbounded};
 use shared::simulation::chunk::TransformComponent;
 use shared::simulation::{
@@ -159,7 +159,7 @@ pub fn start_pending_meshing_tasks_system(
 
         let (sender, receiver) = unbounded();
 
-        ComputeTaskPool::get()
+        AsyncComputeTaskPool::get()
             .spawn(async move {
                 let buffer = acquire_buffer();
 
