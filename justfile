@@ -57,6 +57,8 @@ fmt:
 clean:
 	rm -rf target/
 
+alias clip := clippy
+
 # INFO: ------------------------------
 #         testing & validation
 # ------------------------------------
