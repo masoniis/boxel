@@ -8,6 +8,14 @@ server  := "server"
 # where to place wsl windows builds
 wsl_target := "C:/temp/vantablock-build"
 
+open_cmd := if os() == "macos" { \
+    "open" \
+} else if os() == "windows" { \
+    "explorer.exe" \
+} else { \
+    "xdg-open" \
+}
+
 default: run
 
 # INFO: -------------------------
@@ -77,7 +85,7 @@ test-bench:
 bench *args:
     cargo bench -p {{client}} {{args}}
     @echo "Opening Criterion report..."
-    open target/criterion/report/index.html
+    -{{ open_cmd }} target/criterion/report/index.html
 
 # full pre-push verification suite
 ready *args:
