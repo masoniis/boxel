@@ -1,4 +1,4 @@
-use crate::simulation::asset::VoxelMeshAsset;
+use crate::render::chunk::asset::VoxelMeshAsset;
 use bevy::asset::Handle;
 use bevy::ecs::prelude::Component;
 

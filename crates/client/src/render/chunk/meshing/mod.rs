@@ -8,8 +8,8 @@ pub mod packed_face;
 // --------------------------------------
 
 use crate::prelude::*;
-use crate::simulation::{
-    asset::VoxelMeshAsset,
+use crate::render::chunk::asset::VoxelMeshAsset;
+use shared::simulation::{
     block::{
         BlockRegistry,
         block_registry::{AIR_BLOCK_ID, BlockId},

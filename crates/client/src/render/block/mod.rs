@@ -46,7 +46,6 @@ impl<T: Clone> BlockFaceTextures<T> {
     }
 }
 
-pub mod meshing;
 pub mod plugin;
 pub mod registry;
 

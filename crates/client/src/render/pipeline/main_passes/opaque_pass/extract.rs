@@ -1,10 +1,11 @@
+use crate::render::chunk::OpaqueMeshComponent;
+use crate::render::chunk::VoxelMeshAsset;
 use crate::render::types::RenderTransformComponent;
 use bevy::asset::Handle;
 use bevy::ecs::prelude::*;
 use bevy::render::Extract;
 use bevy::render::sync_world::RenderEntity;
-use shared::simulation::asset::VoxelMeshAsset;
-use shared::simulation::chunk::{OpaqueMeshComponent, TransformComponent};
+use shared::simulation::chunk::TransformComponent;
 
 // INFO: --------------------------------
 //         RenderWorld components

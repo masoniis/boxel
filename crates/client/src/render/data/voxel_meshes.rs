@@ -1,3 +1,4 @@
+use crate::render::chunk::{OpaqueMeshComponent, TransparentMeshComponent, VoxelMeshAsset};
 use crate::{prelude::*, render::types::VoxelMesh};
 use bevy::{
     asset::{AssetEvent, AssetId, Assets},
@@ -8,10 +9,7 @@ use bevy::{
     platform::collections::HashMap,
     render::Extract,
 };
-use shared::simulation::{
-    asset::VoxelMeshAsset,
-    chunk::{OpaqueMeshComponent, TransformComponent, TransparentMeshComponent},
-};
+use shared::simulation::chunk::TransformComponent;
 
 #[derive(Resource, Default)]
 pub struct RenderMeshStorageResource {

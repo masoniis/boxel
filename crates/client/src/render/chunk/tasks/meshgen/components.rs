@@ -1,4 +1,4 @@
-use crate::simulation::chunk::{OpaqueMeshData, TransparentMeshData};
+use crate::render::chunk::meshing::{OpaqueMeshData, TransparentMeshData};
 use bevy::ecs::prelude::Component;
 use crossbeam::channel::Receiver;
 

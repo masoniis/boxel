@@ -1,10 +1,10 @@
 use super::{OpaqueMeshData, TransparentMeshData};
-use crate::simulation::chunk::meshing::packed_face::PackedFace;
-use crate::simulation::{
-    block::{BlockId, BlockRegistry},
+use crate::prelude::*;
+use crate::render::chunk::meshing::packed_face::PackedFace;
+use shared::simulation::{
+    block::{BlockId, BlockRegistry, texture_registry::TextureId},
     chunk::{NeighborLODs, PaddedChunk, types::ChunkLod},
 };
-use crate::{prelude::*, simulation::block::texture_registry::TextureId};
 use std::sync::Arc;
 
 // INFO: -----------------------

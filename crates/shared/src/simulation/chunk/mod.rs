@@ -1,14 +1,12 @@
 pub mod common;
 pub mod components;
 pub mod consts;
-pub mod meshing;
 pub mod tasks;
 pub mod types;
 
 pub use common::*;
 pub use components::*;
 pub use consts::*;
-pub use meshing::*;
 pub use tasks::*;
 pub use types::*;
 
@@ -39,7 +37,6 @@ impl Plugin for ChunkLoadingPlugin {
         app.add_systems(
             FixedUpdate,
             (
-                handle_dirty_chunks_system,
                 start_pending_generation_tasks_system,
                 poll_chunk_generation_tasks,
             )

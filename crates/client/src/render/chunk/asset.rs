@@ -1,4 +1,4 @@
-use crate::simulation::chunk::meshing::packed_face::PackedFace;
+use crate::render::chunk::meshing::packed_face::PackedFace;
 use bevy::asset::Asset;
 use bevy::reflect::Reflect;
 use std::sync::Arc;

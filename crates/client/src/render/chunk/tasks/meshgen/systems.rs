@@ -1,16 +1,19 @@
 use crate::prelude::*;
 use crate::render::block::BlockRenderDataRegistry;
+use crate::render::chunk::{
+    OpaqueMeshComponent, TransparentMeshComponent, VoxelMeshAsset,
+    meshing::build_chunk_mesh,
+    tasks::meshgen::{CheckForMeshing, WantsMeshing, components::ChunkMeshingTaskComponent},
+};
 use bevy::asset::Assets;
 use bevy::ecs::prelude::*;
 use bevy::tasks::ComputeTaskPool;
 use crossbeam::channel::{TryRecvError, unbounded};
+use shared::simulation::chunk::TransformComponent;
 use shared::simulation::{
-    asset::VoxelMeshAsset,
     block::BlockRegistry,
     chunk::{
-        CHUNK_SIDE_LENGTH, CheckForMeshing, ChunkBlocksComponent, ChunkCoord,
-        ChunkMeshingTaskComponent, ChunkState, ChunkStateManager, OpaqueMeshComponent,
-        TransformComponent, TransparentMeshComponent, WantsMeshing, build_chunk_mesh,
+        CHUNK_SIDE_LENGTH, ChunkBlocksComponent, ChunkCoord, ChunkState, ChunkStateManager,
         chunk_state_manager::NEIGHBOR_OFFSETS,
         common::{
             chunk_scaling::{downsample_chunk, upsample_chunk},

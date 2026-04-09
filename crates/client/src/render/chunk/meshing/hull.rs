@@ -1,6 +1,6 @@
 use super::{OpaqueMeshData, TransparentMeshData, common::*};
 use crate::prelude::*;
-use crate::simulation::{
+use shared::simulation::{
     block::{BlockRegistry, block_registry::BlockId},
     chunk::{CHUNK_SIDE_LENGTH, PaddedChunk},
 };

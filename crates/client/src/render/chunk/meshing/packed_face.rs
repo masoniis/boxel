@@ -1,4 +1,4 @@
-use crate::simulation::chunk::meshing::common::{AoLevel, FaceSide};
+use crate::render::chunk::meshing::common::{AoLevel, FaceSide};
 use bevy::reflect::Reflect;
 
 /// A struct representing a single voxel face in the world

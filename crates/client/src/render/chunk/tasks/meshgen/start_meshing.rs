@@ -1,8 +1,7 @@
 use crate::prelude::*;
-use crate::simulation::chunk::{
-    CheckForMeshing, ChunkCoord, ChunkMeshDirty, ChunkStateManager, WantsMeshing,
-};
+use crate::render::chunk::tasks::meshgen::{CheckForMeshing, WantsMeshing};
 use bevy::ecs::prelude::*;
+use shared::simulation::chunk::{ChunkCoord, ChunkMeshDirty, ChunkStateManager};
 
 /// A system that detects chunks marked as dirty and prepares them for re-meshing.
 pub fn handle_dirty_chunks_system(
