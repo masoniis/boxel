@@ -2,8 +2,8 @@ set shell := ["bash", "-c"]
 
 # crate names
 project := "vantablock"
-client  := "client"
-server  := "server"
+client  := "vantablock-client"
+server  := "vantablock-server"
 
 # where to place wsl windows builds
 wsl_target := "C:/temp/vantablock-build"

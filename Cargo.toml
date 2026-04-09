@@ -1,6 +1,6 @@
 [workspace]
 members = ["crates/shared", "crates/client", "crates/server", "crates/utils"]
-resolver = "2"
+resolver = "3"
 
 [workspace.package]
 version = "0.0.1"
@@ -42,8 +42,8 @@ debug = false
 
 [workspace.dependencies]
 # crate deps
-utils = { path = "./crates/utils" }
-shared = { path = "./crates/shared" }
+utils = { path = "./crates/utils", package = "vantablock-utils" }
+shared = { path = "./crates/shared", package = "vantablock-shared" }
 
 # logging/error handling deps
 time = { version = "0.3.43", features = ["formatting", "macros"] }

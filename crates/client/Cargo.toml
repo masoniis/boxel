@@ -1,8 +1,9 @@
 [package]
-name = "client"
+name = "vantablock-client"
 description = "client for vantablock"
 version.workspace = true
 edition.workspace = true
+publish.workspace = true
 default-run = "client"
 
 [lints]

@@ -60,7 +60,7 @@ jobs:
     needs: [release-plz-release]
     permissions:
       contents: write
-    if: ${{ contains(needs.release-plz-release.outputs.releases, '"package_name":"client"') }}
+    if: ${{ contains(needs.release-plz-release.outputs.releases, '"package_name":"vantablock-client"') }}
     strategy:
       fail-fast: false
       matrix:
@@ -97,7 +97,7 @@ jobs:
         shell: bash
         run: |
           # extract tag from package_name='client' to append release assets to
-          TAG=$(echo '${{ needs.release-plz-release.outputs.releases }}' | jq -r '.[] | select(.package_name == "client") | .tag')
+          TAG=$(echo '${{ needs.release-plz-release.outputs.releases }}' | jq -r '.[] | select(.package_name == "vantablock-client") | .tag')
           if [ -z "$TAG" ] || [ "$TAG" == "null" ]; then
             echo "Error: Could not find tag for client package."
             exit 1
