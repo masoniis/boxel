@@ -1,4 +1,5 @@
-pub mod smoothing;
+pub mod block_actions;
+pub mod client_message;
 
 // INFO: ---------------------------
 //         plugin definition
@@ -6,15 +7,15 @@ pub mod smoothing;
 
 use bevy::app::{App, Plugin, Update};
 
-pub struct NetworkGraphicsPlugin;
+pub struct ServerIngressPlugin;
 
-impl Plugin for NetworkGraphicsPlugin {
+impl Plugin for ServerIngressPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,
             (
-                smoothing::update_logical_position_smoothing,
-                smoothing::update_player_look_smoothing,
+                client_message::receive_client_messages,
+                block_actions::handle_client_block_requests,
             ),
         );
     }
